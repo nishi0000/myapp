@@ -5,6 +5,12 @@ import menu from "../images/menu.png";
 import { Link } from "react-router-dom";
 
 export const Header = () => {
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  
   return (
     <SHeader>
       <Link to="/">
@@ -56,3 +62,4 @@ const SMenu = styled.img`
     margin-right: 8px;
   }
 `;
+
