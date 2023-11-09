@@ -16,6 +16,7 @@ import {
 } from "firebase/auth";
 import { useState } from "react";
 import { SignInCheck } from "./comportnents/SignInCheck";
+import { Header } from "./comportnents/Header";
 
 function App() {
 
@@ -95,6 +96,7 @@ function App() {
 
   return (
     <>
+    <Header />
       <h1>Hello,World!</h1>
       <button onClick={onClickSubmit}>送信</button>
       <button onClick={onClickDelete}>削除</button>
