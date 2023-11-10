@@ -17,7 +17,6 @@ import {
 import { useState } from "react";
 import { SignInCheck } from "./comportnents/SignInCheck";
 import { Header } from "./comportnents/Header";
-import HamburgerMenu from "./comportnents/HamburgerMenu";
 
 function App() {
 
@@ -105,7 +104,6 @@ function App() {
       <button onClick={onClickSignIn}>ログイン</button>
       <button onClick={onClickSignOut}>ログアウト</button><br />
       {userId ? (<p>ログインしています。</p>):(<p>ログインしていません。</p>)}
-      <HamburgerMenu />
       <Router />
     </>
   );

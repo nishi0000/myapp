@@ -1,26 +1,21 @@
 import styled from "styled-components";
 import pclogo from "../images/logo-pc.png";
 import splogo from "../images/logo-sp.png";
-import menu from "../images/menu.png";
 import { Link } from "react-router-dom";
+import HamburgerMenu from "./HamburgerMenu";
 
 export const Header = () => {
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
   
-  return (
+  return (<>
     <SHeader>
       <Link to="/">
         <SLogopc src={`${pclogo}`} />
         <SLogosp src={`${splogo}`} />
       </Link>
-      <Link to="spmenu">
-        <SMenu src={`${menu}`} />
-      </Link>
+      <HamburgerMenu />
     </SHeader>
+
+    </>
   );
 };
 
@@ -54,12 +49,4 @@ const SLogosp = styled.img`
   }
 `;
 
-const SMenu = styled.img`
-  display: none;
-  @media screen and (max-width: 375px) {
-    height: 30px;
-    display: inline;
-    margin-right: 8px;
-  }
-`;
 

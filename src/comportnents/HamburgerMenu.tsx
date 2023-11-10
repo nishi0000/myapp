@@ -1,17 +1,14 @@
 import { useState } from "react";
+import menu from "../images/menu.png";
 import styled from "styled-components";
 
 const HamburgerMenu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
     <div>
-      <SButton onClick={toggleMenu}>
-        {isOpen ? <p>ひらく</p> : <p>とじる</p>}
+      <SButton onClick={()=>setIsOpen(!isOpen)}>
+        <SImg src={`${menu}`} />
       </SButton>
       {isOpen ? (
         <SNavi>
@@ -54,8 +51,9 @@ width: 250px;
 z-index: 9;
 overflow: hidden;
 height: -webkit-fill-available;
-
-
+@media screen and (max-width: 375px) {
+  margin-top:50px;
+  }
   }
 `;
 
@@ -70,5 +68,14 @@ color: #333;
 margin: 1rem 0;
 font-size: 18px;
 text-align: left;
+  }
+`;
+
+const SImg = styled.img`
+display: none;
+@media screen and (max-width: 375px) {
+  height: 30px;
+  display: inline;
+  margin-right: 8px;
   }
 `;
