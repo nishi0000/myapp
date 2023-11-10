@@ -7,13 +7,11 @@ import {
 export const SignInCheck = () => {
 
     const auth = getAuth();
-
     onAuthStateChanged(auth, (user:any) => {
         if (user) {
           const uid = user.uid;
           console.log(uid);
-        } else {
-          console.log("未ログイン");
+          return uid;
         }
       });
 

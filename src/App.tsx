@@ -14,9 +14,10 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { useState } from "react";
 import { SignInCheck } from "./comportnents/SignInCheck";
 import { Header } from "./comportnents/Header";
+import { useEffect, useState } from 'react';
+import firebase from 'firebase/app';
 
 function App() {
 

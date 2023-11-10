@@ -9,6 +9,7 @@ import { NotFound } from "../pages/NotFound";
 
 export const Router = () => {
     return (
+      
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<SignIn />} />
