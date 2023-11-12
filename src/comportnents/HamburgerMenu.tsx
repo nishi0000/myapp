@@ -7,17 +7,17 @@ const HamburgerMenu = () => {
 
   return (
     <div>
-      <SButton onClick={()=>setIsOpen(!isOpen)}>
+      <SButton onClick={() => setIsOpen(!isOpen)}>
         <SImg src={`${menu}`} />
       </SButton>
       {isOpen ? (
         <SNavi>
-          <SUl>
-            <Sli>ホーム</Sli>
-            <Sli>サービス</Sli>
-            <Sli>ポートフォリオ</Sli>
-            <Sli>お問い合わせ</Sli>
-          </SUl>
+            <SUl>
+              <Sli>ホーム</Sli>
+              <Sli>サービス</Sli>
+              <Sli>ポートフォリオ</Sli>
+              <Sli>お問い合わせ</Sli>
+            </SUl>
         </SNavi>
       ) : (
         <></>
@@ -72,10 +72,22 @@ text-align: left;
 `;
 
 const SImg = styled.img`
-display: none;
-@media screen and (max-width: 375px) {
-  height: 30px;
-  display: inline;
-  margin-right: 8px;
+  display: none;
+  @media screen and (max-width: 375px) {
+    height: 30px;
+    display: inline;
+    margin-right: 8px;
+    z-index: 12;
   }
 `;
+
+// const SOverlay = styled.div`
+//   /*　画面全体を覆う設定　*/
+//   position: fixed;
+//   z-index: 3;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   background-color: rgba(0, 0, 0, 0.5);
+// `;

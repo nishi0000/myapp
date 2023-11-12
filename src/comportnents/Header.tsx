@@ -2,25 +2,70 @@ import styled from "styled-components";
 import pclogo from "../images/logo-pc.png";
 import splogo from "../images/logo-sp.png";
 import signin from "../images/signin.png";
+import signout from "../images/signout.png";
 import { Link } from "react-router-dom";
 import HamburgerMenu from "./HamburgerMenu";
+import { useEffect, useState } from "react";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { ModalWindow } from "./ModalWindow";
+import { useDispatch,useSelector } from "react-redux";
+import { signIn,commonSignOut } from "../features/AuthSlice";
 
 export const Header = () => {
-  
-  return (<>
-    <SHeader>
-      <div>
-      <Link to="/">
-        <SLogopc src={`${pclogo}`} />
-        <SLogosp src={`${splogo}`} />
-      </Link>
-      <Link to="/signin">
-      <SIcon src={`${signin}`} />
-      </Link>
-      </div>
-      <HamburgerMenu />
-    </SHeader>
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const token = useSelector((state) => state.auth.userToken);
+  const dispatch = useDispatch();
+  const auth = getAuth();
 
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user: any) => {
+      if (user) {
+        console.log(user);
+        dispatch(signIn({uid:user.uid,name:user.displayName}));
+      }
+    });
+  }, []);
+
+  const onClickSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("ログアウト成功！");
+        setModalOpen(false);
+        dispatch(commonSignOut());
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  return (
+    <>
+      <SHeader>
+        <div>
+          <Link to="/">
+            <SLogopc src={`${pclogo}`} />
+            <SLogosp src={`${splogo}`} />
+          </Link>
+          {token ? (
+            <SIcon src={`${signout}`} onClick={() => setModalOpen(true)} />
+          ) : (
+            <Link to="/signin">
+            <SIcon src={`${signin}`} />
+          </Link>
+          )}
+        </div>
+        <HamburgerMenu />
+      </SHeader>
+
+      {modalOpen && (
+        <ModalWindow
+          onClickYes={onClickSignOut}
+          onClickNo={() => setModalOpen(false)}
+        >
+          ログアウトしますか？
+        </ModalWindow>
+      )}
     </>
   );
 };
@@ -55,14 +100,13 @@ const SLogosp = styled.img`
   }
 `;
 
-
 const SIcon = styled.img`
   height: 32px;
-  margin-left:16px;
-  margin-bottom:5px;
+  margin-left: 16px;
+  margin-bottom: 5px;
   transition: 0.1s;
   &:hover {
-      transform: translate3d(1px, 1px, 0);
+    transform: translate3d(1px, 1px, 0);
   }
   @media screen and (max-width: 768px) {
     display: none;

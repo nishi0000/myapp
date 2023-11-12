@@ -3,7 +3,6 @@ import {
     onAuthStateChanged,
   } from "firebase/auth";
 
-
 export const SignInCheck = () => {
 
     const auth = getAuth();
@@ -14,8 +13,5 @@ export const SignInCheck = () => {
           return uid;
         }
       });
-
-
-
 }
 

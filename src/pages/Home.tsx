@@ -1,30 +1,26 @@
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 
-
 export const Home = () => {
-    const [test,setTest] = useState("");
-    
-    const auth = getAuth();
-    const user = auth.currentUser;
+    const [uid,setUid] = useState("");
 
     useEffect(()=>{
-        if (user) {
-            setTest("ログイン中");
-          } else {
-            setTest("ログアウト中")
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user:any) => {
+          if (user) {
+            const uid = user.uid;
+            console.log(user);
+            setUid(uid);
           }
-    },[])
+        });
 
-
-
+    },[]);
 
 
     return(<>
 
     <p>Homeだよー</p>
-    <p>{`${test}`}</p>
-
+    {`${uid}`}
     
     </>
 
