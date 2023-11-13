@@ -1,7 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export interface RootState {
+  auth:{
+        isSignIn: boolean;
+        userToken: string;
+        userName: string;
+      }
+    };
 
-const initialState= {
+const initialState = {
   isSignIn: false,
   userToken: "",
   userName: "",

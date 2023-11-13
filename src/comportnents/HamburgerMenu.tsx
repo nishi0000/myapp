@@ -5,12 +5,12 @@ import styled from "styled-components";
 const HamburgerMenu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  return (
+  return (<>
     <div>
       <SButton onClick={() => setIsOpen(!isOpen)}>
         <SImg src={`${menu}`} />
       </SButton>
-      {isOpen ? (
+      {isOpen ? ( 
         <SNavi>
             <SUl>
               <Sli>ホーム</Sli>
@@ -23,6 +23,8 @@ const HamburgerMenu = () => {
         <></>
       )}
     </div>
+    </>
+    
   );
 };
 
@@ -81,13 +83,13 @@ const SImg = styled.img`
   }
 `;
 
-// const SOverlay = styled.div`
-//   /*　画面全体を覆う設定　*/
-//   position: fixed;
-//   z-index: 3;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background-color: rgba(0, 0, 0, 0.5);
-// `;
+const SOverlay = styled.div`
+  /*　画面全体を覆う設定　*/
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+`;

@@ -14,14 +14,12 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { SignInCheck } from "./comportnents/SignInCheck";
 import { Header } from "./comportnents/Header";
-import { useEffect, useState } from 'react';
-import firebase from 'firebase/app';
+import { useState } from "react";
 
 function App() {
 
-  const [userId,setUserId] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
 
   const postData = collection(db, "posts");
   getDocs(postData).then((querySnapshot) => {
@@ -61,6 +59,7 @@ function App() {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        console.log(errorCode);
         console.log(errorMessage);
       });
   };
@@ -77,34 +76,36 @@ function App() {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        console.log(errorCode);
         console.log(errorMessage);
       });
   };
 
   const onClickSignOut = () => {
-    signOut(auth).then(() => {
-      // Sign-out successful.
-      console.log("ログアウト成功！");
-      setUserId("");
-    }).catch((error) => {
-      // An error happened.
-      console.log(error);
-    });
-  }
-
-  SignInCheck();
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        console.log("ログアウト成功！");
+        setUserId("");
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log(error);
+      });
+  };
 
   return (
     <>
-    <Header />
+      <Header />
       <h1>Hello,World!</h1>
       <button onClick={onClickSubmit}>送信</button>
       <button onClick={onClickDelete}>削除</button>
       <button onClick={onClickUpdate}>更新</button>
       <button onClick={onClickSignUp}>登録</button>
       <button onClick={onClickSignIn}>ログイン</button>
-      <button onClick={onClickSignOut}>ログアウト</button><br />
-      {userId ? (<p>ログインしています。</p>):(<p>ログインしていません。</p>)}
+      <button onClick={onClickSignOut}>ログアウト</button>
+      <br />
+      {userId ? <p>ログインしています。</p> : <p>ログインしていません。</p>}
       <Router />
     </>
   );

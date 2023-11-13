@@ -9,11 +9,11 @@ import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { ModalWindow } from "./ModalWindow";
 import { useDispatch,useSelector } from "react-redux";
-import { signIn,commonSignOut } from "../features/AuthSlice";
+import { signIn,commonSignOut,RootState } from "../features/AuthSlice";
 
 export const Header = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const token = useSelector((state) => state.auth.userToken);
+  const token = useSelector((state: RootState) => state.auth.userToken);
   const dispatch = useDispatch();
   const auth = getAuth();
 
@@ -25,7 +25,7 @@ export const Header = () => {
         dispatch(signIn({uid:user.uid,name:user.displayName}));
       }
     });
-  }, []);
+  }, [dispatch]);
 
   const onClickSignOut = () => {
     signOut(auth)
