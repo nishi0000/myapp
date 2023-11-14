@@ -3,12 +3,13 @@ import styled from "styled-components";
 
 type ButtonProps = {
     children: string;
-    onClick: () => void;
+    type?:"button" | "reset" | "submit" | undefined;
+    onClick?: () => void;
 };
 
-export const Button: FC<ButtonProps> = ({ children, onClick }) => {
+export const Button: FC<ButtonProps> = ({ children, type,onClick }) => {
     return (
-        <SButton type="button" onClick={onClick}>{children}</SButton>
+        <SButton type={type} onClick={onClick}>{children}</SButton>
     );
 };
 

@@ -1,35 +1,39 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import Button from "../comportnents/Button";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
 import styled from "styled-components";
+import eyeclose from "../images/eyeclose.png"
 
 export const SignIn = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const Navigate = useNavigate();
 
-  const onClickSignIn = () => {
+  const onSubmit = (data: any) => {
+    console.log(data);
+
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
-        setEmail("");
-        setPassword("");
         Navigate("/");
       })
       .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorMessage);
-        console.log(errorCode);
+        setErrorMessage(errorMessage);
       });
   };
 
   const onClickSignUp = () => {
-    Navigate("/signup")
-  }
+    Navigate("/signup");
+  };
 
   return (
     <>
@@ -37,27 +41,49 @@ export const SignIn = () => {
         <SContainer>
           <SH2>ログイン</SH2>
         </SContainer>
-        <form>
-          <SLabel>メールアドレス</SLabel>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <SLabel htmlFor="email">メールアドレス</SLabel>
+          <SInputcontainer>
           <SInput
             placeholder="メールアドレス"
-            required
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            id="email"
+            {...register("email", {
+              required: {
+                value: true,
+                message: "入力が必須の項目です。",
+              },
+              pattern: {
+                value: /^[\w\-._]+@[\w\-._]+\.[A-Za-z]+/,
+                message: "入力形式がメールアドレスではありません。",
+              },
+            })}
           />
+          </SInputcontainer>
+          {errors.email?.message && (
+            <SErrorMessage>{String(errors.email?.message)}</SErrorMessage>
+          )}
           <SLabel>パスワード</SLabel>
+          <SInputcontainer>
           <SInput
             placeholder="パスワード"
-            required
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            id="password"
+            {...register("password", {
+              required: {
+                value: true,
+                message: "入力が必須の項目です。",
+              },
+            })}
           />
-          <br />
+         <SEyeicon src={`${eyeclose}`} />
+          </SInputcontainer>
+          {errors.password?.message && (
+            <SErrorMessage>{String(errors.password?.message)}</SErrorMessage>
+          )}
           <SContainer>
-          <p>パスワードをお忘れですか？</p>
-            <Button onClick={onClickSignIn}>ログイン</Button>
+            {errorMessage && <SErrorMessage>ログインに失敗しました。<br />{errorMessage}</SErrorMessage>}
+            <p>パスワードをお忘れですか？</p>
+            <Button type="submit">ログイン</Button>
             <br />
             <Button onClick={onClickSignUp}>新規登録</Button>
           </SContainer>
@@ -66,7 +92,6 @@ export const SignIn = () => {
     </>
   );
 };
-
 
 const SMain = styled.main`
   display: flex;
@@ -93,16 +118,36 @@ const SContainer = styled.div`
 const SInput = styled.input`
   max-width: 300px;
   width: 90%;
-  margin-top:8px;
-  border: 1px solid gray;
-  border-radius: 8px;
-  padding:6px;
-  height:20px;
+  border: none;
+  height: 20px;
   font-size: large;
+  &:focus {
+    outline: none;
+  }
 `;
 
 const SLabel = styled.label`
-display: block;
-margin-top:16px;
+  display: block;
+  margin-top: 16px;
 `;
 
+const SErrorMessage = styled.div`
+  font-size: 14px;
+  color: red;
+`;
+
+const SInputcontainer = styled.div`
+display:flex;
+align-items: center;
+border: 1px solid gray;
+border-radius: 8px;
+padding:8px;
+
+`;
+
+const SEyeicon = styled.img`
+height:20px;
+margin-top:3px;
+margin-right:5px;
+
+`;

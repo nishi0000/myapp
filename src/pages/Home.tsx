@@ -14,7 +14,6 @@ export const Home = () => {
       onAuthStateChanged(auth, (user:any) => {
           if (user) {
             const uid = user.uid;
-            console.log(user);
             setUid(uid);
           }
         });

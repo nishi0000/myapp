@@ -14,7 +14,7 @@ export const ModalWindow: FC<ModalProps>  = ({children,onClickYes,onClickNo}) =>
         <SModaloverlay>
         <SModalcontainer>
           <p>{children}</p>
-          <Button onClick={onClickYes}>はい</Button><Button onClick={onClickNo}>いいえ</Button>
+          <Button type="button" onClick={onClickYes}>はい</Button><Button type="button" onClick={onClickNo}>いいえ</Button>
         </SModalcontainer>
       </SModaloverlay>
 

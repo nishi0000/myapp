@@ -101,7 +101,7 @@ export const SignUp = () => {
         <button className="button">アップロード</button>
       </form>
       <br />
-      <Button onClick={onClickSignUp}>登録</Button>
+      <Button type="button" onClick={onClickSignUp}>登録</Button>
       <br />
       <Link to="/signin">アカウントをお持ちの方はこちら</Link>
     </>
