@@ -3,4 +3,5 @@
 header {
     align-items: center;
     justify-content: space-between;
+    display: block;
 }

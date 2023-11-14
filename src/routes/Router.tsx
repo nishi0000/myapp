@@ -6,6 +6,7 @@ import { NewBreadPage } from "../pages/NewBreadPage";
 import { EditBreadReview } from "../pages/EditBreadReview";
 import { BreadReview } from "../pages/BreadReview";
 import { NotFound } from "../pages/NotFound";
+import { UserProfile } from "../pages/UserProfile";
 
 export const Router = () => {
     return (
@@ -17,6 +18,7 @@ export const Router = () => {
         <Route path="/newbreadpage" element={<NewBreadPage />} />
         <Route path="/editbreadreview" element={<EditBreadReview />} />
         <Route path="/breadreview" element={<BreadReview />} />
+        <Route path="/userprofile" element={<UserProfile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     );

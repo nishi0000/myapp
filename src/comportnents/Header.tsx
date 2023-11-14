@@ -3,7 +3,8 @@ import pclogo from "../images/logo-pc.png";
 import splogo from "../images/logo-sp.png";
 import signin from "../images/signin.png";
 import signout from "../images/signout.png";
-import { Link } from "react-router-dom";
+import usericon from "../images/usericon.png"
+import { Link, useNavigate } from "react-router-dom";
 import HamburgerMenu from "./HamburgerMenu";
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
@@ -15,7 +16,9 @@ export const Header = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const token = useSelector((state: RootState) => state.auth.userToken);
   const dispatch = useDispatch();
+  const Navigate = useNavigate();
   const auth = getAuth();
+
 
   useEffect(() => {
     const auth = getAuth();
@@ -33,6 +36,7 @@ export const Header = () => {
         console.log("ログアウト成功！");
         setModalOpen(false);
         dispatch(commonSignOut());
+        Navigate("/");
       })
       .catch((error) => {
         console.log(error);
@@ -47,9 +51,12 @@ export const Header = () => {
             <SLogopc src={`${pclogo}`} />
             <SLogosp src={`${splogo}`} />
           </Link>
-          {token ? (
+          {token ? (<>
             <SIcon src={`${signout}`} onClick={() => setModalOpen(true)} />
-          ) : (
+            <Link to="/userprofile">
+            <SIcon src={`${usericon}`} />
+            </Link>
+            </> ) : (
             <Link to="/signin">
             <SIcon src={`${signin}`} />
           </Link>

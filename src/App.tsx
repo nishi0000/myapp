@@ -19,7 +19,7 @@ import { useState } from "react";
 
 function App() {
 
-  const [userId, setUserId] = useState<string>("");
+  // const [userId, setUserId] = useState<string>("");
 
   const postData = collection(db, "posts");
   getDocs(postData).then((querySnapshot) => {
@@ -27,77 +27,77 @@ function App() {
     console.log(querySnapshot.docs.map((doc) => doc.id));
   });
 
-  const onClickSubmit = () => {
-    addDoc(collection(db, "posts", "post"), {
-      name: "nishiii",
-      id: "aaaaa",
-      massage: "やっふー",
-    });
-  };
+  // const onClickSubmit = () => {
+  //   addDoc(collection(db, "posts", "post"), {
+  //     name: "nishiii",
+  //     id: "aaaaa",
+  //     massage: "やっふー",
+  //   });
+  // };
 
-  const onClickDelete = () => {
-    deleteDoc(doc(db, "posts", "jOqKHKg2mGTnc1u4lp6W"));
-  };
+  // const onClickDelete = () => {
+  //   deleteDoc(doc(db, "posts", "jOqKHKg2mGTnc1u4lp6W"));
+  // };
 
-  const onClickUpdate = () => {
-    updateDoc(doc(db, "posts", "cqRIFmVusHdSnboyFiFl"), {
-      name: "nishiii",
-      id: "aaaaa",
-      massage: "やっぴー",
-    });
-  };
+  // const onClickUpdate = () => {
+  //   updateDoc(doc(db, "posts", "cqRIFmVusHdSnboyFiFl"), {
+  //     name: "nishiii",
+  //     id: "aaaaa",
+  //     massage: "やっぴー",
+  //   });
+  // };
 
-  const auth = getAuth();
+  // const auth = getAuth();
 
-  const onClickSignUp = () => {
-    createUserWithEmailAndPassword(auth, "email@gmail.com", "password")
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
-      });
-  };
+  // const onClickSignUp = () => {
+  //   createUserWithEmailAndPassword(auth, "email@gmail.com", "password")
+  //     .then((userCredential) => {
+  //       // Signed in
+  //       const user = userCredential.user;
+  //       console.log(user);
+  //     })
+  //     .catch((error) => {
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       console.log(errorCode);
+  //       console.log(errorMessage);
+  //     });
+  // };
 
-  const onClickSignIn = () => {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, "email@gmail.com", "password")
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        setUserId(`${user}`);
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
-      });
-  };
+  // const onClickSignIn = () => {
+  //   const auth = getAuth();
+  //   signInWithEmailAndPassword(auth, "email@gmail.com", "password")
+  //     .then((userCredential) => {
+  //       // Signed in
+  //       const user = userCredential.user;
+  //       setUserId(`${user}`);
+  //       console.log(user);
+  //     })
+  //     .catch((error) => {
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       console.log(errorCode);
+  //       console.log(errorMessage);
+  //     });
+  // };
 
-  const onClickSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-        console.log("ログアウト成功！");
-        setUserId("");
-      })
-      .catch((error) => {
-        // An error happened.
-        console.log(error);
-      });
-  };
+  // const onClickSignOut = () => {
+  //   signOut(auth)
+  //     .then(() => {
+  //       // Sign-out successful.
+  //       console.log("ログアウト成功！");
+  //       setUserId("");
+  //     })
+  //     .catch((error) => {
+  //       // An error happened.
+  //       console.log(error);
+  //     });
+  // };
 
   return (
     <>
       <Header />
-      <h1>Hello,World!</h1>
+      {/* <h1>Hello,World!</h1>
       <button onClick={onClickSubmit}>送信</button>
       <button onClick={onClickDelete}>削除</button>
       <button onClick={onClickUpdate}>更新</button>
@@ -105,7 +105,7 @@ function App() {
       <button onClick={onClickSignIn}>ログイン</button>
       <button onClick={onClickSignOut}>ログアウト</button>
       <br />
-      {userId ? <p>ログインしています。</p> : <p>ログインしていません。</p>}
+      {userId ? <p>ログインしています。</p> : <p>ログインしていません。</p>} */}
       <Router />
     </>
   );

@@ -8,7 +8,7 @@ type ButtonProps = {
 
 export const Button: FC<ButtonProps> = ({ children, onClick }) => {
     return (
-        <SButton onClick={onClick}>{children}</SButton>
+        <SButton type="button" onClick={onClick}>{children}</SButton>
     );
 };
 

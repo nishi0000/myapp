@@ -69,7 +69,7 @@ export const SignUp = () => {
 
   return (
     <>
-      <p>SignUpだよー</p>
+      <h2>SignIn</h2>
       <label>名前</label>
       <br />
       <input
