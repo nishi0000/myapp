@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import styled from "styled-components";
-import eyeclose from "../images/eyeclose.png"
+import eyeopen from "../images/eyeopen.png";
 
 export const SignIn = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -44,44 +44,50 @@ export const SignIn = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <SLabel htmlFor="email">メールアドレス</SLabel>
           <SInputcontainer>
-          <SInput
-            placeholder="メールアドレス"
-            id="email"
-            {...register("email", {
-              required: {
-                value: true,
-                message: "入力が必須の項目です。",
-              },
-              pattern: {
-                value: /^[\w\-._]+@[\w\-._]+\.[A-Za-z]+/,
-                message: "入力形式がメールアドレスではありません。",
-              },
-            })}
-          />
+            <SInput
+              placeholder="メールアドレス"
+              id="email"
+              {...register("email", {
+                required: {
+                  value: true,
+                  message: "入力が必須の項目です。",
+                },
+                pattern: {
+                  value: /^[\w\-._]+@[\w\-._]+\.[A-Za-z]+/,
+                  message: "入力形式がメールアドレスではありません。",
+                },
+              })}
+            />
           </SInputcontainer>
           {errors.email?.message && (
             <SErrorMessage>{String(errors.email?.message)}</SErrorMessage>
           )}
           <SLabel>パスワード</SLabel>
           <SInputcontainer>
-          <SInput
-            placeholder="パスワード"
-            type="password"
-            id="password"
-            {...register("password", {
-              required: {
-                value: true,
-                message: "入力が必須の項目です。",
-              },
-            })}
-          />
-         <SEyeicon src={`${eyeclose}`} />
+            <SInput
+              placeholder="パスワード"
+              type="password"
+              id="password"
+              {...register("password", {
+                required: {
+                  value: true,
+                  message: "入力が必須の項目です。",
+                },
+              })}
+            />
+            <SEyeicon src={`${eyeopen}`} />
           </SInputcontainer>
           {errors.password?.message && (
             <SErrorMessage>{String(errors.password?.message)}</SErrorMessage>
           )}
           <SContainer>
-            {errorMessage && <SErrorMessage>ログインに失敗しました。<br />{errorMessage}</SErrorMessage>}
+            {errorMessage && (
+              <SErrorMessage>
+                ログインに失敗しました。
+                <br />
+                {errorMessage}
+              </SErrorMessage>
+            )}
             <p>パスワードをお忘れですか？</p>
             <Button type="submit">ログイン</Button>
             <br />
@@ -137,17 +143,15 @@ const SErrorMessage = styled.div`
 `;
 
 const SInputcontainer = styled.div`
-display:flex;
-align-items: center;
-border: 1px solid gray;
-border-radius: 8px;
-padding:8px;
-
+  display: flex;
+  align-items: center;
+  border: 1px solid gray;
+  border-radius: 8px;
+  padding: 8px;
 `;
 
 const SEyeicon = styled.img`
-height:20px;
-margin-top:3px;
-margin-right:5px;
-
+  height: 20px;
+  margin-top: 2px;
+  margin-right: 5px;
 `;
