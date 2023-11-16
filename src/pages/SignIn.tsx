@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import styled from "styled-components";
 import eyeopen from "../images/eyeopen.png";
+import eyeclose from "../images/eyeclose.png";
 
 export const SignIn = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -14,6 +15,7 @@ export const SignIn = () => {
     formState: { errors },
   } = useForm();
   const Navigate = useNavigate();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const onSubmit = (data: any) => {
     console.log(data);
@@ -66,8 +68,9 @@ export const SignIn = () => {
           <SInputcontainer>
             <SInput
               placeholder="パスワード"
-              type="password"
+              type={isPasswordVisible ? "text" : "password"}
               id="password"
+              autoComplete="off"
               {...register("password", {
                 required: {
                   value: true,
@@ -75,7 +78,17 @@ export const SignIn = () => {
                 },
               })}
             />
-            <SEyeicon src={`${eyeopen}`} />
+            {isPasswordVisible ? (
+              <SEyeicon
+                src={`${eyeclose}`}
+                onClick={() => setIsPasswordVisible(false)}
+              />
+            ) : (
+              <SEyeicon
+                src={`${eyeopen}`}
+                onClick={() => setIsPasswordVisible(true)}
+              />
+            )}
           </SInputcontainer>
           {errors.password?.message && (
             <SErrorMessage>{String(errors.password?.message)}</SErrorMessage>
@@ -154,4 +167,7 @@ const SEyeicon = styled.img`
   height: 20px;
   margin-top: 2px;
   margin-right: 5px;
+  &:hover {
+    opacity: 0.7;
+  }
 `;

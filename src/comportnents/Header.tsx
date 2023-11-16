@@ -3,14 +3,14 @@ import pclogo from "../images/logo-pc.png";
 import splogo from "../images/logo-sp.png";
 import signin from "../images/signin.png";
 import signout from "../images/signout.png";
-import usericon from "../images/usericon.png"
+import usericon from "../images/usericon.png";
 import { Link, useNavigate } from "react-router-dom";
 import HamburgerMenu from "./HamburgerMenu";
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { ModalWindow } from "./ModalWindow";
-import { useDispatch,useSelector } from "react-redux";
-import { signIn,commonSignOut,RootState } from "../features/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { signIn, commonSignOut, RootState } from "../features/AuthSlice";
 
 export const Header = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -19,13 +19,19 @@ export const Header = () => {
   const Navigate = useNavigate();
   const auth = getAuth();
 
-
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user: any) => {
       if (user) {
         console.log(user);
-        dispatch(signIn({uid:user.uid,name:user.displayName}));
+        dispatch(
+          signIn({
+            uid: user.uid,
+            name: user.displayName,
+            email: user.email,
+            usericon: user.photoURL,
+          })
+        );
       }
     });
   }, [dispatch]);
@@ -51,15 +57,17 @@ export const Header = () => {
             <SLogopc src={`${pclogo}`} />
             <SLogosp src={`${splogo}`} />
           </Link>
-          {token ? (<>
-            <SIcon src={`${signout}`} onClick={() => setModalOpen(true)} />
-            <Link to="/userprofile">
-            <SIcon src={`${usericon}`} />
-            </Link>
-            </> ) : (
+          {token ? (
+            <>
+              <SIcon src={`${signout}`} onClick={() => setModalOpen(true)} />
+              <Link to="/userprofile">
+                <SIcon src={`${usericon}`} />
+              </Link>
+            </>
+          ) : (
             <Link to="/signin">
-            <SIcon src={`${signin}`} />
-          </Link>
+              <SIcon src={`${signin}`} />
+            </Link>
           )}
         </div>
         <HamburgerMenu />
