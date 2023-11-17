@@ -4,6 +4,7 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import db from "./firebase";
@@ -21,11 +22,6 @@ function App() {
 
   // const [userId, setUserId] = useState<string>("");
 
-  const postData = collection(db, "posts");
-  getDocs(postData).then((querySnapshot) => {
-    console.log(querySnapshot.docs.map((doc) => doc.data()));
-    console.log(querySnapshot.docs.map((doc) => doc.id));
-  });
 
   // const onClickSubmit = () => {
   //   addDoc(collection(db, "posts", "post"), {

@@ -41,10 +41,11 @@ export const authSlice = createSlice({
     iconUpload:(state,action)=>{
       state.userIcon = action.payload.usericon;
     },
-    iconPathGet:(state,action)=>{
-      state.storagePath = action.payload.iconpath;
-    }
+    nameUpDate:(state,action)=>{
+      state.userName = action.payload.name;
+    },
+
   },
 });
 
-export const { signIn, commonSignOut,iconUpload,iconPathGet } = authSlice.actions;
+export const { signIn, commonSignOut,iconUpload,nameUpDate } = authSlice.actions;

@@ -19,7 +19,7 @@ export const Header = () => {
   const Navigate = useNavigate();
   const auth = getAuth();
 
-  useEffect(() => {
+  useEffect(() => {// ユーザー情報を取得、グローバルステートにセット
     const auth = getAuth();
     onAuthStateChanged(auth, (user: any) => {
       if (user) {
