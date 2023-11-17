@@ -126,7 +126,7 @@ export const UserProfile = () => {
                 )}
               </div>
 
-              <SImagetext>
+              <SImagetext className=".item__text">
                 <p>アイコン画像の変更</p>
               </SImagetext>
             </SItem>
@@ -212,10 +212,6 @@ const SItem = styled.div`
   margin: 0 auto;
   position: relative;
   z-index: 1;
-  &:hover .item__text {
-    opacity: 1;
-  }
-  }
 `;
 
 const SImagetext = styled.div`
@@ -235,7 +231,10 @@ display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
+&:hover {
+  opacity: 1;
 }
+
 `;
 
 const SLabel = styled.label`
