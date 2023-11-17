@@ -127,7 +127,6 @@ const SMain = styled.main`
 const SH2 = styled.h2`
   font-weight: normal;
   font-size: 20px;
-  margin: 0;
 `;
 
 const SContainer = styled.div`

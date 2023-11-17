@@ -53,12 +53,12 @@ export const Home = () => {
                   ></SUsernoneicon>
                 )}<SStoreDetail>
                 <SH3>{data.name}</SH3>
-                <SP>{data.store}</SP>
-              <SP>{data.detail}</SP>
-              <SP>レビュー数:{data.review}</SP>
-              <SP>お気に入り数:{data.bookmark}</SP>
-              <SP>価格：{data.price}円</SP>
-              <SP>平均評価：{data.star}</SP>
+                <p>{data.store}</p>
+              <SPdetail>{data.detail}</SPdetail>
+              <p>レビュー数:{data.review}</p>
+              <p>お気に入り数:{data.bookmark}</p>
+              <p>価格：{data.price}円</p>
+              <p>平均評価：{data.star}</p>
               </SStoreDetail>
             </SBraedContainer>
           );
@@ -88,7 +88,6 @@ const SStoreDetail = styled.div`
 min-height: 256px;
 width:60%;
 margin-left:8px;
-
 `;
 
 const SUsericon = styled.div`
@@ -106,14 +105,11 @@ const SUsernoneicon = styled.img`
   background-position: center;
 `;
 
-const SP = styled.p`
-  margin:0;
-  padding:0;
+const SPdetail = styled.p`
+font-size: 12px;
+color:gray;
 `;
 
 const SH3 = styled.h3`
-  font-size: 18px;
-  margin:0;
-  padding:0;
-
+font-size: 18px;
 `;
