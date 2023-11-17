@@ -114,28 +114,25 @@ export const UserProfile = () => {
         <details>
           <SSummary>
             <SItem>
-              <div className="item__img">
+              <div>
                 {userIcon ? (
                   <SUsericon
-                    className="usericon"
                     style={{ backgroundImage: `url(${userIcon})` }}
                   ></SUsericon>
                 ) : (
                   <SUsernoneicon
-                    className="usericon"
                     src={human}
                   ></SUsernoneicon>
                 )}
               </div>
 
-              <SImagetext className="item__text">
+              <SImagetext>
                 <p>アイコン画像の変更</p>
               </SImagetext>
             </SItem>
           </SSummary>
           <SCentercontainer>
             <SImageinput
-              className="profile-image-input"
               accept="image/png, image/jpeg"
               type="file"
               onChange={onFileInputChange}
