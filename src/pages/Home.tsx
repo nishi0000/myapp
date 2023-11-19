@@ -3,6 +3,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import noimage from "../images/noimage.png"
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 // type BreadDataType = {
 //     bookmark:number;
@@ -17,6 +18,7 @@ import styled from "styled-components";
 
 export const Home = () => {
     const [breadData, setBreadData] = useState<any>([]);
+    const [breadId,setBreadId] =useState<any>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(()=>{
@@ -24,6 +26,7 @@ export const Home = () => {
         getDocs(postData).then((querySnapshot) => {
           console.log(querySnapshot.docs.map((doc) => doc.data()));
           console.log(querySnapshot.docs.map((doc) => doc.id));
+          setBreadId(querySnapshot.docs.map((doc) => doc.id));
           setBreadData(querySnapshot.docs.map((doc) => doc.data()));
           setIsLoading(false);
         });
@@ -52,6 +55,9 @@ export const Home = () => {
                     src={noimage}
                   ></SUsernoneicon>
                 )}<SStoreDetail>
+                  <Link
+                to={`/${breadId[index]}`}
+              >{data.name}</Link>
                 <SH3>{data.name}</SH3>
                 <p>{data.store}</p>
               <SPdetail>{data.detail}</SPdetail>
