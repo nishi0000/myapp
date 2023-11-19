@@ -20,6 +20,7 @@ export const Home = () => {
     const [breadData, setBreadData] = useState<any>([]);
     const [breadId,setBreadId] =useState<any>([]);
     const [isLoading, setIsLoading] = useState(true);
+    
 
     useEffect(()=>{
         const postData = collection(db, "newbread");
@@ -31,9 +32,6 @@ export const Home = () => {
           setIsLoading(false);
         });
     },[])
-
-
-
 
 
     return(<>
@@ -72,7 +70,6 @@ export const Home = () => {
       )}
     </SMain>
     </>
-
     )
 }
 

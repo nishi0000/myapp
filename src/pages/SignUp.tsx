@@ -38,9 +38,9 @@ export const SignUp = () => {
         const errorMessage = error.message;
         setErrorMessage(errorMessage);
       });
-    
   }
 
+  
   return (
     <>
       <SMain>

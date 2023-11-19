@@ -16,7 +16,6 @@ export const NewBreadPage = () => {
   //   });
   // };
 
-
   const onClickNewBread = () => {
 
   addDoc(collection(db, 'newbread', "LI2JNjqWUruB76Ub0r2K","review"),{
@@ -27,7 +26,6 @@ export const NewBreadPage = () => {
   datail: "すごくおいしかったです。すごくおいしかったです。すごくおいしかったです。すごくおいしかったです。すごくおいしかったです。すごくおいしかったです。すごくおいしかったです。すごくおいしかったです。",
   timestamp:  serverTimestamp(),
 })
-
 
 }
   return (
