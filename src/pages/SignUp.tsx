@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import eyeopen from "../images/eyeopen.png";
 import eyeclose from "../images/eyeclose.png";
+import { doc, setDoc } from "firebase/firestore";
+import db from "../firebase";
 
 export const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -31,7 +33,11 @@ export const SignUp = () => {
         console.log(user);
         updateProfile(user, {
           displayName: data.username,
-        })        
+        })
+        setDoc(doc(db, "users", `${user.uid}`), {
+          userid:`${user.uid}`,
+        })
+
       Navigate("/");
       })
       .catch((error) => {

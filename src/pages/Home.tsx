@@ -5,17 +5,6 @@ import noimage from "../images/noimage.png"
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-// type BreadDataType = {
-//     bookmark:number;
-//     detail: string;
-//     name:string; 
-//     photoUrl:string; 
-//     price:number;
-//     review:number;
-//     star:number; 
-//     store:string; 
-// };
-
 export const Home = () => {
     const [breadData, setBreadData] = useState<any>([]);
     const [breadId,setBreadId] =useState<any>([]);

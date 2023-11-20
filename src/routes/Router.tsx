@@ -7,6 +7,7 @@ import { EditBreadReview } from "../pages/EditBreadReview";
 import { BreadReview } from "../pages/BreadReview";
 import { NotFound } from "../pages/NotFound";
 import { UserProfile } from "../pages/UserProfile";
+import { NewBreadReview } from "../pages/NewBreadReview";
 
 export const Router = () => {
   return (
@@ -15,8 +16,9 @@ export const Router = () => {
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/newbreadpage" element={<NewBreadPage />} />
-      <Route path="/editbreadreview" element={<EditBreadReview />} />      
-      <Route path=":breadId" element={<BreadReview />} />
+      <Route path="/editbreadreview" element={<EditBreadReview />} />
+      <Route path=":breadId/newbreadreview" element={<NewBreadReview />} />
+      <Route path=":breadId/*" element={<BreadReview />} />
       <Route path="/userprofile" element={<UserProfile />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

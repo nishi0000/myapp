@@ -1,107 +1,59 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
-  addDoc,
   collection,
-  doc,
-  getDoc,
   getDocs,
-  serverTimestamp,
+  orderBy,
+  query,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import noimage from "../images/noimage.png";
 import db from "../firebase";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { RootState } from "features/AuthSlice";
+import Button from "../comportnents/Button";
+import BreadDtail from "../comportnents/BreadDetail";
+import ReactStarsRating from 'react-awesome-stars-rating';
 
 export const BreadReview = () => {
-  const [breadData, setBreadData] = useState<any>();
   const [reviewData, setReviewData] = useState<any>();
-  const [isBreadLoading, setBreadIsLoading] = useState<boolean>(true);
   const [isReviewLoading, setReviewIsLoading] = useState<boolean>(true);
-  const [reviewTitle, setReviewTitle] = useState<string>();
-  const [reviewDetail, setReviewDetail] = useState<string>();
-  const [star, setStar] = useState<any>();
-  const useId = useSelector((state: RootState) => state.auth.userToken);
-  const useName = useSelector((state: RootState) => state.auth.userName);
   const params = useParams();
+  
 
   useEffect(() => {
-    const test = async () => {
-      const docRef = doc(db, "newbread", `${params.breadId}`);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-        setBreadData(docSnap.data());
-        setBreadIsLoading(false);
-      } else {
-        // docSnap.data() will be undefined in this case
-        console.log("No such document!");
-      }
-    };
-    test();
-  }, []);
 
-  const onClickNewBread = () => {
-    addDoc(collection(db, "newbread", `${params.breadId}`, "review"), {
-      username: `${useName}`,
-      uid: `${useId}`,
-      title: `${reviewTitle}`,
-      star: `${star}`,
-      datail: `${reviewDetail}`,
-      timestamp: serverTimestamp(),
-    }).then(()=>{setReviewTitle("");
-    setReviewDetail("");
-    setStar("");
-    });
-  };
-
-  useEffect(() => {
     const postData = collection(db, "newbread", `${params.breadId}`, "review");
-    getDocs(postData).then((querySnapshot) => {
+    const sortedQuery = query(postData, orderBy('timestamp',`desc`)); // 'desc'は降順、'asc'は昇順
+    
+    getDocs(sortedQuery).then((querySnapshot) => {
       console.log(querySnapshot.docs.map((doc) => doc.data()));
       console.log(querySnapshot.docs.map((doc) => doc.id));
       setReviewData(querySnapshot.docs.map((doc) => doc.data()));
       setReviewIsLoading(false);
     });
+
   }, []);
 
   return (
     <>
-      <SMain>
-        {isBreadLoading ? (
-          <p>ロード中</p>
-        ) : (
-          <SBraedContainer>
-            {breadData.photoUrl ? (
-              <SUsericon
-                style={{ backgroundImage: `url(${breadData.photoUrl})` }}
-              ></SUsericon>
-            ) : (
-              <SUsernoneicon src={noimage}></SUsernoneicon>
-            )}
-            <SStoreDetail>
-              <SH2>{breadData.name}</SH2>
-              <p>{breadData.store}</p>
-              <SPdetail>{breadData.detail}</SPdetail>
-              <p>レビュー数:{breadData.review}</p>
-              <p>お気に入り数:{breadData.bookmark}</p>
-              <p>価格：{breadData.price}円</p>
-              <p>平均評価：{breadData.star}</p>
-            </SStoreDetail>
-          </SBraedContainer>
-        )}
-
+      <BreadDtail params={`${params.breadId}`} />
+      <SButtoncontainer>
+        <Link to="newbreadreview">
+          <Button>レビューを投稿する</Button>
+        </Link>
+      </SButtoncontainer>
+      <SMaincontainer>
         {isReviewLoading ? (
           <p></p>
         ) : (
           reviewData.map((data: any) => {
             const timestamp = new Date(data.timestamp.seconds * 1000);
+            
             return (
               <>
                 <SReviewContainer>
-                  <SStar>★★★★☆</SStar>
+                  <STitlecontainer>
+                <ReactStarsRating value={data.star} isEdit={false} size={20}/>
                   <SH3>{data.title}</SH3>
+                  </STitlecontainer>
                   <p>
                     {timestamp.getFullYear()}年{timestamp.getMonth() + 1}月
                     {timestamp.getDate()}日
@@ -114,28 +66,13 @@ export const BreadReview = () => {
             );
           })
         )}
-      </SMain>
+      </SMaincontainer>
 
-      <br />
-      <br />
-      タイトル：<input type="text" value={reviewTitle} onChange={(e)=>{setReviewTitle(e.target.value)}}></input>
-      <br />
-      <br />
-      ☆の数：<input type="text" onChange={(e)=>{setStar(e.target.value)}}></input>
-      <br />
-      <br />
-      感想：<textarea onChange={(e)=>{setReviewDetail(e.target.value)}}></textarea>
-
-      <br />
-      <button type="button" onClick={onClickNewBread}>テスト</button>
-      <br />
-      <br />
-      <br />
     </>
   );
 };
 
-const SMain = styled.main`
+const SMaincontainer = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 800px;
@@ -143,54 +80,26 @@ const SMain = styled.main`
   gap: 18px;
 `;
 
-const SBraedContainer = styled.div`
-  display: flex;
-  margin-top: 24px;
-`;
-
-const SStoreDetail = styled.div`
-  min-height: 256px;
-  width: 60%;
-  margin-left: 8px;
-`;
-
-const SUsericon = styled.div`
-  max-height: 256px;
-  width: 256px;
-  background-repeat: no-repeat;
-  background-position: center;
-`;
-
-const SUsernoneicon = styled.img`
-  height: 256px;
-  width: 256px;
-  background-repeat: no-repeat;
-  background-position: center;
-`;
-
-const SPdetail = styled.p`
-  font-size: 12px;
-  color: gray;
-`;
-
-const SH2 = styled.h2`
-  font-size: 18px;
-`;
-
 const SH3 = styled.h3`
   font-size: 18px;
-`;
-
-const SStar = styled.div`
-  float: left;
-  margin-right: 16px;
+  display:block;
+  margin-left:8px;
 `;
 
 const SReviewContainer = styled.div`
-  background-color: gainsboro;
+  background-color: #f0cfa0;
   padding: 24px;
 `;
 
 const SUsername = styled.div`
   text-align: right;
+`;
+
+const SButtoncontainer = styled.div`
+  text-align: center;
+`;
+
+const STitlecontainer= styled.div`
+display:flex;
+margin-bottom:8px;
 `;
