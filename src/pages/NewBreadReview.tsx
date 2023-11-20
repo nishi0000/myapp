@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import BreadDtail from "../comportnents/BreadDetail";
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { RootState } from "../features/AuthSlice";
 import {
   addDoc,
@@ -28,9 +28,9 @@ export const NewBreadReview = () => {
     setStar(value);
   };
 
-  const onSubmitNewBread = (event: any) => {
+  const onSubmitNewBread = (event: any) => {// 「投稿する」ボタンのクリック
     event.preventDefault();
-    addDoc(collection(db, "newbread", `${params.breadId}`, "review"), {
+    addDoc(collection(db, "newbread", `${params.breadId}`, "review"), {// レビュー新規登録
       username: `${useName}`,
       uid: `${useId}`,
       title: `${reviewTitle}`,
@@ -38,7 +38,7 @@ export const NewBreadReview = () => {
       datail: `${reviewDetail}`,
       timestamp: serverTimestamp(),
     })
-      .then(() => {
+      .then(() => {// レビューしているパンの情報取得
         const postData = collection(
           db,
           "newbread",
@@ -49,8 +49,11 @@ export const NewBreadReview = () => {
           .then((data) => {
             console.log(data.docs.map((doc) => doc.data()));
             return data.docs.map((doc) => doc.data());
-          })
+          }) 
           .then((data) => {
+            updateDoc(doc(db, "newbread", `${params.breadId}`), {
+              review: data.length,
+            })
             const starSum = data.reduce((data, value) => {
               return data + parseInt(value.star, 10);
             }, 0);
