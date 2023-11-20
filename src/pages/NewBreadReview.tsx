@@ -1,9 +1,16 @@
 import { useNavigate, useParams } from "react-router-dom";
 import BreadDtail from "../comportnents/BreadDetail";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RootState } from "../features/AuthSlice";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import db from "../firebase";
 import styled from "styled-components";
 import ReactStarsRating from "react-awesome-stars-rating";
@@ -20,21 +27,45 @@ export const NewBreadReview = () => {
   const onChange = (value: any) => {
     setStar(value);
   };
-  const onSubmitNewBread = (event:any) => {
+
+  const onSubmitNewBread = (event: any) => {
     event.preventDefault();
     addDoc(collection(db, "newbread", `${params.breadId}`, "review"), {
       username: `${useName}`,
       uid: `${useId}`,
       title: `${reviewTitle}`,
-      star: `${star}`,
+      star: star,
       datail: `${reviewDetail}`,
       timestamp: serverTimestamp(),
-    }).then(() => {
-      setReviewTitle("");
-      setReviewDetail("");
-      setStar(3);
-      Navigate(`${params.breadId}`);
-    });
+    })
+      .then(() => {
+        const postData = collection(
+          db,
+          "newbread",
+          `${params.breadId}`,
+          "review"
+        );
+        getDocs(postData)
+          .then((data) => {
+            console.log(data.docs.map((doc) => doc.data()));
+            return data.docs.map((doc) => doc.data());
+          })
+          .then((data) => {
+            const starSum = data.reduce((data, value) => {
+              return data + parseInt(value.star, 10);
+            }, 0);
+            console.log(starSum);
+            return starSum;
+          })
+          .then((data) => {
+            updateDoc(doc(db, "newbread", `${params.breadId}`), {
+              star: data,
+            });
+          });
+      })
+      .then(() => {
+        Navigate(`${params.breadId}`);
+      });
   };
 
   return (

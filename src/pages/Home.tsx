@@ -51,7 +51,7 @@ export const Home = () => {
               <p>レビュー数:{data.review}</p>
               <p>お気に入り数:{data.bookmark}</p>
               <p>価格：{data.price}円</p>
-              <p>平均評価：{data.star}</p>
+              <p>平均評価：{parseInt(data.star, 10)}</p>
               </SStoreDetail>
             </SBraedContainer>
           );
