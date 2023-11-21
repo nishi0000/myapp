@@ -11,13 +11,15 @@ import styled from "styled-components";
 import Button from "../comportnents/Button";
 import BreadDtail from "../comportnents/BreadDetail";
 import ReactStarsRating from 'react-awesome-stars-rating';
+import { RootState } from "features/AuthSlice";
+import { useSelector } from "react-redux";
 
 export const BreadReview = () => {
   const [reviewData, setReviewData] = useState<any>();
   const [isReviewLoading, setReviewIsLoading] = useState<boolean>(true);
+  const useId = useSelector((state: RootState) => state.auth.userToken);
   const params = useParams();
   
-
   useEffect(() => {
 
     const postData = collection(db, "newbread", `${params.breadId}`, "review");
@@ -35,17 +37,19 @@ export const BreadReview = () => {
   return (
     <>
       <BreadDtail params={`${params.breadId}`} />
-      <SButtoncontainer>
-        <Link to="newbreadreview">
-          <Button>レビューを投稿する</Button>
-        </Link>
-      </SButtoncontainer>
+      {useId && (<SButtoncontainer>
+
+<Link to="newbreadreview">
+  <Button>レビューを投稿する</Button>
+</Link>
+</SButtoncontainer>) }
       <SMaincontainer>
         {isReviewLoading ? (
           <p></p>
         ) : (
           reviewData.map((data: any) => {
             const timestamp = new Date(data.timestamp.seconds * 1000);
+
             
             return (
               <>
@@ -60,7 +64,7 @@ export const BreadReview = () => {
                   </p>
 
                   <p>{data.datail}</p>
-                  <SUsername>{data.username}</SUsername>
+                  <Link to={`/users/${data.uid}`}><SUsername>{data.username}</SUsername></Link>
                 </SReviewContainer>
               </>
             );
@@ -77,6 +81,7 @@ const SMaincontainer = styled.div`
   flex-direction: column;
   max-width: 800px;
   margin: 8px auto;
+  margin-top:16px;
   gap: 18px;
 `;
 

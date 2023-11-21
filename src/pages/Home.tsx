@@ -1,5 +1,5 @@
 import db from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import noimage from "../images/noimage.png"
 import styled from "styled-components";
@@ -10,10 +10,11 @@ export const Home = () => {
     const [breadId,setBreadId] =useState<any>([]);
     const [isLoading, setIsLoading] = useState(true);
     
-
     useEffect(()=>{
+
         const postData = collection(db, "newbread");
-        getDocs(postData).then((querySnapshot) => {
+        const sortedQuery = query(postData, orderBy('timestamp',`desc`));
+        getDocs(sortedQuery).then((querySnapshot) => {
           console.log(querySnapshot.docs.map((doc) => doc.data()));
           console.log(querySnapshot.docs.map((doc) => doc.id));
           setBreadId(querySnapshot.docs.map((doc) => doc.id));
@@ -26,7 +27,7 @@ export const Home = () => {
     return(<>
     <SMain>
       <h2>Bread Review</h2>
-      <p>ランキング/口コミが多い順</p>
+      <p>平均評価順/レビューが多い順</p>
       {isLoading ? (
         <p>ロード中</p>
       ) : (

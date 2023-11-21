@@ -5,6 +5,7 @@ import { useState } from "react";
 import { RootState } from "../features/AuthSlice";
 import {
   addDoc,
+  arrayUnion,
   collection,
   doc,
   getDocs,
@@ -28,47 +29,62 @@ export const NewBreadReview = () => {
     setStar(value);
   };
 
-  const onSubmitNewBread = (event: any) => {// 「投稿する」ボタンのクリック
+  const onSubmitNewBread = (event: any) => {
+    // 「投稿する」ボタンのクリック
     event.preventDefault();
-    addDoc(collection(db, "newbread", `${params.breadId}`, "review"), {// レビュー新規登録
+    addDoc(collection(db, "newbread", `${params.breadId}`, "review"), {
+      // レビュー新規登録
       username: `${useName}`,
       uid: `${useId}`,
       title: `${reviewTitle}`,
       star: star,
       datail: `${reviewDetail}`,
       timestamp: serverTimestamp(),
-    })
-      .then(() => {// レビューしているパンの情報取得
-        const postData = collection(
-          db,
-          "newbread",
-          `${params.breadId}`,
-          "review"
-        );
-        getDocs(postData)
-          .then((data) => {
-            console.log(data.docs.map((doc) => doc.data()));
-            return data.docs.map((doc) => doc.data());
-          }) 
-          .then((data) => {
-            updateDoc(doc(db, "newbread", `${params.breadId}`), {
-              review: data.length,
-            })
-            const starSum = data.reduce((data, value) => {
-              return data + parseInt(value.star, 10);
-            }, 0);
-            console.log(starSum);
-            return starSum;
-          })
-          .then((data) => {
-            updateDoc(doc(db, "newbread", `${params.breadId}`), {
-              star: data,
-            });
+    }).then((data) => {
+
+      updateDoc(doc(db, "users", `${useId}`), {
+        reviews: arrayUnion({breadId:`${params.breadId}`,reviewId:data.id})
+    });
+      console.log(data.id);
+      // レビューしているパンの情報取得
+      const postData = collection(
+        db,
+        "newbread",
+        `${params.breadId}`,
+        "review"
+      );
+      getDocs(postData)
+        .then((data) => {
+          console.log(data.docs.map((doc) => doc.data()));
+          return data.docs.map((doc) => doc.data());
+        })
+        .then((data) => {
+          updateDoc(doc(db, "newbread", `${params.breadId}`), {
+            // レビュー数を取得・データを更新する
+            review: data.length,
           });
-      })
-      .then(() => {
-        Navigate(`${params.breadId}`);
-      });
+
+          const starSum = data.reduce((data, value) => {
+            //星の総数を計算
+            return data + parseInt(value.star, 10);
+          }, 0);
+          console.log(starSum);
+          return starSum; // 星の総数をreturnする
+        })
+
+        .then((data) => {
+          // 星の総数データを更新する
+          updateDoc(doc(db, "newbread", `${params.breadId}`), {
+            star: data,
+          })
+            .then(() => {
+              console.log("更新が完了しました！");
+            })
+            .then(() => {// レビューページに戻る
+              Navigate(`/${params.breadId}`);
+            });
+        });
+    });
   };
 
   return (

@@ -17,7 +17,7 @@ export const BreadDtail: FC<BaredDtailType> = ({ params }) => {
 
     useEffect(() => {
         const test = async () => {
-          const docRef = doc(db, "newbread", `${params}`);
+          const docRef = doc(db, "newbread", params );
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             console.log("Document data:", docSnap.data());
@@ -25,7 +25,8 @@ export const BreadDtail: FC<BaredDtailType> = ({ params }) => {
             setBreadIsLoading(false);
           } else {
             // docSnap.data() will be undefined in this case
-            console.log("No such document!");
+            console.log("No such document!",docSnap);
+            console.error(`ドキュメントが見つかりませんでした。ID: ${params}`)
           }
         };
         test();
@@ -51,7 +52,7 @@ export const BreadDtail: FC<BaredDtailType> = ({ params }) => {
               <p>レビュー数:{breadData.review}</p>
               <p>お気に入り数:{breadData.bookmark}</p>
               <p>価格：{breadData.price}円</p>
-              <p>平均評価：{breadData.star}</p>
+              {breadData.review ? (<p>平均評価：{(parseInt(breadData.star, 10)/breadData.review).toFixed(1)}</p>):(<p>平均評価：0</p>)}
             </SStoreDetail>
           </SBraedContainer>
         )}

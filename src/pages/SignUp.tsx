@@ -36,6 +36,7 @@ export const SignUp = () => {
         })
         setDoc(doc(db, "users", `${user.uid}`), {
           userid:`${user.uid}`,
+          reviews:[],
         })
 
       Navigate("/");

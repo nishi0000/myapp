@@ -1,28 +1,186 @@
+import styled from "styled-components";
 import db from "../firebase";
-import { addDoc, collection, } from "firebase/firestore";
-
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { useState } from "react";
+import Button from "../comportnents/Button";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import Compressor from "compressorjs";
+import { useNavigate } from "react-router-dom";
 
 export const NewBreadPage = () => {
+  const [name, setName] = useState<string>("");
+  const [store, setStore] = useState<string>("");
+  const [homepageUrl, setHomepageUrl] = useState<string>("");
+  const [photoUrl, setPhotoUrl] = useState<string>("");
+  const [detail, setDetail] = useState<string>("");
+  const [price, setPrice] = useState<any>(0);
+  const Navigate = useNavigate();
 
-  const onClickNewBread = () => {
+  const [image, setImage] = useState<any>("");
+  const storage = getStorage();
 
-    addDoc(collection(db, "newbread"), {
-      name: "創業乃が美（レギュラー（2斤））",
-      store: "高級「生」食パン専門店の乃が美（のがみ）",
-      bookmark: 0,
-      photoUrl: "https://firebasestorage.googleapis.com/v0/b/react-app-baaae.appspot.com/o/images%2FAdobeStock_276274510.jpeg?alt=media&token=7da03f17-9edf-4d75-b6e3-73aa4a7841b6",
-      star: 0,
-      review:0,
-      price:500,
-      detail:"「あの頃の味が恋しい」というみなさまの声にお応えして、ここに発祥時の配合「黄金比率」を復刻しました。",
-    })
+  const onFileInputChange = (e: any) => {
+    // アップロードする画像を選択・リサイズする関数
+    // アップロードする画像を表示する
+    if (e.target.files.length > 0) {
+      // ファイルが選択されていればセット
+      const file = e.target.files[0];
+      console.log(e.target.files[0]);
+      new Compressor(file, {
+        // 画像のリサイズ
+        quality: 0.6,
+        maxHeight: 400,
+        maxWidth: 400,
+        convertSize: 1000000,
+        success(result) {
+          setImage(result); // 変換した画像をセット
+          console.log(result);
+        },
+      });
+    } else {
+      setImage(""); // ファイルが選択されていなければ空にする
+    }
+  };
 
-  }
+  const onSubmitNewBread = (event: any) => {
+    // 「投稿する」ボタンのクリック
+    event.preventDefault();
+    if (image) {
+      console.log(image);
+      const storageRef = ref(storage, `images/${image.name}`);
+      uploadBytes(storageRef, image)
+        .then(() => {
+          console.log("画像アップロード成功！");
+          return getDownloadURL(storageRef); //画像URLゲット
+        })
+        .then((data) => {
+          addDoc(collection(db, "newbread"), {
+            // レビュー新規登録
+            name,
+            store,
+            homepageUrl,
+            bookmark: 0,
+            photoUrl: data,
+            star: 0,
+            review: 0,
+            price,
+            detail,
+            timestamp: serverTimestamp(),
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log("画像アップロード失敗");
+        })
+        .then(() => {
+          Navigate("/");
+        });
+    } else {
+      addDoc(collection(db, "newbread"), {
+        // レビュー新規登録
+        name,
+        store,
+        homepageUrl,
+        bookmark: 0,
+        photoUrl,
+        star: 0,
+        review: 0,
+        price,
+        detail,
+        timestamp: serverTimestamp(),
+      }).then(() => {
+        Navigate("/");
+      });
+    }
+  };
 
   return (
     <>
-      <p>NewBreadPageだよー</p>
-      <button onClick={onClickNewBread}>テスト</button>
+      <form onSubmit={onSubmitNewBread}>
+        <SContainer>
+          <h2>新規ページ追加</h2>
+          <br />
+          商品タイトル：
+          <STitleinput
+            type="text"
+            value={name}
+            required
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+          />
+          お店の名前：
+          <STitleinput
+            type="text"
+            value={store}
+            required
+            onChange={(e) => {
+              setStore(e.target.value);
+            }}
+          />
+          ホームページURL：
+          <STitleinput
+            type="text"
+            value={homepageUrl}
+            onChange={(e) => {
+              setHomepageUrl(e.target.value);
+            }}
+          />
+          価格：
+          <STitleinput
+            type="text"
+            pattern="^[1-9][0-9]*$"
+            value={price}
+            onChange={(e) => {
+              setPrice(e.target.value);
+            }}
+          />
+          説明文：
+          <SCommentsarea
+            required
+            value={detail}
+            onChange={(e) => {
+              setDetail(e.target.value);
+            }}
+          ></SCommentsarea>
+          <br />
+          <input
+            accept="image/png, image/jpeg"
+            type="file"
+            onChange={onFileInputChange}
+          />
+          <br />
+          {image && (
+            <img src={window.URL.createObjectURL(image)} alt="user-icon" />
+          )}
+        </SContainer>
+        <br />
+        <SButtoncontainer>
+          <Button type="submit">投稿する</Button>
+        </SButtoncontainer>
+      </form>
     </>
   );
 };
+
+const SContainer = styled.main`
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 8px auto;
+`;
+
+const STitleinput = styled.input`
+  padding: 4px;
+  font-size: large;
+`;
+
+const SCommentsarea = styled.textarea`
+  padding: 4px;
+  height: 100px;
+  font-size: large;
+`;
+
+const SButtoncontainer = styled.div`
+  text-align: center;
+`;
