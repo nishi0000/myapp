@@ -21,8 +21,6 @@ export const Home = () => {
     getDocs(sortedQuery).then((querySnapshot) => {
       console.log(querySnapshot.docs.map((doc) => doc.data()));
       console.log(querySnapshot.docs.map((doc) => doc.id));
-      // setBreadId(querySnapshot.docs.map((doc) => doc.id));
-      // setBreadData(querySnapshot.docs.map((doc) => doc.data()));
       setBreadId(splitArray(querySnapshot.docs.map((doc) => doc.id),3));
       setBreadData(splitArray(querySnapshot.docs.map((doc) => doc.data()),3));
 

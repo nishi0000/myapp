@@ -12,13 +12,16 @@ import Button from "../comportnents/Button";
 import BreadDtail from "../comportnents/BreadDetail";
 import ReactStarsRating from 'react-awesome-stars-rating';
 import { RootState } from "features/AuthSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { splitArray } from "../comportnents/SplitArray";
+import { PageState, ReviewPageBack, ReviewPageFirst, ReviewPageLast, ReviewPageNext } from "../features/Page";
 
 export const BreadReview = () => {
   const [reviewData, setReviewData] = useState<any>();
   const [isReviewLoading, setReviewIsLoading] = useState<boolean>(true);
   const useId = useSelector((state: RootState) => state.auth.userToken);
+  const page = useSelector((state:PageState) => state.page.reviewPage);
+  const dispatch = useDispatch();
   const params = useParams();
   
   useEffect(() => {
@@ -35,6 +38,33 @@ export const BreadReview = () => {
 
   }, []);
 
+  const onClickNextPage = () => {
+    if(reviewData.length-1 > page){
+      console.log(reviewData.length);
+    dispatch(ReviewPageNext());
+  }else{
+  }
+  }
+
+  const onClickBackPage = () => {
+    if( page > 0 && reviewData.length+1 > page){
+      console.log(reviewData.length);
+    dispatch(ReviewPageBack());
+  }else{
+  }
+  }
+
+  const onClickFirstPage = () => {
+    dispatch(ReviewPageFirst());
+  }
+
+  const onClickLastPage = () => {
+    dispatch(ReviewPageLast({lastpage:reviewData.length-1}));
+  }
+
+
+
+
   return (
     <>
       <BreadDtail params={`${params.breadId}`} />
@@ -48,7 +78,7 @@ export const BreadReview = () => {
         {isReviewLoading ? (
           <p></p>
         ) : (
-          reviewData[0].map((data: any) => {
+          reviewData[page].map((data: any) => {
             const timestamp = new Date(data.timestamp.seconds * 1000);
             return (
               <>
@@ -69,6 +99,10 @@ export const BreadReview = () => {
             );
           })
         )}
+        <div onClick={onClickFirstPage}>最初に戻る</div>
+        <div onClick={onClickBackPage}>前へ</div>
+        <div onClick={onClickNextPage}>次へ</div>
+        <div onClick={onClickLastPage}>最後に進む</div>
       </SMaincontainer>
 
     </>
