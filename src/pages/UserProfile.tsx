@@ -7,9 +7,12 @@ import human from "../images/human.png";
 import Compressor from "compressorjs";
 import styled from "styled-components";
 import Button from "../comportnents/Button";
+import { doc, updateDoc } from "firebase/firestore";
+import db from "../firebase";
 
 export const UserProfile = () => {
   const userIcon = useSelector((state: RootState) => state.auth.userIcon);
+  const useId = useSelector((state: RootState) => state.auth.userToken);
   const storage = getStorage();
   const dispatch = useDispatch();
   const [image, setImage] = useState<any>("");
@@ -26,7 +29,8 @@ export const UserProfile = () => {
     });
   }, []);
 
-  const onFileInputChange = (e: any) => {// アップロードする画像を選択・リサイズする関数
+  const onFileInputChange = (e: any) => {
+    // アップロードする画像を選択・リサイズする関数
     // アップロードする画像を表示する
     if (e.target.files.length > 0) {
       // ファイルが選択されていればセット
@@ -48,7 +52,8 @@ export const UserProfile = () => {
     }
   };
 
-  const handleSubmit = (e: any) => {// アイコン画像変更用関数
+  const handleSubmit = (e: any) => {
+    // アイコン画像変更用関数
     // 画像をアップロードする
     if (image) {
       e.preventDefault();
@@ -63,6 +68,10 @@ export const UserProfile = () => {
           // 画像URLをユーザー情報にセットする
           console.log(url);
           const auth = getAuth();
+          updateDoc(doc(db, "users", `${useId}`), {
+            usericon: url,
+          });
+
           if (auth.currentUser) {
             updateProfile(auth.currentUser, {
               //ユーザーアカウントにセット
@@ -91,18 +100,20 @@ export const UserProfile = () => {
     }
   };
 
-  const onClickNameUpdate = () => {// 名前変更用関数
+  const onClickNameUpdate = () => {
+    // 名前変更用関数
     const auth = getAuth();
     if (auth.currentUser) {
       updateProfile(auth.currentUser, {
         //ユーザーアカウントにセット
         displayName: changeUserName,
-      }).then(()=>{
-        dispatch(nameUpDate({name:changeUserName}));
-      }
-      )
+      }).then(() => {
+        updateDoc(doc(db, "users", `${useId}`), {
+          username: changeUserName,
+        });
+        dispatch(nameUpDate({ name: changeUserName }));
+      });
     }
-
   };
 
   return (
@@ -120,9 +131,7 @@ export const UserProfile = () => {
                     style={{ backgroundImage: `url(${userIcon})` }}
                   ></SUsericon>
                 ) : (
-                  <SUsernoneicon
-                    src={human}
-                  ></SUsernoneicon>
+                  <SUsernoneicon src={human}></SUsernoneicon>
                 )}
               </div>
 
@@ -215,26 +224,25 @@ const SItem = styled.div`
 `;
 
 const SImagetext = styled.div`
-position: absolute;
-z-index: 1;
-border-radius: 50%;
-width: 100%;
-height: 100%;
-top: 0;
-left: 0;
-text-align: center;
-color: #fff;
-background-color: rgba(0, 0, 0, 0.6);
-transition: 0.3s ease-in-out;
-opacity: 0;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-&:hover {
-  opacity: 1;
-}
-
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  text-align: center;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  transition: 0.3s ease-in-out;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const SLabel = styled.label`

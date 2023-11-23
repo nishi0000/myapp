@@ -13,6 +13,7 @@ import BreadDtail from "../comportnents/BreadDetail";
 import ReactStarsRating from 'react-awesome-stars-rating';
 import { RootState } from "features/AuthSlice";
 import { useSelector } from "react-redux";
+import { splitArray } from "../comportnents/SplitArray";
 
 export const BreadReview = () => {
   const [reviewData, setReviewData] = useState<any>();
@@ -27,8 +28,8 @@ export const BreadReview = () => {
     
     getDocs(sortedQuery).then((querySnapshot) => {
       console.log(querySnapshot.docs.map((doc) => doc.data()));
-      console.log(querySnapshot.docs.map((doc) => doc.id));
-      setReviewData(querySnapshot.docs.map((doc) => doc.data()));
+      // setReviewData(querySnapshot.docs.map((doc) => doc.data()));
+      setReviewData(splitArray(querySnapshot.docs.map((doc) => doc.data()),3));
       setReviewIsLoading(false);
     });
 
@@ -47,10 +48,8 @@ export const BreadReview = () => {
         {isReviewLoading ? (
           <p></p>
         ) : (
-          reviewData.map((data: any) => {
+          reviewData[0].map((data: any) => {
             const timestamp = new Date(data.timestamp.seconds * 1000);
-
-            
             return (
               <>
                 <SReviewContainer>
