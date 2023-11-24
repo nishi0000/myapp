@@ -31,13 +31,16 @@ export const BreadReview = () => {
 
     getDocs(sortedQuery).then((querySnapshot) => {
       console.log(querySnapshot.docs.map((doc) => doc.data()));
-      // setReviewData(querySnapshot.docs.map((doc) => doc.data()));
-      setReviewData(
-        splitArray(
-          querySnapshot.docs.map((doc) => doc.data()),
-          3
-        )
-      );
+      if (querySnapshot.docs.length != 0) {
+        setReviewData(
+          splitArray(
+            querySnapshot.docs.map((doc) => doc.data()),
+            3
+          )
+        );
+      } else {
+        setReviewData(querySnapshot.docs.map((doc) => doc.data()));
+      }
       setReviewIsLoading(false);
     });
   }, []);
@@ -76,10 +79,11 @@ export const BreadReview = () => {
           </Link>
         </SButtoncontainer>
       )}
+
       <SMaincontainer>
         {isReviewLoading ? (
           <p></p>
-        ) : (
+        ) : reviewData.length > 0 ? (
           reviewData[page].map((data: any) => {
             const timestamp = new Date(data.timestamp.seconds * 1000);
             return (
@@ -106,6 +110,8 @@ export const BreadReview = () => {
               </>
             );
           })
+        ) : (
+          <p>まだレビューが投稿されていません。</p>
         )}
         <div onClick={onClickFirstPage}>最初に戻る</div>
         <div onClick={onClickBackPage}>前へ</div>
