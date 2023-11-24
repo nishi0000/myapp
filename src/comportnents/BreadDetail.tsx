@@ -17,7 +17,7 @@ export const BreadDtail: FC<BaredDtailType> = ({ params }) => {
 
     useEffect(() => {
         const test = async () => {
-          const docRef = doc(db, "newbread", params );
+          const docRef = doc(db, "newbread", params);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             console.log("Document data:", docSnap.data());

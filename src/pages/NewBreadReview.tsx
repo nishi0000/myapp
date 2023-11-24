@@ -1,13 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
 import BreadDtail from "../comportnents/BreadDetail";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RootState } from "../features/AuthSlice";
 import {
   addDoc,
   arrayUnion,
   collection,
   doc,
+  getDoc,
   getDocs,
   serverTimestamp,
   updateDoc,
@@ -20,6 +21,7 @@ import Button from "../comportnents/Button";
 export const NewBreadReview = () => {
   const [reviewTitle, setReviewTitle] = useState<string>();
   const [reviewDetail, setReviewDetail] = useState<string>();
+  const [breadData,setBreadData] = useState<any>();
   const [star, setStar] = useState<number>(3);
   const useId = useSelector((state: RootState) => state.auth.userToken);
   const useName = useSelector((state: RootState) => state.auth.userName);
@@ -29,9 +31,24 @@ export const NewBreadReview = () => {
     setStar(value);
   };
 
+  useEffect(()=>{
+
+    getDoc(doc(
+      db,
+      "newbread",
+      `${params.breadId}`,
+    ))
+    .then((data:any) => {
+      setBreadData(data.data());
+    })
+    
+  },[])
+
   const onSubmitNewBread = (event: any) => {
     // 「投稿する」ボタンのクリック
     event.preventDefault();
+    console.log(breadData);
+
     addDoc(collection(db, "newbread", `${params.breadId}`, "review"), {
       // レビュー新規登録
       username: `${useName}`,
@@ -39,9 +56,10 @@ export const NewBreadReview = () => {
       title: `${reviewTitle}`,
       star: star,
       datail: `${reviewDetail}`,
+      breadid:params.breadId,
+      breadtitle:`${breadData.name}`,
       timestamp: serverTimestamp(),
     }).then((data) => {
-
       updateDoc(doc(db, "users", `${useId}`), {
         reviews: arrayUnion({breadId:`${params.breadId}`,reviewId:data.id})
     });
@@ -64,7 +82,7 @@ export const NewBreadReview = () => {
             review: data.length,
           });
 
-          const starSum = data.reduce((data, value) => {
+          const starSum = data.reduce((data:any, value:any) => {
             //星の総数を計算
             return data + parseInt(value.star, 10);
           }, 0);
