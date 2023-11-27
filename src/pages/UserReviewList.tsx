@@ -1,13 +1,14 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
+import human from "../images/human.png"
 import ReactStarsRating from "react-awesome-stars-rating";
 import db from "../firebase";
 import styled from "styled-components";
 
 export const UserReviewList = () => {
   const params = useParams();
-  const [userData,setUserData] = useState<any>();
+  const [userData, setUserData] = useState<any>();
   const [reviewDataArry, setReviewDataArry] = useState<any>();
   const [isReviewLoading, setIsReviewLoading] = useState<boolean>(true);
 
@@ -15,7 +16,7 @@ export const UserReviewList = () => {
     getDoc(doc(db, "users", `${params.userId}`)) // ユーザーデータ取得
       .then((userData) => {
         const user = userData.data();
-        setUserData(userData.data())
+        setUserData(userData.data());
         if (user && user.reviews) {
           // ユーザーのレビューがある場合
           const promises = user.reviews.map((review: any) => {
@@ -43,9 +44,21 @@ export const UserReviewList = () => {
   return (
     <>
       <SMaincontainer>
-        {userData && (<SUsercontainer><SUsericon
-                    style={{ backgroundImage: `url(${userData.usericon})` }}
-                  ></SUsericon><SUserdetail><p>ユーザーネーム：{userData.username}</p><p>レビュー数：{userData.reviews.length}</p></SUserdetail></SUsercontainer>)}
+        {userData && (
+          <SUsercontainer>
+            {userData.usericon ? (
+              <SUsericon
+                style={{ backgroundImage: `url(${userData.usericon})` }}
+              ></SUsericon>
+            ) : (<SUsernoneicon src={human}></SUsernoneicon>
+            )}
+
+            <SUserdetail>
+              <p>ユーザーネーム：{userData.username}</p>
+              <p>レビュー数：{userData.reviews.length}</p>
+            </SUserdetail>
+          </SUsercontainer>
+        )}
         {isReviewLoading ? (
           <p></p>
         ) : (
@@ -55,6 +68,7 @@ export const UserReviewList = () => {
             return (
               <>
                 <SReviewContainer>
+                <Link to={`/${data.breadid}`}><h3>{data.breadtitle}</h3></Link>
                   <STitlecontainer>
                     <ReactStarsRating
                       value={data.star}
@@ -69,7 +83,6 @@ export const UserReviewList = () => {
                   </p>
 
                   <p>{data.datail}</p>
-                  <SUsername>{data.username}</SUsername>
                 </SReviewContainer>
               </>
             );
@@ -90,22 +103,30 @@ const SMaincontainer = styled.div`
 `;
 
 const SUsericon = styled.div`
-height:200px;
-width:200px;
-border-radius:50%;
-background-repeat: no-repeat;
-background-position: center;
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+`;
+
+const SUsernoneicon = styled.img`
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
 `;
 
 const SUsercontainer = styled.div`
-max-width: 600px;
-display:flex;
-align-items: center;
-margin:0 auto;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
 `;
 
 const SUserdetail = styled.div`
-margin-left:32px;
+  margin-left: 32px;
 `;
 
 const SH3 = styled.h3`
@@ -122,7 +143,6 @@ const SReviewContainer = styled.div`
 const SUsername = styled.div`
   text-align: right;
 `;
-
 
 const STitlecontainer = styled.div`
   display: flex;

@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import db from "../firebase";
 import styled from "styled-components";
@@ -20,6 +20,7 @@ import {
 export const BreadReview = () => {
   const [reviewData, setReviewData] = useState<any>();
   const [isReviewLoading, setReviewIsLoading] = useState<boolean>(true);
+  const [userName, setUserName] = useState<string>("");
   const useId = useSelector((state: RootState) => state.auth.userToken);
   const page = useSelector((state: PageState) => state.page.reviewPage);
   const dispatch = useDispatch();
@@ -84,8 +85,20 @@ export const BreadReview = () => {
         {isReviewLoading ? (
           <p></p>
         ) : reviewData.length > 0 ? (
-          reviewData[page].map((data: any) => {
+          reviewData[page].map((data: any,index:any) => {
             const timestamp = new Date(data.timestamp.seconds * 1000);
+            getDoc(doc(
+              db,
+              "users",
+              `${reviewData[page][index].uid}`,
+            ))
+            .then((data:any) => {
+              console.log(data.data());
+              return data.data().username;
+            }).then((data)=>{
+              setUserName(data);
+            })
+
             return (
               <>
                 <SReviewContainer>
@@ -104,7 +117,7 @@ export const BreadReview = () => {
 
                   <p>{data.datail}</p>
                   <Link to={`/users/${data.uid}`}>
-                    <SUsername>{data.username}</SUsername>
+                    <SUsername>{userName}</SUsername>
                   </Link>
                 </SReviewContainer>
               </>

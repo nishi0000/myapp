@@ -36,7 +36,7 @@ export const SignUp = () => {
         })
         setDoc(doc(db, "users", `${user.uid}`), {
           userid:`${user.uid}`,
-          usename:data.username,
+          username:data.username,
           reviews:[],
         })
 
