@@ -93,7 +93,6 @@ export const BreadReview = () => {
               `${reviewData[page][index].uid}`,
             ))
             .then((data:any) => {
-              console.log(data.data());
               return data.data().username;
             }).then((data)=>{
               setUserName(data);

@@ -88,6 +88,8 @@ export const Home = () => {
                   ) : (
                     <p>平均評価：0</p>
                   )}
+                  <Link to={`/${breadId[page][index]}/editbreadreview`}>編集</Link><p></p>
+                  <p>削除</p>
                 </SStoreDetail>
               </SBraedContainer>
             );
