@@ -1,18 +1,33 @@
 import db from "../firebase";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import noimage from "../images/noimage.png";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Pagination } from "../comportnents/Pagination";
 import { useDispatch, useSelector } from "react-redux";
-import { PageState, breadPageBack, breadPageFirst, breadPageLast, breadPageNext } from "../features/Page";
+import {
+  PageState,
+  breadPageBack,
+  breadPageFirst,
+  breadPageLast,
+  breadPageNext,
+} from "../features/Page";
+import { ModalWindow } from "../comportnents/ModalWindow";
 
 export const Home = () => {
   const [breadData, setBreadData] = useState<any>([]);
   const [breadId, setBreadId] = useState<any>([]);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
-  const page = useSelector((state:PageState) => state.page.breadPage);
+  const page = useSelector((state: PageState) => state.page.breadPage);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -21,38 +36,52 @@ export const Home = () => {
     getDocs(sortedQuery).then((querySnapshot) => {
       console.log(querySnapshot.docs.map((doc) => doc.data()));
       console.log(querySnapshot.docs.map((doc) => doc.id));
-      setBreadId(Pagination(querySnapshot.docs.map((doc) => doc.id),3));
-      setBreadData(Pagination(querySnapshot.docs.map((doc) => doc.data()),3));
+      setBreadId(
+        Pagination(
+          querySnapshot.docs.map((doc) => doc.id),
+          3
+        )
+      );
+      setBreadData(
+        Pagination(
+          querySnapshot.docs.map((doc) => doc.data()),
+          3
+        )
+      );
 
-      console.log(Pagination(querySnapshot.docs.map((doc) => doc.data()),3));
+      console.log(
+        Pagination(
+          querySnapshot.docs.map((doc) => doc.data()),
+          3
+        )
+      );
       setIsLoading(false);
     });
   }, []);
 
   const onClickNextPage = () => {
-    if(breadData.length-1 > page){
+    if (breadData.length - 1 > page) {
       console.log(breadData.length);
-    dispatch(breadPageNext());
-  }else{
-  }
-  }
+      dispatch(breadPageNext());
+    } else {
+    }
+  };
 
   const onClickBackPage = () => {
-    if( page > 0 && breadData.length+1 > page){
+    if (page > 0 && breadData.length + 1 > page) {
       console.log(breadData.length);
-    dispatch(breadPageBack());
-  }else{
-  }
-  }
+      dispatch(breadPageBack());
+    } else {
+    }
+  };
 
   const onClickFirstPage = () => {
     dispatch(breadPageFirst());
-  }
+  };
 
   const onClickLastPage = () => {
-    dispatch(breadPageLast({lastpage:breadData.length-1}));
-  }
-
+    dispatch(breadPageLast({ lastpage: breadData.length - 1 }));
+  };
 
   return (
     <>
@@ -88,8 +117,26 @@ export const Home = () => {
                   ) : (
                     <p>平均評価：0</p>
                   )}
-                  <Link to={`/${breadId[page][index]}/editbreadreview`}>編集</Link><p></p>
-                  <p>削除</p>
+                  <Link to={`/${breadId[page][index]}/editbreadreview`}>
+                    編集
+                  </Link>
+                  <p onClick={() =>{
+                        deleteDoc(
+                          doc(db, "newbread", `${breadId[page][index]}`)
+                        );
+                      }}>削除</p>
+                  {/* {modalOpen && (
+                    <ModalWindow
+                      onClickYes={() => {
+                        deleteDoc(
+                          doc(db, "newbread", `${breadId[page][index]}`)
+                        );
+                      }}
+                      onClickNo={() => setModalOpen(false)}
+                    >
+                      本当に削除しますか？
+                    </ModalWindow>
+                  )} */}
                 </SStoreDetail>
               </SBraedContainer>
             );
@@ -114,7 +161,7 @@ const SMain = styled.main`
 const SBraedContainer = styled.div`
   display: flex;
   margin-top: 24px;
-  word-wrap:break-word;
+  word-wrap: break-word;
 `;
 
 const SStoreDetail = styled.div`
