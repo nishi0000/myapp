@@ -3,7 +3,7 @@ import { Home } from "../pages/Home";
 import { SignIn } from "../pages/SignIn";
 import { SignUp } from "../pages/SignUp";
 import { NewBreadPage } from "../pages/NewBreadPage";
-import { EditBreadReview } from "../pages/EditBreadReview";
+import { EditBreadPage } from "../pages/EditBreadPage";
 import { BreadReview } from "../pages/BreadReview";
 import { NotFound } from "../pages/NotFound";
 import { UserProfile } from "../pages/UserProfile";
@@ -17,7 +17,7 @@ export const Router = () => {
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/newbreadpage" element={<NewBreadPage />} />
-      <Route path=":breadId/editbreadreview" element={<EditBreadReview />} />
+      <Route path=":breadId/editbreadpage" element={<EditBreadPage />} />
       <Route path=":breadId/newbreadreview" element={<NewBreadReview />} />
       <Route path=":breadId/*" element={<BreadReview />} />
       <Route path="/users/:userId" element={<UserReviewList />} />

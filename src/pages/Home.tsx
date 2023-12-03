@@ -1,8 +1,6 @@
 import db from "../firebase";
 import {
   collection,
-  deleteDoc,
-  doc,
   getDocs,
   orderBy,
   query,
@@ -20,35 +18,32 @@ import {
   breadPageLast,
   breadPageNext,
 } from "../features/Page";
-import { ModalWindow } from "../comportnents/ModalWindow";
 
 export const Home = () => {
   const [breadData, setBreadData] = useState<any>([]);
   const [breadId, setBreadId] = useState<any>([]);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
   const page = useSelector((state: PageState) => state.page.breadPage);
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect(() => {// 各商品データ取得関数
     const postData = collection(db, "newbread");
     const sortedQuery = query(postData, orderBy("timestamp", `desc`));
-    getDocs(sortedQuery).then((querySnapshot) => {
+    getDocs(sortedQuery).then((querySnapshot) => {// 各商品データ取得
       console.log(querySnapshot.docs.map((doc) => doc.data()));
       console.log(querySnapshot.docs.map((doc) => doc.id));
-      setBreadId(
+      setBreadId(// ページネーション用関数　各商品idを配列として受け取る（リンク作成用）
         Pagination(
           querySnapshot.docs.map((doc) => doc.id),
           3
         )
       );
-      setBreadData(
+      setBreadData(// ページネーション用関数　各商品データを配列として受け取る（データ表示用）
         Pagination(
           querySnapshot.docs.map((doc) => doc.data()),
           3
         )
       );
-
       console.log(
         Pagination(
           querySnapshot.docs.map((doc) => doc.data()),
@@ -59,7 +54,7 @@ export const Home = () => {
     });
   }, []);
 
-  const onClickNextPage = () => {
+  const onClickNextPage = () => {// ページネーション用関数　次へ進む
     if (breadData.length - 1 > page) {
       console.log(breadData.length);
       dispatch(breadPageNext());
@@ -67,7 +62,7 @@ export const Home = () => {
     }
   };
 
-  const onClickBackPage = () => {
+  const onClickBackPage = () => {// ページネーション用関数　前へ戻る
     if (page > 0 && breadData.length + 1 > page) {
       console.log(breadData.length);
       dispatch(breadPageBack());
@@ -75,11 +70,11 @@ export const Home = () => {
     }
   };
 
-  const onClickFirstPage = () => {
+  const onClickFirstPage = () => {// ページネーション用関数　最初に戻る
     dispatch(breadPageFirst());
   };
 
-  const onClickLastPage = () => {
+  const onClickLastPage = () => {// ページネーション用関数　最後に進む
     dispatch(breadPageLast({ lastpage: breadData.length - 1 }));
   };
 
@@ -117,26 +112,10 @@ export const Home = () => {
                   ) : (
                     <p>平均評価：0</p>
                   )}
-                  <Link to={`/${breadId[page][index]}/editbreadreview`}>
+                  <Link to={`/${breadId[page][index]}/editbreadpage`}>
                     編集
                   </Link>
-                  <p onClick={() =>{
-                        deleteDoc(
-                          doc(db, "newbread", `${breadId[page][index]}`)
-                        );
-                      }}>削除</p>
-                  {/* {modalOpen && (
-                    <ModalWindow
-                      onClickYes={() => {
-                        deleteDoc(
-                          doc(db, "newbread", `${breadId[page][index]}`)
-                        );
-                      }}
-                      onClickNo={() => setModalOpen(false)}
-                    >
-                      本当に削除しますか？
-                    </ModalWindow>
-                  )} */}
+
                 </SStoreDetail>
               </SBraedContainer>
             );

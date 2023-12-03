@@ -9,7 +9,7 @@ import styled from "styled-components";
 export const UserReviewList = () => {
   const params = useParams();
   const [userData, setUserData] = useState<any>();
-  const [reviewDataArry, setReviewDataArry] = useState<any>();
+  const [reviewDataArray, setReviewDataArray] = useState<any>();
   const [isReviewLoading, setIsReviewLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export const UserReviewList = () => {
       })
       .then((reviews) => {
         console.log(reviews);
-        setReviewDataArry(reviews);
+        setReviewDataArray(reviews);
         setIsReviewLoading(false);
       })
       .catch((error) => {
@@ -55,16 +55,17 @@ export const UserReviewList = () => {
 
             <SUserdetail>
               <p>ユーザーネーム：{userData.username}</p>
-              <p>レビュー数：{userData.reviews.length}</p>
+              
+              <p>レビュー数：{(reviewDataArray && reviewDataArray.filter((data:any) => data !== undefined).length)}</p>
             </SUserdetail>
           </SUsercontainer>
         )}
         {isReviewLoading ? (
           <p></p>
         ) : (
-          reviewDataArry.map((data: any) => {
+          reviewDataArray.map((data: any) => {
+            if(data){
             const timestamp = new Date(data.timestamp.seconds * 1000);
-
             return (
               <>
                 <SReviewContainer>
@@ -85,7 +86,7 @@ export const UserReviewList = () => {
                   <p>{data.datail}</p>
                 </SReviewContainer>
               </>
-            );
+            );}
           })
         )}
       </SMaincontainer>
