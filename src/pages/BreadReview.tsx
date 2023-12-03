@@ -1,5 +1,12 @@
 import { Link, useParams } from "react-router-dom";
-import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import db from "../firebase";
 import styled from "styled-components";
@@ -18,11 +25,13 @@ import {
 } from "../features/Page";
 
 export const BreadReview = () => {
+  const [reviewId, setReviewId] = useState<any>([]);
   const [reviewData, setReviewData] = useState<any>();
   const [isReviewLoading, setReviewIsLoading] = useState<boolean>(true);
   const [userName, setUserName] = useState<string>("");
   const useId = useSelector((state: RootState) => state.auth.userToken);
   const page = useSelector((state: PageState) => state.page.reviewPage);
+  const admin = useSelector((state: RootState) => state.auth.admin);
   const dispatch = useDispatch();
   const params = useParams();
 
@@ -33,6 +42,13 @@ export const BreadReview = () => {
     getDocs(sortedQuery).then((querySnapshot) => {
       console.log(querySnapshot.docs.map((doc) => doc.data()));
       if (querySnapshot.docs.length != 0) {
+        setReviewId(
+          // 各商品idを配列として受け取る（リンク作成用）
+          Pagination(
+            querySnapshot.docs.map((doc) => doc.id),
+            3
+          )
+        );
         setReviewData(
           Pagination(
             querySnapshot.docs.map((doc) => doc.data()),
@@ -85,18 +101,15 @@ export const BreadReview = () => {
         {isReviewLoading ? (
           <p></p>
         ) : reviewData.length > 0 ? (
-          reviewData[page].map((data: any,index:any) => {
+          reviewData[page].map((data: any, index: any) => {
             const timestamp = new Date(data.timestamp.seconds * 1000);
-            getDoc(doc(
-              db,
-              "users",
-              `${reviewData[page][index].uid}`,
-            ))
-            .then((data:any) => {
-              return data.data().username;
-            }).then((data)=>{
-              setUserName(data);
-            })
+            // getDoc(doc(db, "users", `${reviewData[page][index].uid}`))
+            //   .then((data: any) => {
+            //     return data.data().username;
+            //   })
+            //   .then((data) => {
+            //     setUserName(data);
+            //   });
 
             return (
               <>
@@ -118,6 +131,13 @@ export const BreadReview = () => {
                   <Link to={`/users/${data.uid}`}>
                     <SUsername>{userName}</SUsername>
                   </Link>
+                  {admin || useId === data.uid && (
+                    <Link
+                      to={`/${params.breadId}/${reviewId[page][index]}/editbreadreview`}
+                    >
+                      編集
+                    </Link>
+                  )}
                 </SReviewContainer>
               </>
             );

@@ -1,10 +1,5 @@
 import db from "../firebase";
-import {
-  collection,
-  getDocs,
-  orderBy,
-  query,
-} from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import noimage from "../images/noimage.png";
 import styled from "styled-components";
@@ -18,27 +13,33 @@ import {
   breadPageLast,
   breadPageNext,
 } from "../features/Page";
+import { RootState } from "../features/AuthSlice";
 
 export const Home = () => {
   const [breadData, setBreadData] = useState<any>([]);
   const [breadId, setBreadId] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
   const page = useSelector((state: PageState) => state.page.breadPage);
+  const admin = useSelector((state: RootState) => state.auth.admin);
   const dispatch = useDispatch();
 
-  useEffect(() => {// 各商品データ取得関数
+  useEffect(() => {
+    // 各商品データ取得関数
     const postData = collection(db, "newbread");
     const sortedQuery = query(postData, orderBy("timestamp", `desc`));
-    getDocs(sortedQuery).then((querySnapshot) => {// 各商品データ取得
+    getDocs(sortedQuery).then((querySnapshot) => {
+      // 各商品データ取得
       console.log(querySnapshot.docs.map((doc) => doc.data()));
       console.log(querySnapshot.docs.map((doc) => doc.id));
-      setBreadId(// ページネーション用関数　各商品idを配列として受け取る（リンク作成用）
+      setBreadId(
+        // 各商品idを配列として受け取る（リンク作成用）
         Pagination(
           querySnapshot.docs.map((doc) => doc.id),
           3
         )
       );
-      setBreadData(// ページネーション用関数　各商品データを配列として受け取る（データ表示用）
+      setBreadData(
+        // ページネーション用関数　各商品データを配列として受け取る（データ表示用）
         Pagination(
           querySnapshot.docs.map((doc) => doc.data()),
           3
@@ -54,7 +55,8 @@ export const Home = () => {
     });
   }, []);
 
-  const onClickNextPage = () => {// ページネーション用関数　次へ進む
+  const onClickNextPage = () => {
+    // ページネーション用関数　次へ進む
     if (breadData.length - 1 > page) {
       console.log(breadData.length);
       dispatch(breadPageNext());
@@ -62,7 +64,8 @@ export const Home = () => {
     }
   };
 
-  const onClickBackPage = () => {// ページネーション用関数　前へ戻る
+  const onClickBackPage = () => {
+    // ページネーション用関数　前へ戻る
     if (page > 0 && breadData.length + 1 > page) {
       console.log(breadData.length);
       dispatch(breadPageBack());
@@ -70,11 +73,13 @@ export const Home = () => {
     }
   };
 
-  const onClickFirstPage = () => {// ページネーション用関数　最初に戻る
+  const onClickFirstPage = () => {
+    // ページネーション用関数　最初に戻る
     dispatch(breadPageFirst());
   };
 
-  const onClickLastPage = () => {// ページネーション用関数　最後に進む
+  const onClickLastPage = () => {
+    // ページネーション用関数　最後に進む
     dispatch(breadPageLast({ lastpage: breadData.length - 1 }));
   };
 
@@ -112,10 +117,11 @@ export const Home = () => {
                   ) : (
                     <p>平均評価：0</p>
                   )}
-                  <Link to={`/${breadId[page][index]}/editbreadpage`}>
-                    編集
-                  </Link>
-
+                  {admin && (
+                    <Link to={`/${breadId[page][index]}/editbreadpage`}>
+                      編集
+                    </Link>
+                  )}
                 </SStoreDetail>
               </SBraedContainer>
             );

@@ -141,9 +141,6 @@ const SReviewContainer = styled.div`
   padding: 24px;
 `;
 
-const SUsername = styled.div`
-  text-align: right;
-`;
 
 const STitlecontainer = styled.div`
   display: flex;

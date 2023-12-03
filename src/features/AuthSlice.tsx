@@ -8,6 +8,7 @@ export interface RootState {
         userEmail:string;
         userIcon?:string|null;
         storagePath?:string;
+        admin:boolean;
       }
     };
 
@@ -18,6 +19,7 @@ const initialState = {
   userName: "",
   userIcon: "",
   storagePath:"",
+  admin:false,
 };
 
 export const authSlice = createSlice({
@@ -37,6 +39,7 @@ export const authSlice = createSlice({
       state.userName = "";
       state.userEmail = "";
       state.userIcon = "";
+      state.admin = false;
     },
     iconUpload:(state,action)=>{
       state.userIcon = action.payload.usericon;
@@ -44,8 +47,11 @@ export const authSlice = createSlice({
     nameUpDate:(state,action)=>{
       state.userName = action.payload.name;
     },
+    adminChack:(state,action)=>{
+      state.admin = action.payload.admin;
+    },
 
   },
 });
 
-export const { signIn, commonSignOut,iconUpload,nameUpDate } = authSlice.actions;
+export const { signIn, commonSignOut,iconUpload,nameUpDate,adminChack } = authSlice.actions;

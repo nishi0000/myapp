@@ -4,22 +4,34 @@ import splogo from "../images/logo-sp.png";
 import signin from "../images/signin.png";
 import signout from "../images/signout.png";
 import usericon from "../images/usericon.png";
+import breadadd from "../images/breadadd.png";
+import home from "../images/home.png";
 import { Link, useNavigate } from "react-router-dom";
 import HamburgerMenu from "./HamburgerMenu";
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { ModalWindow } from "./ModalWindow";
 import { useDispatch, useSelector } from "react-redux";
-import { signIn, commonSignOut, RootState } from "../features/AuthSlice";
+import {
+  signIn,
+  commonSignOut,
+  RootState,
+  adminChack,
+} from "../features/AuthSlice";
+import { doc, getDoc } from "firebase/firestore";
+import db from "../firebase";
 
 export const Header = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [naviText, setNaviText] = useState<string>("");
   const token = useSelector((state: RootState) => state.auth.userToken);
+  const admin = useSelector((state: RootState) => state.auth.admin);
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const auth = getAuth();
 
-  useEffect(() => {// ユーザー情報を取得、グローバルステートにセット
+  useEffect(() => {
+    // ユーザー情報を取得、グローバルステートにセット
     const auth = getAuth();
     onAuthStateChanged(auth, (user: any) => {
       if (user) {
@@ -32,6 +44,14 @@ export const Header = () => {
             usericon: user.photoURL,
           })
         );
+        getDoc(doc(db, "users", `${user.uid}`)).then((data: any) => {
+          console.log(data.data());
+          dispatch(
+            adminChack({
+              admin: data.data().admin,
+            })
+          );
+        });
       }
     });
   }, [dispatch]);
@@ -59,16 +79,68 @@ export const Header = () => {
           </Link>
           {token ? (
             <>
-              <SIcon src={`${signout}`} onClick={() => setModalOpen(true)} />
-              <Link to="/userprofile">
+              <SIcon
+                src={`${signout}`}
+                onClick={() => setModalOpen(true)}
+                onMouseEnter={() => {
+                  setNaviText("ログアウト");
+                }}
+                onMouseLeave={() => {
+                  setNaviText("");
+                }}
+              />
+              <Link
+                to="/userprofile"
+                onMouseEnter={() => {
+                  setNaviText("プロフィール");
+                }}
+                onMouseLeave={() => {
+                  setNaviText("");
+                }}
+              >
                 <SIcon src={`${usericon}`} />
               </Link>
             </>
           ) : (
-            <Link to="/signin">
+            <Link
+              to="/signin"
+              onMouseEnter={() => {
+                setNaviText("ログイン");
+              }}
+              onMouseLeave={() => {
+                setNaviText("");
+              }}
+            >
               <SIcon src={`${signin}`} />
             </Link>
           )}
+          <Link
+            to="/"
+            onMouseEnter={() => {
+              setNaviText("ホーム");
+            }}
+            onMouseLeave={() => {
+              setNaviText("");
+            }}
+          >
+            <SIcon src={`${home}`} />
+          </Link>
+          {admin && (
+            <Link
+              to="/newbreadpage"
+              onMouseEnter={() => {
+                setNaviText("商品追加");
+              }}
+              onMouseLeave={() => {
+                setNaviText("");
+              }}
+            >
+              <SIcon src={`${breadadd}`} />
+            </Link>
+          )}
+        </div>
+        <div>
+          <SNavitext>{naviText}</SNavitext>
         </div>
         <HamburgerMenu />
       </SHeader>
@@ -88,7 +160,9 @@ export const Header = () => {
 const SHeader = styled.header`
   background-color: #330000;
   height: 70px;
-  @media screen and (max-width: 375px) {
+  display: flex;
+  align-items: end;
+  @media screen and (max-width: 428px) {
     height: 50px;
     display: flex;
     align-items: center;
@@ -109,7 +183,7 @@ const SLogosp = styled.img`
     height: 70px;
     display: inline;
   }
-  @media screen and (max-width: 375px) {
+  @media screen and (max-width: 428px) {
     height: 50px;
     display: inline;
   }
@@ -124,6 +198,15 @@ const SIcon = styled.img`
     transform: translate3d(1px, 1px, 0);
   }
   @media screen and (max-width: 768px) {
+    height: 24px;
+  }
+  @media screen and (max-width: 428px) {
     display: none;
   }
+`;
+
+const SNavitext = styled.div`
+  color: white;
+  margin-left: 20px;
+  margin-bottom: 8px;
 `;

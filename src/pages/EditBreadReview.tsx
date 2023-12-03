@@ -1,28 +1,35 @@
-import styled from "styled-components";
-import db from "../firebase";
-import { doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { useState,useEffect } from "react";
-import Button from "../comportnents/Button";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import Compressor from "compressorjs";
 import { useNavigate, useParams } from "react-router-dom";
+import BreadDtail from "../comportnents/BreadDetail";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { RootState } from "../features/AuthSlice";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
+import db from "../firebase";
+import styled from "styled-components";
+import ReactStarsRating from "react-awesome-stars-rating";
+import Button from "../comportnents/Button";
+import { ModalWindow } from "../comportnents/ModalWindow";
 
 export const EditBreadReview = () => {
-  const [name, setName] = useState<string>("");
-  const [store, setStore] = useState<string>("");
-  const [homepageUrl, setHomepageUrl] = useState<string>("");
-  const [photoUrl, setPhotoUrl] = useState<string>("");
-  const [detail, setDetail] = useState<string>("");
-  const [price, setPrice] = useState<any>(0);
-  const [bookmark, setBookmark] = useState<any>(0);
-  const [star, setStar] = useState<any>(0);
-  const [review, setReview] = useState<any>(0);
-  const Navigate = useNavigate();
+    const [modalOpen,setModalOpen] = useState<boolean>(false);
+  const [reviewTitle, setReviewTitle] = useState<string>();
+  const [reviewDetail, setReviewDetail] = useState<string>();
+  const [breadData,setBreadData] = useState<any>();
+  const [star, setStar] = useState<number>(3);
+  const useId = useSelector((state: RootState) => state.auth.userToken);
+  const useName = useSelector((state: RootState) => state.auth.userName);
   const params = useParams();
-
-  const [image, setImage] = useState<any>("");
-  const storage = getStorage();
-
+  const Navigate = useNavigate();
+  const onChange = (value: any) => {
+    setStar(value);
+  };
 
   useEffect(()=>{
 
@@ -32,170 +39,172 @@ export const EditBreadReview = () => {
       `${params.breadId}`,
     ))
     .then((data:any) => {
-      console.log(data.data());
-      setName(data.data().name);
-      setStore(data.data().store);
-      setPrice(data.data().price);
-      setHomepageUrl(data.data().homepageUrl);
-      setDetail(data.data().detail);
-      setPhotoUrl(data.data().photoUrl);
-      setBookmark(data.data().bookmark);
-      setStar(data.data().star);
-      setReview(data.data().review);
+      setBreadData(data.data());
     })
+
+    getDoc(doc(
+        db,
+        "newbread",
+        `${params.breadId}`,
+        "review",
+        `${params.reviewId}`,
+      ))
+      .then((data:any) => {
+        console.log(data.data());
+        setReviewTitle(data.data().title);
+        setStar(data.data().star);
+        setReviewDetail(data.data().datail);
+      })
+
     
   },[])
-
-
-
-  const onFileInputChange = (e: any) => {
-    // アップロードする画像を選択・リサイズする関数
-    // アップロードする画像を表示する
-    if (e.target.files.length > 0) {
-      // ファイルが選択されていればセット
-      const file = e.target.files[0];
-      console.log(e.target.files[0]);
-      new Compressor(file, {
-        // 画像のリサイズ
-        quality: 0.6,
-        maxHeight: 400,
-        maxWidth: 400,
-        convertSize: 1000000,
-        success(result) {
-          setImage(result); // 変換した画像をセット
-          console.log(result);
-        },
-      });
-    } else {
-      setImage(""); // ファイルが選択されていなければ空にする
-    }
-  };
-
-
-
-
 
   const onSubmitNewBread = (event: any) => {
     // 「投稿する」ボタンのクリック
     event.preventDefault();
-    if (image) {
-      console.log(image);
-      const storageRef = ref(storage, `images/${image.name}`);
-      uploadBytes(storageRef, image)
-        .then(() => {
-          console.log("画像アップロード成功！");
-          return getDownloadURL(storageRef); //画像URLゲット
+    console.log(breadData);
+
+    updateDoc(doc(db, "newbread", `${params.breadId}`, "review",`${params.reviewId}`), {
+      // レビュー新規登録
+      username: `${useName}`,
+      uid: `${useId}`,
+      title: `${reviewTitle}`,
+      star: star,
+      datail: `${reviewDetail}`,
+      breadid:params.breadId,
+      breadtitle:`${breadData.name}`,
+    }).then(() => {
+      // レビューしているパンの情報取得
+      const postData = collection(
+        db,
+        "newbread",
+        `${params.breadId}`,
+        "review"
+      );
+      getDocs(postData)
+        .then((data) => {
+          console.log(data.docs.map((doc) => doc.data()));
+          return data.docs.map((doc) => doc.data());
         })
         .then((data) => {
-            updateDoc(doc(db, "newbread", `${params.breadId}`), {
-                // レビュー新規登録
-                name,
-                store,
-                homepageUrl,
-                bookmark,
-                photoUrl: data,
-                star,
-                review:review,
-                price,
-                detail,
-                timestamp: serverTimestamp(),
-              });
+          updateDoc(doc(db, "newbread", `${params.breadId}`), {
+            // レビュー数を取得・データを更新する
+            review: data.length,
+          });
+
+          const starSum = data.reduce((data:any, value:any) => {
+            //星の総数を計算
+            return data + parseInt(value.star, 10);
+          }, 0);
+          console.log(starSum);
+          return starSum; // 星の総数をreturnする
         })
-        .catch((error) => {
-          console.log(error);
-          console.log("画像アップロード失敗");
-        })
-        .then(() => {
-          Navigate("/");
+
+        .then((data) => {
+          // 星の総数データを更新する
+          updateDoc(doc(db, "newbread", `${params.breadId}`), {
+            star: data,
+          })
+            .then(() => {
+              console.log("更新が完了しました！");
+            })
+            .then(() => {// レビューページに戻る
+              Navigate(`/${params.breadId}`);
+            });
         });
-    } else {
-        updateDoc(doc(db, "newbread", `${params.breadId}`), {
-        // レビュー新規登録
-        name,
-        store,
-        homepageUrl,
-        bookmark,
-        photoUrl,
-        star,
-        review:review,
-        price,
-        detail,
-        timestamp: serverTimestamp(),
-      }).then(() => {
-        Navigate("/");
-      });
-    }
+    });
   };
 
-
+  const onClickDelete = () => {
+    deleteDoc(
+        doc(db, "newbread", `${params.breadId}`,"review",`${params.reviewId}`)
+      ).then(()=>{
+        const postData = collection(
+            db,
+            "newbread",
+            `${params.breadId}`,
+            "review"
+          );
+          getDocs(postData)
+            .then((data) => {
+              console.log(data.docs.map((doc) => doc.data()));
+              return data.docs.map((doc) => doc.data());
+            })
+            .then((data) => {
+              updateDoc(doc(db, "newbread", `${params.breadId}`), {
+                // レビュー数を取得・データを更新する
+                review: data.length,
+              });
+    
+              const starSum = data.reduce((data:any, value:any) => {
+                //星の総数を計算
+                return data + parseInt(value.star, 10);
+              }, 0);
+              console.log(starSum);
+              return starSum; // 星の総数をreturnする
+            })
+    
+            .then((data) => {
+              // 星の総数データを更新する
+              updateDoc(doc(db, "newbread", `${params.breadId}`), {
+                star: data,
+              })
+                .then(() => {
+                  console.log("更新が完了しました！");
+                })
+                .then(() => {// レビューページに戻る
+                  Navigate(`/${params.breadId}`);
+                });
+            });
+      }).then(()=>{
+        Navigate( `/${params.breadId}`);
+      })
+  }
 
 
 
   return (
     <>
+      <BreadDtail params={`${params.breadId}`} />
       <form onSubmit={onSubmitNewBread}>
         <SContainer>
-          <h2>新規ページ追加</h2>
           <br />
-          商品タイトル：
+          <br />
+          レビュータイトル：
           <STitleinput
             type="text"
-            value={name}
+            value={reviewTitle}
             required
             onChange={(e) => {
-              setName(e.target.value);
+              setReviewTitle(e.target.value);
             }}
           />
-          お店の名前：
-          <STitleinput
-            type="text"
-            value={store}
-            required
-            onChange={(e) => {
-              setStore(e.target.value);
-            }}
-          />
-          ホームページURL：
-          <STitleinput
-            type="text"
-            value={homepageUrl}
-            onChange={(e) => {
-              setHomepageUrl(e.target.value);
-            }}
-          />
-          価格：
-          <STitleinput
-            type="text"
-            pattern="^[1-9][0-9]*$"
-            value={price}
-            onChange={(e) => {
-              setPrice(e.target.value);
-            }}
-          />
-          説明文：
+          <br />
+          評価：
+          <ReactStarsRating onChange={onChange} value={star} isHalf={false} />
+          <br />
+          レビュー本文：
           <SCommentsarea
             required
-            value={detail}
+            value={reviewDetail}
             onChange={(e) => {
-              setDetail(e.target.value);
+              setReviewDetail(e.target.value);
             }}
           ></SCommentsarea>
-          <br />
-          <input
-            accept="image/png, image/jpeg"
-            type="file"
-            onChange={onFileInputChange}
-          />
-          <br />
-          {image && (
-            <img src={window.URL.createObjectURL(image)} alt="user-icon" />
-          )}
         </SContainer>
-        <br />
         <SButtoncontainer>
-          <Button type="submit">投稿する</Button>
+          <Button type="submit">更新する</Button>
+          <Button type="button" onClick={()=>setModalOpen(true)}>削除する</Button>
         </SButtoncontainer>
       </form>
+      {modalOpen && (
+        <ModalWindow
+          onClickYes={onClickDelete}
+          onClickNo={() => setModalOpen(false)}
+        >
+          削除しますか？
+        </ModalWindow>
+      )}
     </>
   );
 };
@@ -214,18 +223,10 @@ const STitleinput = styled.input`
 
 const SCommentsarea = styled.textarea`
   padding: 4px;
-  height: 100px;
+  height: 200px;
   font-size: large;
 `;
 
 const SButtoncontainer = styled.div`
   text-align: center;
 `;
-
-
-
-
-
-
-
-

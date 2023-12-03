@@ -53,7 +53,7 @@ width: 250px;
 z-index: 9;
 overflow: hidden;
 height: -webkit-fill-available;
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 428px) {
   margin-top:50px;
   }
   }
@@ -75,7 +75,7 @@ text-align: left;
 
 const SImg = styled.img`
   display: none;
-  @media screen and (max-width: 375px) {
+  @media screen and (max-width: 428px) {
     height: 30px;
     display: inline;
     margin-right: 8px;

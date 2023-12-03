@@ -38,6 +38,7 @@ export const SignUp = () => {
           userid:`${user.uid}`,
           username:data.username,
           reviews:[],
+          admin:false,
         })
 
       Navigate("/");
