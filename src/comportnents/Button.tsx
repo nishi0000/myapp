@@ -25,6 +25,9 @@ const SButton = styled.button`
         opacity: 0.8;
         transform: translate3d(1px, 2px, 0);
     }
+    @media screen and (max-width: 428px) {
+        padding: 8px 12px;
+        }
 `;
 
 export default Button;

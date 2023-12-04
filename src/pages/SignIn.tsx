@@ -101,7 +101,7 @@ export const SignIn = () => {
                 {errorMessage}
               </SErrorMessage>
             )}
-            <p>パスワードをお忘れですか？</p>
+            <br />
             <Button type="submit">ログイン</Button>
             <br />
             <Button onClick={onClickSignUp}>新規登録</Button>
@@ -122,6 +122,10 @@ const SMain = styled.main`
   border: 1px solid gray;
   border-radius: 16px;
   box-shadow: 6px 6px 10px 0px rgba(0, 0, 0, 0.24);
+  @media screen and (max-width: 428px) {
+    border: none;
+    box-shadow: none;
+  }
 `;
 
 const SH2 = styled.h2`

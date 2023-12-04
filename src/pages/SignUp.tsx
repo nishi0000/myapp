@@ -160,6 +160,10 @@ const SMain = styled.main`
   border: 1px solid gray;
   border-radius: 16px;
   box-shadow: 6px 6px 10px 0px rgba(0, 0, 0, 0.24);
+  @media screen and (max-width: 428px) {
+    border: none;
+    box-shadow: none;
+  }
 `;
 
 const SH2 = styled.h2`

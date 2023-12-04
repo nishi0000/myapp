@@ -47,4 +47,7 @@ padding: 1em;
 background: #fff;
 color: black;
 text-align: center;
+@media screen and (max-width: 428px) {
+  font-size:14px;
+  }
 `;
