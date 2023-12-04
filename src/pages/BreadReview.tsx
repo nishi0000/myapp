@@ -28,7 +28,7 @@ export const BreadReview = () => {
   const [reviewId, setReviewId] = useState<any>([]);
   const [reviewData, setReviewData] = useState<any>();
   const [isReviewLoading, setReviewIsLoading] = useState<boolean>(true);
-  const [userName, setUserName] = useState<string>("");
+  const [userName, setUserName] = useState<any>("");
   const useId = useSelector((state: RootState) => state.auth.userToken);
   const page = useSelector((state: PageState) => state.page.reviewPage);
   const admin = useSelector((state: RootState) => state.auth.admin);
@@ -36,32 +36,58 @@ export const BreadReview = () => {
   const params = useParams();
 
   useEffect(() => {
+    dispatch(ReviewPageFirst());
     const postData = collection(db, "newbread", `${params.breadId}`, "review");
+    // レビュー投稿順に表示する
     const sortedQuery = query(postData, orderBy("timestamp", `desc`)); // 'desc'は降順、'asc'は昇順
 
+    // ページネーション用に配列をつくる
     getDocs(sortedQuery).then((querySnapshot) => {
       console.log(querySnapshot.docs.map((doc) => doc.data()));
       if (querySnapshot.docs.length != 0) {
         setReviewId(
-          // 各商品idを配列として受け取る（リンク作成用）
+          // 各レビューidを配列として受け取る（リンク作成用）
           Pagination(
             querySnapshot.docs.map((doc) => doc.id),
             3
           )
         );
+        // 各レビューデータを配列として受け取る（データ表示用）
         setReviewData(
           Pagination(
             querySnapshot.docs.map((doc) => doc.data()),
             3
           )
         );
-      } else {
+      } else {// もしレビューがなければ空の配列を受け取る
         setReviewData(querySnapshot.docs.map((doc) => doc.data()));
       }
+      // ローディング非表示
       setReviewIsLoading(false);
     });
   }, []);
 
+  useEffect(() => {
+    //ユーザーネーム取得用関数
+    const getUserNameArray = async () => {
+      const usernames = await Promise.all(
+        reviewData[page].map((data: any) =>
+          getDoc(doc(db, "users", `${data.uid}`)).then(
+            (userData: any) => userData.data().username
+          )
+        )
+      );
+      // ユーザーネームを配列として受け取る
+      setUserName(usernames);
+    };
+
+    // ユーザーデータを取得する前に、reviewDataとpageが定義されているか確認
+    if (reviewData && reviewData[page] && page !== undefined) {
+      getUserNameArray();
+    }
+  }, [reviewData,page]);
+
+  // ページネーション用関数　次へ進む
   const onClickNextPage = () => {
     if (reviewData.length - 1 > page) {
       console.log(reviewData.length);
@@ -70,6 +96,7 @@ export const BreadReview = () => {
     }
   };
 
+   // ページネーション用関数　前へ戻る
   const onClickBackPage = () => {
     if (page > 0 && reviewData.length + 1 > page) {
       console.log(reviewData.length);
@@ -78,10 +105,12 @@ export const BreadReview = () => {
     }
   };
 
+  // ページネーション用関数　最初に戻る
   const onClickFirstPage = () => {
     dispatch(ReviewPageFirst());
   };
 
+  // ページネーション用関数　最後に進む
   const onClickLastPage = () => {
     dispatch(ReviewPageLast({ lastpage: reviewData.length - 1 }));
   };
@@ -103,14 +132,6 @@ export const BreadReview = () => {
         ) : reviewData.length > 0 ? (
           reviewData[page].map((data: any, index: any) => {
             const timestamp = new Date(data.timestamp.seconds * 1000);
-            // getDoc(doc(db, "users", `${reviewData[page][index].uid}`))
-            //   .then((data: any) => {
-            //     return data.data().username;
-            //   })
-            //   .then((data) => {
-            //     setUserName(data);
-            //   });
-
             return (
               <>
                 <SReviewContainer>
@@ -129,15 +150,16 @@ export const BreadReview = () => {
 
                   <p>{data.datail}</p>
                   <Link to={`/users/${data.uid}`}>
-                    <SUsername>{userName}</SUsername>
+                    <SUsername>{userName[index]}</SUsername>
                   </Link>
-                  {admin || useId === data.uid && (
-                    <Link
-                      to={`/${params.breadId}/${reviewId[page][index]}/editbreadreview`}
-                    >
-                      編集
-                    </Link>
-                  )}
+                  {admin ||
+                    (useId === data.uid && (
+                      <Link
+                        to={`/${params.breadId}/${reviewId[page][index]}/editbreadreview`}
+                      >
+                        編集
+                      </Link>
+                    ))}
                 </SReviewContainer>
               </>
             );

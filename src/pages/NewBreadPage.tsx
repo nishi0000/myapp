@@ -15,9 +15,10 @@ export const NewBreadPage = () => {
   const [detail, setDetail] = useState<string>("");
   const [price, setPrice] = useState<any>(0);
   const Navigate = useNavigate();
-
   const [image, setImage] = useState<any>("");
   const storage = getStorage();
+
+
 
   const onFileInputChange = (e: any) => {
     // アップロードする画像を選択・リサイズする関数

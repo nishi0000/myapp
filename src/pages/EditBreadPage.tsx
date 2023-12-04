@@ -24,8 +24,9 @@ export const EditBreadPage = () => {
   const params = useParams();
   const storage = getStorage();
 
+ 
 
-  useEffect(()=>{
+  useEffect(()=>{// 編集用のデータを受け取ってセットする
 
     getDoc(doc(
       db,
@@ -73,7 +74,7 @@ export const EditBreadPage = () => {
 
 
   const onSubmitNewBread = (event: any) => {
-    // 「投稿する」ボタンのクリック
+    // 「更新する」ボタンのクリック
     event.preventDefault();
     if (image) {
       console.log(image);
@@ -105,7 +106,7 @@ export const EditBreadPage = () => {
         .then(() => {
           Navigate("/");
         });
-    } else {
+    } else {// 画像データの更新がない場合はアップロードを省く
         updateDoc(doc(db, "newbread", `${params.breadId}`), {
         // レビュー新規登録
         name,
@@ -195,7 +196,7 @@ export const EditBreadPage = () => {
         </SContainer>
         <br />
         <SButtoncontainer>
-          <Button type="submit">投稿する</Button>
+          <Button type="submit">更新する</Button>
           <Button type="button" onClick={()=>setModalOpen(true)}>削除する</Button>
         </SButtoncontainer>
       </form>

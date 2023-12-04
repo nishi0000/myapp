@@ -23,7 +23,7 @@ const SButton = styled.button`
     margin: 8px 8px;
     &:hover {
         opacity: 0.8;
-        transform: translate3d(1px, 5px, 0);
+        transform: translate3d(1px, 2px, 0);
     }
 `;
 
