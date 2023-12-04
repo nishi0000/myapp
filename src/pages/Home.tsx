@@ -26,6 +26,7 @@ export const Home = () => {
   
 
   useEffect(() => {
+    dispatch(breadPageFirst())
     // 各商品データ取得関数
     const postData = collection(db, "newbread");
     const sortedQuery = query(postData, orderBy("timestamp", `desc`));
