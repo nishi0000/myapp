@@ -152,14 +152,14 @@ export const BreadReview = () => {
                   <Link to={`/users/${data.uid}`}>
                     <SUsername>{userName[index]}</SUsername>
                   </Link>
-                  {admin ||
-                    (useId === data.uid && (
+
+                  {admin || useId === data.uid ? (
                       <Link
                         to={`/${params.breadId}/${reviewId[page][index]}/editbreadreview`}
                       >
                         編集
                       </Link>
-                    ))}
+                    ):(null)}
                 </SReviewContainer>
               </>
             );

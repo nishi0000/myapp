@@ -23,7 +23,6 @@ export const EditBreadPage = () => {
   const Navigate = useNavigate();
   const params = useParams();
   const storage = getStorage();
-
  
 
   useEffect(()=>{// 編集用のデータを受け取ってセットする
@@ -217,6 +216,10 @@ const SContainer = styled.main`
   flex-direction: column;
   max-width: 400px;
   margin: 8px auto;
+  @media screen and (max-width: 428px) {
+    width: 95%;
+  }
+
 `;
 
 const STitleinput = styled.input`

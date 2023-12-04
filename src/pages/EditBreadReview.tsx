@@ -214,6 +214,9 @@ const SContainer = styled.main`
   flex-direction: column;
   max-width: 400px;
   margin: 8px auto;
+  @media screen and (max-width: 428px) {
+    width: 95%;
+  }
 `;
 
 const STitleinput = styled.input`
