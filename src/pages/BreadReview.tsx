@@ -15,28 +15,25 @@ import BreadDtail from "../comportnents/BreadDetail";
 import ReactStarsRating from "react-awesome-stars-rating";
 import { RootState } from "features/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Pagination } from "../comportnents/Pagination";
+import { PageControl, Pagination } from "../comportnents/Pagination";
 import {
   PageState,
-  ReviewPageBack,
-  ReviewPageFirst,
-  ReviewPageLast,
-  ReviewPageNext,
+  pageFirst,
 } from "../features/Page";
 
 export const BreadReview = () => {
   const [reviewId, setReviewId] = useState<any>([]);
-  const [reviewData, setReviewData] = useState<any>();
+  const [reviewData, setReviewData] = useState<any>([]);
   const [isReviewLoading, setReviewIsLoading] = useState<boolean>(true);
   const [userName, setUserName] = useState<any>("");
   const useId = useSelector((state: RootState) => state.auth.userToken);
-  const page = useSelector((state: PageState) => state.page.reviewPage);
+  const page = useSelector((state: PageState) => state.page.page);
   const admin = useSelector((state: RootState) => state.auth.admin);
   const dispatch = useDispatch();
   const params = useParams();
 
   useEffect(() => {
-    dispatch(ReviewPageFirst());
+    dispatch(pageFirst());
     const postData = collection(db, "newbread", `${params.breadId}`, "review");
     // レビュー投稿順に表示する
     const sortedQuery = query(postData, orderBy("timestamp", `desc`)); // 'desc'は降順、'asc'は昇順
@@ -87,33 +84,6 @@ export const BreadReview = () => {
     }
   }, [reviewData,page]);
 
-  // ページネーション用関数　次へ進む
-  const onClickNextPage = () => {
-    if (reviewData.length - 1 > page) {
-      console.log(reviewData.length);
-      dispatch(ReviewPageNext());
-    } else {
-    }
-  };
-
-   // ページネーション用関数　前へ戻る
-  const onClickBackPage = () => {
-    if (page > 0 && reviewData.length + 1 > page) {
-      console.log(reviewData.length);
-      dispatch(ReviewPageBack());
-    } else {
-    }
-  };
-
-  // ページネーション用関数　最初に戻る
-  const onClickFirstPage = () => {
-    dispatch(ReviewPageFirst());
-  };
-
-  // ページネーション用関数　最後に進む
-  const onClickLastPage = () => {
-    dispatch(ReviewPageLast({ lastpage: reviewData.length - 1 }));
-  };
 
   return (
     <>
@@ -167,10 +137,7 @@ export const BreadReview = () => {
         ) : (
           <p>まだレビューが投稿されていません。</p>
         )}
-        <div onClick={onClickFirstPage}>最初に戻る</div>
-        <div onClick={onClickBackPage}>前へ</div>
-        <div onClick={onClickNextPage}>次へ</div>
-        <div onClick={onClickLastPage}>最後に進む</div>
+        <PageControl arrayData={reviewData}/>
       </SMaincontainer>
     </>
   );

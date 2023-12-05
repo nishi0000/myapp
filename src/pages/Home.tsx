@@ -5,15 +5,12 @@ import { useEffect, useState } from "react";
 import noimage from "../images/noimage.png";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { Pagination } from "../comportnents/Pagination";
+import { PageControl, Pagination } from "../comportnents/Pagination";
 import ReactStarsRating from "react-awesome-stars-rating";
 import { useDispatch, useSelector } from "react-redux";
 import {
   PageState,
-  breadPageBack,
-  breadPageFirst,
-  breadPageLast,
-  breadPageNext,
+  pageFirst,
 } from "../features/Page";
 import { RootState } from "../features/AuthSlice";
 
@@ -21,13 +18,13 @@ export const Home = () => {
   const [breadData, setBreadData] = useState<any>([]);
   const [breadId, setBreadId] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const page = useSelector((state: PageState) => state.page.breadPage);
+  const page = useSelector((state: PageState) => state.page.page);
   const admin = useSelector((state: RootState) => state.auth.admin);
   const dispatch = useDispatch();
   const Navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(breadPageFirst());
+    dispatch(pageFirst());
     // 各商品データ取得関数
     const postData = collection(db, "newbread");
     const sortedQuery = query(postData, orderBy("timestamp", `desc`));
@@ -39,53 +36,26 @@ export const Home = () => {
         // 各商品idを配列として受け取る（リンク作成用）
         Pagination(
           querySnapshot.docs.map((doc) => doc.id),
-          3
+          5
         )
       );
       setBreadData(
         // ページネーション用関数　各商品データを配列として受け取る（データ表示用）
         Pagination(
           querySnapshot.docs.map((doc) => doc.data()),
-          3
+          5
         )
       );
       console.log(
         Pagination(
           querySnapshot.docs.map((doc) => doc.data()),
-          3
+          5
         )
       );
       setIsLoading(false);
     });
   }, []);
 
-  const onClickNextPage = () => {
-    // ページネーション用関数　次へ進む
-    if (breadData.length - 1 > page) {
-      console.log(breadData.length);
-      dispatch(breadPageNext());
-    } else {
-    }
-  };
-
-  const onClickBackPage = () => {
-    // ページネーション用関数　前へ戻る
-    if (page > 0 && breadData.length + 1 > page) {
-      console.log(breadData.length);
-      dispatch(breadPageBack());
-    } else {
-    }
-  };
-
-  const onClickFirstPage = () => {
-    // ページネーション用関数　最初に戻る
-    dispatch(breadPageFirst());
-  };
-
-  const onClickLastPage = () => {
-    // ページネーション用関数　最後に進む
-    dispatch(breadPageLast({ lastpage: breadData.length - 1 }));
-  };
 
   return (
     <>
@@ -146,10 +116,9 @@ export const Home = () => {
             );
           })
         )}
-        <div onClick={onClickFirstPage}>最初に戻る</div>
-        <div onClick={onClickBackPage}>前へ</div>
-        <div onClick={onClickNextPage}>次へ</div>
-        <div onClick={onClickLastPage}>最後に進む</div>
+
+        <PageControl arrayData={breadData}/>
+
       </SMain>
     </>
   );
