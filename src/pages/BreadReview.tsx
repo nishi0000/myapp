@@ -137,7 +137,7 @@ export const BreadReview = () => {
         ) : (
           <p>まだレビューが投稿されていません。</p>
         )}
-        <PageControl arrayData={reviewData}/>
+        <PageControl url={`/${params.breadId}/#top`} arrayData={reviewData}/>
       </SMaincontainer>
     </>
   );

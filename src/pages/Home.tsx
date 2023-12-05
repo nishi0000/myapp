@@ -117,7 +117,7 @@ export const Home = () => {
           })
         )}
 
-        <PageControl arrayData={breadData}/>
+        <PageControl url={`/#top`} arrayData={breadData}/>
 
       </SMain>
     </>
