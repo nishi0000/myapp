@@ -133,9 +133,10 @@ const SMain = styled.main`
 `;
 
 const SBraedContainer = styled.div`
-  display: flex;
-  margin-top: 24px;
-  word-wrap: break-word;
+display: flex;
+word-wrap: break-word;
+margin: 24px auto 12px;
+width: 95%;
   &:hover {
     background-color: #fffacd;
   }
@@ -189,6 +190,7 @@ const SBraednoneicon = styled.img`
   @media screen and (max-width: 428px) {
     height: 200px;
     width: 200px;
+    margin:0 auto;
   }
 `;
 
@@ -205,8 +207,13 @@ const SLink = styled(Link)`
   font-size: 20px;
   display: block;
   margin-bottom: 8px;
+  font-weight:bold;
   &:hover {
     text-decoration: underline;
+  }
+  @media screen and (max-width: 428px) {
+    font-size: 18px;
+    margin-top:12px;
   }
 `;
 

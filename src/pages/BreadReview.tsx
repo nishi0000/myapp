@@ -150,6 +150,7 @@ const SMaincontainer = styled.div`
   margin: 8px auto;
   margin-top: 16px;
   gap: 18px;
+  width:95%;
 `;
 
 const SH3 = styled.h3`

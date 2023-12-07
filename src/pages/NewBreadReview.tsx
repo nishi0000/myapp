@@ -80,6 +80,7 @@ export const NewBreadReview = () => {
           updateDoc(doc(db, "newbread", `${params.breadId}`), {
             // レビュー数を取得・データを更新する
             review: data.length,
+            timestamp: serverTimestamp(),
           });
 
           const starSum = data.reduce((data:any, value:any) => {
