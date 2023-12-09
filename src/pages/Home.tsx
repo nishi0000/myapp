@@ -8,7 +8,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { PageControl, Pagination } from "../comportnents/Pagination";
 import ReactStarsRating from "react-awesome-stars-rating";
 import { useDispatch, useSelector } from "react-redux";
-import { PageState, pageFirst } from "../features/Page";
+import {
+  PageState,
+  pageFirst,
+} from "../features/Page";
 import { RootState } from "../features/AuthSlice";
 
 export const Home = () => {
@@ -53,6 +56,7 @@ export const Home = () => {
     });
   }, []);
 
+
   return (
     <>
       <SMain>
@@ -63,63 +67,58 @@ export const Home = () => {
         ) : (
           breadData[page].map((data: any, index: number) => {
             return (
-              <>
-                <SBraedContainer
-                  onClick={() => Navigate(`/${breadId[page][index]}`)}
-                  key={index}
-                >
-                  {data.photoUrl ? (
-                    <>
-                      <SBraedicon
-                        style={{ backgroundImage: `url(${data.photoUrl})` }}
-                      ></SBraedicon>
-                      <SBraediconsp src={`${data.photoUrl}`}></SBraediconsp>
-                    </>
-                  ) : (
-                    <SBraednoneicon src={noimage}></SBraednoneicon>
-                  )}
-                  <SStoreDetail>
-                    <SLink to={`/${breadId[page][index]}`}>{data.name}</SLink>
-                    <p>{data.store}</p>
-                    <SPdetail>{data.detail}</SPdetail>
-                    <p>価格：{data.price}円</p>
-                    <div>
-                      <ReactStarsRating
-                        value={(parseInt(data.star, 10) / data.review).toFixed(
-                          1
-                        )}
-                        isEdit={false}
-                        size={18}
-                      />
-
-                      {data.review ? (
-                        <SStar>
-                          {(parseInt(data.star, 10) / data.review).toFixed(1)}
-                        </SStar>
-                      ) : (
-                        <SStar>0</SStar>
-                      )}
-
-                      <SLinkReview to={`/${breadId[page][index]}`}>
-                        <SIcon src={`${reviewicon}`} />
-                        <SReviews>{data.review}</SReviews>
-                      </SLinkReview>
-                    </div>
-                  </SStoreDetail>
-                </SBraedContainer>
-                {admin && (
-                  <>
-                    <SEditlink to={`/${breadId[page][index]}/editbreadpage`}>
-                      編集
-                    </SEditlink>
-                  </>
+              <SBraedContainer
+                onClick={() => Navigate(`/${breadId[page][index]}`)}
+                key={index}
+              >
+                {data.photoUrl ? (
+                  <SUsericon
+                    style={{ backgroundImage: `url(${data.photoUrl})` }}
+                  ></SUsericon>
+                ) : (
+                  <SUsernoneicon src={noimage}></SUsernoneicon>
                 )}
-              </>
+                <SStoreDetail>
+                  <SLink to={`/${breadId[page][index]}`}>{data.name}</SLink>
+                  <p>{data.store}</p>
+                  <SPdetail>{data.detail}</SPdetail>
+                  <p>価格：{data.price}円</p>
+                  <div>
+                    <ReactStarsRating
+                      value={(parseInt(data.star, 10) / data.review).toFixed(1)}
+                      isEdit={false}
+                      size={18}
+                    />
+
+                    {data.review ? (
+                      <SStar>
+                        {(parseInt(data.star, 10) / data.review).toFixed(1)}
+                      </SStar>
+                    ) : (
+                      <SStar>0</SStar>
+                    )}
+
+                    <SLinkReview to={`/${breadId[page][index]}`}>
+                      <SIcon src={`${reviewicon}`} />
+                      <SReviews>{data.review}</SReviews>
+                    </SLinkReview>
+                  </div>
+                  {admin && (
+                    <>
+                      <br />
+                      <Link to={`/${breadId[page][index]}/editbreadpage`}>
+                        編集
+                      </Link>
+                    </>
+                  )}
+                </SStoreDetail>
+              </SBraedContainer>
             );
           })
         )}
 
-        <PageControl url={`/#top`} arrayData={breadData} />
+        <PageControl url={`/#top`} arrayData={breadData}/>
+
       </SMain>
     </>
   );
@@ -133,18 +132,11 @@ const SMain = styled.main`
 `;
 
 const SBraedContainer = styled.div`
-display: flex;
-word-wrap: break-word;
-margin: 24px auto 12px;
-width: 95%;
+  display: flex;
+  margin-top: 24px;
+  word-wrap: break-word;
   &:hover {
     background-color: #fffacd;
-  }
-  @media screen and (max-width: 428px) {
-    width: 90%;
-    flex-direction: column;
-    padding :8px 0;
-    margin : 0 auto;
   }
 `;
 
@@ -155,43 +147,20 @@ const SStoreDetail = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  @media screen and (max-width: 428px) {
-    width: 95%;
-  }
 `;
 
-const SBraedicon = styled.div`
+const SUsericon = styled.div`
   max-height: 216px;
   width: 216px;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;
-  @media screen and (max-width: 428px) {
-    display: none;
-  }
 `;
 
-const SBraediconsp = styled.img`
-  display: none;
-  @media screen and (max-width: 428px) {
-    display: block;
-    width: 95%;
-    margin:0 auto;
-  }
-`;
-
-const SBraednoneicon = styled.img`
-  display: block;
-  max-height: 216px;
-  width: 216px;
+const SUsernoneicon = styled.img`
+  height: 256px;
+  width: 256px;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;
-  @media screen and (max-width: 428px) {
-    height: 200px;
-    width: 200px;
-    margin:0 auto;
-  }
 `;
 
 const SPdetail = styled.p`
@@ -207,13 +176,8 @@ const SLink = styled(Link)`
   font-size: 20px;
   display: block;
   margin-bottom: 8px;
-  font-weight:bold;
   &:hover {
     text-decoration: underline;
-  }
-  @media screen and (max-width: 428px) {
-    font-size: 18px;
-    margin-top:12px;
   }
 `;
 
@@ -244,9 +208,4 @@ const SLinkReview = styled(Link)`
   &:hover {
     text-decoration: underline;
   }
-`;
-
-const SEditlink = styled(Link)`
-  z-index: 3;
-  text-align: right;
 `;
