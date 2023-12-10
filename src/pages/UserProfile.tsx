@@ -11,6 +11,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import db from "../firebase";
 
 export const UserProfile = () => {
+  const [message, setMessage] = useState<string>("");
   const userIcon = useSelector((state: RootState) => state.auth.userIcon);
   const useId = useSelector((state: RootState) => state.auth.userToken);
   const storage = getStorage();
@@ -107,12 +108,16 @@ export const UserProfile = () => {
       updateProfile(auth.currentUser, {
         //ユーザーアカウントにセット
         displayName: changeUserName,
-      }).then(() => {
-        updateDoc(doc(db, "users", `${useId}`), {
-          username: changeUserName,
+      })
+        .then(() => {
+          updateDoc(doc(db, "users", `${useId}`), {
+            username: changeUserName,
+          });
+          dispatch(nameUpDate({ name: changeUserName }));
+        })
+        .then(() => {
+          setMessage("名前の変更が完了しました！");
         });
-        dispatch(nameUpDate({ name: changeUserName }));
-      });
     }
   };
 
@@ -165,6 +170,7 @@ export const UserProfile = () => {
           onChange={(e) => setChangeUserName(e.target.value)}
         ></SNameinput>
         <SCentercontainer>
+          <SUpdatemessege>{message}</SUpdatemessege>
           <Button onClick={onClickNameUpdate}>名前変更</Button>
         </SCentercontainer>
       </SNameinputcontainer>
@@ -268,4 +274,9 @@ const SNameinput = styled.input`
 const SNameinputcontainer = styled.div`
   max-width: 300px;
   margin: 16px auto;
+`;
+
+const SUpdatemessege = styled.div`
+  font-size: 14px;
+  color: red;
 `;

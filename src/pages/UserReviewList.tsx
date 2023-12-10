@@ -95,12 +95,13 @@ export const UserReviewList = () => {
 };
 
 const SMaincontainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 800px;
-  margin: 8px auto;
-  margin-top: 16px;
-  gap: 18px;
+display: flex;
+flex-direction: column;
+max-width: 800px;
+margin: 8px auto;
+margin-top: 16px;
+gap: 18px;
+width: 95%;
 `;
 
 const SUsericon = styled.div`
@@ -109,6 +110,7 @@ const SUsericon = styled.div`
   border-radius: 50%;
   background-repeat: no-repeat;
   background-position: center;
+
 `;
 
 const SUsernoneicon = styled.img`
@@ -124,10 +126,16 @@ const SUsercontainer = styled.div`
   display: flex;
   align-items: center;
   margin: 0 auto;
+  @media screen and (max-width: 428px) {
+    flex-direction: column;
+  }
 `;
 
 const SUserdetail = styled.div`
   margin-left: 32px;
+  @media screen and (max-width: 428px) {
+    margin-top: 12px;
+  }
 `;
 
 const SH3 = styled.h3`

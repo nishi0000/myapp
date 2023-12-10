@@ -15,7 +15,6 @@
     "compressorjs": "^1.2.1",
     "firebase": "^10.6.0",
     "formik": "^2.4.5",
-    "gh-pages": "^6.1.0",
     "react": "^18.2.0",
     "react-awesome-stars-rating": "^0.15.0",
     "react-dom": "^18.2.0",
@@ -34,7 +33,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && gh-pages -d build"
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -55,7 +54,9 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.23.5",
+    "gh-pages": "^6.1.0",
     "url-loader": "^4.1.1"
   }
 }
