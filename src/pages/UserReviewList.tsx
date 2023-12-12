@@ -1,16 +1,20 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
-import human from "../images/human.png"
+import human from "../images/human.png";
 import ReactStarsRating from "react-awesome-stars-rating";
 import db from "../firebase";
 import styled from "styled-components";
+import { PageControl, Pagination } from "../comportnents/Pagination";
+import { useSelector } from "react-redux";
+import { PageState } from "features/Page";
 
 export const UserReviewList = () => {
   const params = useParams();
   const [userData, setUserData] = useState<any>();
   const [reviewDataArray, setReviewDataArray] = useState<any>();
   const [isReviewLoading, setIsReviewLoading] = useState<boolean>(true);
+  const page = useSelector((state: PageState) => state.page.page);
   const Navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +38,7 @@ export const UserReviewList = () => {
       })
       .then((reviews) => {
         console.log(reviews);
-        setReviewDataArray(reviews);
+        setReviewDataArray(Pagination(reviews, 3));// ページネーション用に配列を作成
         setIsReviewLoading(false);
       })
       .catch((error) => {
@@ -51,58 +55,75 @@ export const UserReviewList = () => {
               <SUsericon
                 style={{ backgroundImage: `url(${userData.usericon})` }}
               ></SUsericon>
-            ) : (<SUsernoneicon src={human}></SUsernoneicon>
+            ) : (
+              <SUsernoneicon src={human}></SUsernoneicon>
             )}
 
             <SUserdetail>
               <p>ユーザーネーム：{userData.username}</p>
-              
-              <p>レビュー数：{(reviewDataArray && reviewDataArray.filter((data:any) => data !== undefined).length)}</p>
+
+              <p>
+                レビュー数：
+                {reviewDataArray &&
+                  reviewDataArray.filter((data: any) => data !== undefined)
+                    .length}
+              </p>
             </SUserdetail>
           </SUsercontainer>
         )}
         {isReviewLoading ? (
           <p></p>
         ) : (
-          reviewDataArray.map((data: any) => {
-            if(data){
-            const timestamp = new Date(data.timestamp.seconds * 1000);
-            return (
-              <>
-                <SReviewContainer onClick={()=>Navigate(`${process.env.PUBLIC_URL}/${data.breadid}`)}>
-                <SLinkbread to={`${process.env.PUBLIC_URL}/${data.breadid}`}>{data.breadtitle}</SLinkbread>
-                  <STitlecontainer>
-                    <ReactStarsRating
-                      value={data.star}
-                      isEdit={false}
-                      size={18}
-                    />
-                    <SH3>{data.title}</SH3>
-                  </STitlecontainer>
-                  <STimestamp>
-                    レビュー日時：{timestamp.getFullYear()}年{timestamp.getMonth() + 1}月
-                    {timestamp.getDate()}日
-                  </STimestamp>
+          reviewDataArray[page].map((data: any) => {
+            if (data) {
+              const timestamp = new Date(data.timestamp.seconds * 1000);
+              return (
+                <>
+                  <SReviewContainer
+                    onClick={() =>
+                      Navigate(`${process.env.PUBLIC_URL}/${data.breadid}`)
+                    }
+                  >
+                    <SLinkbread
+                      to={`${process.env.PUBLIC_URL}/${data.breadid}`}
+                    >
+                      {data.breadtitle}
+                    </SLinkbread>
+                    <STitlecontainer>
+                      <ReactStarsRating
+                        value={data.star}
+                        isEdit={false}
+                        size={18}
+                      />
+                      <SH3>{data.title}</SH3>
+                    </STitlecontainer>
+                    <STimestamp>
+                      レビュー日時：{timestamp.getFullYear()}年
+                      {timestamp.getMonth() + 1}月{timestamp.getDate()}日
+                    </STimestamp>
 
-                  <SDetail>{data.datail}</SDetail>
-                </SReviewContainer>
-              </>
-            );}
+                    <SDetail>{data.datail}</SDetail>
+                  </SReviewContainer>
+                </>
+              );
+            }
           })
         )}
       </SMaincontainer>
+
+      {reviewDataArray.length > 0 ? (<PageControl url={`${process.env.PUBLIC_URL}/${params.breadId}/#top`} arrayData={reviewDataArray} />):(null)}
     </>
   );
 };
 
 const SMaincontainer = styled.div`
-display: flex;
-flex-direction: column;
-max-width: 800px;
-margin: 8px auto;
-margin-top: 16px;
-gap: 18px;
-width: 95%;
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  margin: 8px auto;
+  margin-top: 16px;
+  gap: 18px;
+  width: 95%;
 `;
 
 const SUsericon = styled.div`
@@ -111,7 +132,6 @@ const SUsericon = styled.div`
   border-radius: 50%;
   background-repeat: no-repeat;
   background-position: center;
-
 `;
 
 const SUsernoneicon = styled.img`
@@ -140,10 +160,10 @@ const SUserdetail = styled.div`
 `;
 
 const SH3 = styled.h3`
-font-size: 16px;
-display: block;
-margin-left: 8px;
-font-weight: bolder;
+  font-size: 16px;
+  display: block;
+  margin-left: 8px;
+  font-weight: bolder;
 `;
 
 const SReviewContainer = styled.div`
@@ -153,7 +173,6 @@ const SReviewContainer = styled.div`
     transform: translate3d(2px, 2px, 0);
   }
 `;
-
 
 const STitlecontainer = styled.div`
   display: flex;
@@ -171,9 +190,9 @@ const SDetail = styled.div`
 
 const SLinkbread = styled(Link)`
   color: black;
-  display:block;
+  display: block;
   text-decoration: none;
-  margin-bottom:8px;
+  margin-bottom: 8px;
   &:hover {
     text-decoration: underline;
   }
