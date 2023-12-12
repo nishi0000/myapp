@@ -52,7 +52,7 @@ export const BreadDtail: FC<BaredDtailType> = ({ params }) => {
          
           <SStoreDetail>
                     <SH2>{breadData.name}</SH2>
-                    <a target="_blank" href={`${breadData.homepageUrl}`}>{breadData.store}</a>
+                    <SHomepagelink target="_blank" href={`${breadData.homepageUrl}`}>{breadData.store}</SHomepagelink>
                     <SPdetail>{breadData.detail}</SPdetail>
                     <p>価格：{breadData.price}円</p>
                     <div>
@@ -205,5 +205,14 @@ const SLink = styled(Link)`
   }
 `;
 
+const SHomepagelink = styled.a`
+  color: black;
+  text-decoration: none;
+  font-size: 16px;
+  display: block;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 export default BreadDtail;

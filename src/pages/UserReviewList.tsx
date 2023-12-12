@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import human from "../images/human.png"
@@ -11,6 +11,7 @@ export const UserReviewList = () => {
   const [userData, setUserData] = useState<any>();
   const [reviewDataArray, setReviewDataArray] = useState<any>();
   const [isReviewLoading, setIsReviewLoading] = useState<boolean>(true);
+  const Navigate = useNavigate();
 
   useEffect(() => {
     getDoc(doc(db, "users", `${params.userId}`)) // ユーザーデータ取得
@@ -68,22 +69,22 @@ export const UserReviewList = () => {
             const timestamp = new Date(data.timestamp.seconds * 1000);
             return (
               <>
-                <SReviewContainer>
-                <Link to={`${process.env.PUBLIC_URL}/${data.breadid}`}><h3>{data.breadtitle}</h3></Link>
+                <SReviewContainer onClick={()=>Navigate(`${process.env.PUBLIC_URL}/${data.breadid}`)}>
+                <SLinkbread to={`${process.env.PUBLIC_URL}/${data.breadid}`}>{data.breadtitle}</SLinkbread>
                   <STitlecontainer>
                     <ReactStarsRating
                       value={data.star}
                       isEdit={false}
-                      size={20}
+                      size={18}
                     />
                     <SH3>{data.title}</SH3>
                   </STitlecontainer>
-                  <p>
-                    {timestamp.getFullYear()}年{timestamp.getMonth() + 1}月
+                  <STimestamp>
+                    レビュー日時：{timestamp.getFullYear()}年{timestamp.getMonth() + 1}月
                     {timestamp.getDate()}日
-                  </p>
+                  </STimestamp>
 
-                  <p>{data.datail}</p>
+                  <SDetail>{data.datail}</SDetail>
                 </SReviewContainer>
               </>
             );}
@@ -139,18 +140,41 @@ const SUserdetail = styled.div`
 `;
 
 const SH3 = styled.h3`
-  font-size: 18px;
-  display: block;
-  margin-left: 8px;
+font-size: 16px;
+display: block;
+margin-left: 8px;
+font-weight: bolder;
 `;
 
 const SReviewContainer = styled.div`
   background-color: #f0cfa0;
   padding: 24px;
+  &:hover {
+    transform: translate3d(2px, 2px, 0);
+  }
 `;
 
 
 const STitlecontainer = styled.div`
   display: flex;
   margin-bottom: 8px;
+`;
+
+const STimestamp = styled.div`
+  color: #444444;
+  font-size: 14px;
+`;
+
+const SDetail = styled.div`
+  margin: 12px auto;
+`;
+
+const SLinkbread = styled(Link)`
+  color: black;
+  display:block;
+  text-decoration: none;
+  margin-bottom:8px;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
