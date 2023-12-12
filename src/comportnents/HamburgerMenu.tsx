@@ -22,7 +22,7 @@ const HamburgerMenu = () => {
         console.log("ログアウト成功！");
         setModalOpen(false);
         dispatch(commonSignOut());
-        Navigate("/");
+        Navigate(`${process.env.PUBLIC_URL}/`);
         setIsOpen(false);
       })
       .catch((error) => {
@@ -39,12 +39,12 @@ const HamburgerMenu = () => {
         {isOpen ? (
           <SNavi>
             <SUl>
-              <Link to="/" onClick={() => setIsOpen(false)}>
+              <Link to={`${process.env.PUBLIC_URL}/`} onClick={() => setIsOpen(false)}>
                 <Sli>ホーム</Sli>
               </Link>
               {uid && (
                 <>
-                  <Link to="userprofile" onClick={() => setIsOpen(false)}>
+                  <Link to={`${process.env.PUBLIC_URL}/userprofile`} onClick={() => setIsOpen(false)}>
                     <Sli>プロフィール</Sli>
                   </Link>
                   <div onClick={() => setModalOpen(true)}>
@@ -55,16 +55,16 @@ const HamburgerMenu = () => {
 
               {!uid && (
                 <>
-                  <Link to="signin" onClick={() => setIsOpen(false)}>
+                  <Link to={`${process.env.PUBLIC_URL}/signin`} onClick={() => setIsOpen(false)}>
                     <Sli>ログイン</Sli>
                   </Link>
-                  <Link to="signup" onClick={() => setIsOpen(false)}>
+                  <Link to={`${process.env.PUBLIC_URL}/signup`} onClick={() => setIsOpen(false)}>
                     <Sli>新規登録</Sli>
                   </Link>
                 </>
               )}
               {admin && (
-                <Link to="newbreadpage" onClick={() => setIsOpen(false)}>
+                <Link to={`${process.env.PUBLIC_URL}/newbreadpage`} onClick={() => setIsOpen(false)}>
                   <Sli>商品登録</Sli>
                 </Link>
               )}

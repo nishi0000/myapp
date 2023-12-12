@@ -100,7 +100,7 @@ export const NewBreadReview = () => {
               console.log("更新が完了しました！");
             })
             .then(() => {// レビューページに戻る
-              Navigate(`/${params.breadId}`);
+              Navigate(`${process.env.PUBLIC_URL}/${params.breadId}`);
             });
         });
     });

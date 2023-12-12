@@ -74,7 +74,7 @@ export const NewBreadPage = () => {
           console.log("画像アップロード失敗");
         })
         .then(() => {
-          Navigate("/");
+          Navigate(`${process.env.PUBLIC_URL}/`);
         });
     } else {
       addDoc(collection(db, "newbread"), {
@@ -90,7 +90,7 @@ export const NewBreadPage = () => {
         detail,
         timestamp: serverTimestamp(),
       }).then(() => {
-        Navigate("/");
+        Navigate(`${process.env.PUBLIC_URL}/`);
       });
     }
   };

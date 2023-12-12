@@ -69,7 +69,7 @@ export const UserReviewList = () => {
             return (
               <>
                 <SReviewContainer>
-                <Link to={`/${data.breadid}`}><h3>{data.breadtitle}</h3></Link>
+                <Link to={`${process.env.PUBLIC_URL}/${data.breadid}`}><h3>{data.breadtitle}</h3></Link>
                   <STitlecontainer>
                     <ReactStarsRating
                       value={data.star}

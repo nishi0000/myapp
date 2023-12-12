@@ -103,7 +103,7 @@ export const EditBreadPage = () => {
           console.log("画像アップロード失敗");
         })
         .then(() => {
-          Navigate("/");
+          Navigate(`${process.env.PUBLIC_URL}/`);
         });
     } else {// 画像データの更新がない場合はアップロードを省く
         updateDoc(doc(db, "newbread", `${params.breadId}`), {
@@ -119,7 +119,7 @@ export const EditBreadPage = () => {
         detail,
         timestamp: serverTimestamp(),
       }).then(() => {
-        Navigate("/");
+        Navigate(`${process.env.PUBLIC_URL}/`);
       });
     }
   };
@@ -128,7 +128,7 @@ export const EditBreadPage = () => {
       deleteDoc(
         doc(db, "newbread", `${params.breadId}`)
       ).then(()=>{
-        Navigate("/");
+        Navigate(`${process.env.PUBLIC_URL}/`);
       })
 
   }

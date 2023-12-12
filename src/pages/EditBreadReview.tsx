@@ -109,7 +109,7 @@ export const EditBreadReview = () => {
               console.log("更新が完了しました！");
             })
             .then(() => {// レビューページに戻る
-              Navigate(`/${params.breadId}`);
+              Navigate(`${process.env.PUBLIC_URL}/${params.breadId}`);
             });
         });
     });
@@ -153,11 +153,11 @@ export const EditBreadReview = () => {
                   console.log("更新が完了しました！");
                 })
                 .then(() => {// レビューページに戻る
-                  Navigate(`/${params.breadId}`);
+                  Navigate(`${process.env.PUBLIC_URL}/${params.breadId}`);
                 });
             });
       }).then(()=>{
-        Navigate( `/${params.breadId}`);
+        Navigate(`${process.env.PUBLIC_URL}/${params.breadId}`);
       })
   }
 

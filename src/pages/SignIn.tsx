@@ -24,7 +24,7 @@ export const SignIn = () => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        Navigate("/");
+        Navigate(`${process.env.PUBLIC_URL}/`);
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -34,7 +34,7 @@ export const SignIn = () => {
   };
 
   const onClickSignUp = () => {
-    Navigate("/signup");
+    Navigate(`${process.env.PUBLIC_URL}/signup`);
   };
 
   return (

@@ -65,7 +65,7 @@ export const Home = () => {
             return (
               <>
                 <SBraedContainer
-                  onClick={() => Navigate(`/${breadId[page][index]}`)}
+                  onClick={() => Navigate(`${process.env.PUBLIC_URL}/${breadId[page][index]}`)}
                   key={index}
                 >
                   {data.photoUrl ? (
@@ -79,7 +79,7 @@ export const Home = () => {
                     <SBraednoneicon src={noimage}></SBraednoneicon>
                   )}
                   <SStoreDetail>
-                    <SLink to={`/${breadId[page][index]}`}>{data.name}</SLink>
+                    <SLink to={`${process.env.PUBLIC_URL}/${breadId[page][index]}`}>{data.name}</SLink>
                     <p>{data.store}</p>
                     <SPdetail>{data.detail}</SPdetail>
                     <p>価格：{data.price}円</p>
@@ -100,7 +100,7 @@ export const Home = () => {
                         <SStar>0</SStar>
                       )}
 
-                      <SLinkReview to={`/${breadId[page][index]}`}>
+                      <SLinkReview to={`${process.env.PUBLIC_URL}/${breadId[page][index]}`}>
                         <SIcon src={`${reviewicon}`} />
                         <SReviews>{data.review}</SReviews>
                       </SLinkReview>
@@ -109,7 +109,7 @@ export const Home = () => {
                 </SBraedContainer>
                 {admin && (
                   <>
-                    <SEditlink to={`/${breadId[page][index]}/editbreadpage`}>
+                    <SEditlink to={`${process.env.PUBLIC_URL}/${breadId[page][index]}/editbreadpage`}>
                       編集
                     </SEditlink>
                   </>
@@ -119,7 +119,7 @@ export const Home = () => {
           })
         )}
 
-        <PageControl url={`/#top`} arrayData={breadData} />
+        <PageControl url={`${process.env.PUBLIC_URL}/#top`} arrayData={breadData} />
       </SMain>
     </>
   );

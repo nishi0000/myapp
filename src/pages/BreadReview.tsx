@@ -87,7 +87,7 @@ export const BreadReview = () => {
       <BreadDtail params={`${params.breadId}`} />
       {useId && (
         <SButtoncontainer>
-          <Link to="newbreadreview">
+          <Link to={`${process.env.PUBLIC_URL}/${params.breadId}/newbreadreview`}>
             <Button>レビューを投稿する</Button>
           </Link>
         </SButtoncontainer>
@@ -117,7 +117,7 @@ export const BreadReview = () => {
 
                   <SDetail>{data.datail}</SDetail>
                   <SUsernamecontainer>
-                    <SUsername to={`/users/${data.uid}`}>
+                    <SUsername to={`${process.env.PUBLIC_URL}/users/${data.uid}`}>
                       {userName[index]}
                     </SUsername>
                   </SUsernamecontainer>
@@ -125,7 +125,7 @@ export const BreadReview = () => {
                   {admin || useId === data.uid ? (
                     <>
                       <Link
-                        to={`/${params.breadId}/${reviewId[page][index]}/editbreadreview`}
+                        to={`${process.env.PUBLIC_URL}/${params.breadId}/${reviewId[page][index]}/editbreadreview`}
                       >
                         編集
                       </Link>
@@ -138,7 +138,7 @@ export const BreadReview = () => {
         ) : (
           <p>まだレビューが投稿されていません。</p>
         )}
-        <PageControl url={`/${params.breadId}/#top`} arrayData={reviewData} />
+        <PageControl url={`${process.env.PUBLIC_URL}/${params.breadId}/#top`} arrayData={reviewData} />
       </SMaincontainer>
     </>
   );
