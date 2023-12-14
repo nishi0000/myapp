@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import db from "../firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../comportnents/Button";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import Compressor from "compressorjs";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../features/AuthSlice";
+import { useSelector } from "react-redux";
 
 export const NewBreadPage = () => {
   const [name, setName] = useState<string>("");
@@ -14,9 +16,12 @@ export const NewBreadPage = () => {
   const [photoUrl, setPhotoUrl] = useState<string>("");
   const [detail, setDetail] = useState<string>("");
   const [price, setPrice] = useState<any>(0);
+  const admin = useSelector((state: RootState) => state.auth.admin);
   const Navigate = useNavigate();
   const [image, setImage] = useState<any>("");
   const storage = getStorage();
+
+  useEffect(()=>{admin||Navigate(`${process.env.PUBLIC_URL}/`);},[])
 
 
 

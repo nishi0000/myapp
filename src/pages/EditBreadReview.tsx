@@ -25,6 +25,7 @@ export const EditBreadReview = () => {
   const [star, setStar] = useState<number>(3);
   const useId = useSelector((state: RootState) => state.auth.userToken);
   const useName = useSelector((state: RootState) => state.auth.userName);
+  const admin = useSelector((state: RootState) => state.auth.admin);
   const params = useParams();
   const Navigate = useNavigate();
   const onChange = (value: any) => {
@@ -32,7 +33,6 @@ export const EditBreadReview = () => {
   };
 
   useEffect(()=>{
-
     getDoc(doc(
       db,
       "newbread",

@@ -7,6 +7,8 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import Compressor from "compressorjs";
 import { useNavigate, useParams } from "react-router-dom";
 import { ModalWindow } from "../comportnents/ModalWindow";
+import { useSelector } from "react-redux";
+import { RootState } from "../features/AuthSlice";
 
 export const EditBreadPage = () => {
   const [modalOpen,setModalOpen] = useState<boolean>(false);
@@ -20,12 +22,17 @@ export const EditBreadPage = () => {
   const [star, setStar] = useState<any>(0);
   const [review, setReview] = useState<any>(0);
   const [image, setImage] = useState<any>("");
+  const admin = useSelector((state: RootState) => state.auth.admin);
   const Navigate = useNavigate();
   const params = useParams();
   const storage = getStorage();
  
 
   useEffect(()=>{// 編集用のデータを受け取ってセットする
+    const checkAdmin =async() => {
+      await admin || Navigate(`${process.env.PUBLIC_URL}/`);
+    }
+    checkAdmin();
 
     getDoc(doc(
       db,

@@ -6,18 +6,22 @@ import ReactStarsRating from "react-awesome-stars-rating";
 import db from "../firebase";
 import styled from "styled-components";
 import { PageControl, Pagination } from "../comportnents/Pagination";
-import { useSelector } from "react-redux";
-import { PageState } from "features/Page";
+import { useDispatch, useSelector } from "react-redux";
+import { PageState, pageFirst } from "../features/Page";
 
 export const UserReviewList = () => {
   const params = useParams();
   const [userData, setUserData] = useState<any>();
-  const [reviewDataArray, setReviewDataArray] = useState<any>();
+  const [reviewData, setReviewData] = useState<any>([]);
+  const [reviewDataArray, setReviewDataArray] = useState<any>([]);
   const [isReviewLoading, setIsReviewLoading] = useState<boolean>(true);
   const page = useSelector((state: PageState) => state.page.page);
   const Navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    
+    dispatch(pageFirst());
     getDoc(doc(db, "users", `${params.userId}`)) // ユーザーデータ取得
       .then((userData) => {
         const user = userData.data();
@@ -38,7 +42,8 @@ export const UserReviewList = () => {
       })
       .then((reviews) => {
         console.log(reviews);
-        setReviewDataArray(Pagination(reviews, 3));// ページネーション用に配列を作成
+        setReviewData(reviews);
+        setReviewDataArray(Pagination(reviews, 5)); // ページネーション用に配列を作成
         setIsReviewLoading(false);
       })
       .catch((error) => {
@@ -64,8 +69,8 @@ export const UserReviewList = () => {
 
               <p>
                 レビュー数：
-                {reviewDataArray &&
-                  reviewDataArray.filter((data: any) => data !== undefined)
+                {reviewData &&
+                 reviewData.filter((data: any) => data !== undefined)
                     .length}
               </p>
             </SUserdetail>
@@ -111,7 +116,12 @@ export const UserReviewList = () => {
         )}
       </SMaincontainer>
 
-      {reviewDataArray.length > 0 ? (<PageControl url={`${process.env.PUBLIC_URL}/${params.breadId}/#top`} arrayData={reviewDataArray} />):(null)}
+      {reviewDataArray.length > 0 && (
+        <PageControl
+          url={`${process.env.PUBLIC_URL}/users/${params.userId}/#top`}
+          arrayData={reviewDataArray}
+        />
+      )}
     </>
   );
 };

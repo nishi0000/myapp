@@ -43,14 +43,14 @@ export const BreadReview = () => {
           // 各レビューidを配列として受け取る（リンク作成用）
           Pagination(
             querySnapshot.docs.map((doc) => doc.id),
-            3
+            5
           )
         );
         // 各レビューデータを配列として受け取る（データ表示用）
         setReviewData(
           Pagination(
             querySnapshot.docs.map((doc) => doc.data()),
-            3
+            5
           )
         );
       } else {
