@@ -13,6 +13,7 @@ import { RootState } from "../features/AuthSlice";
 
 export const Home = () => {
   const [breadData, setBreadData] = useState<any>([]);
+  const [ranking, setRanking] = useState<string>("timestamp");
   const [breadId, setBreadId] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
   const page = useSelector((state: PageState) => state.page.page);
@@ -23,8 +24,10 @@ export const Home = () => {
   useEffect(() => {
     dispatch(pageFirst());
     // 各商品データ取得関数
-    const postData = collection(db, "newbread");
-    const sortedQuery = query(postData, orderBy("timestamp", `desc`));
+    
+      const postData = collection(db, "newbread");
+      const sortedQuery = query(postData, orderBy(ranking, `desc`));
+
     getDocs(sortedQuery).then((querySnapshot) => {
       // 各商品データ取得
       console.log(querySnapshot.docs.map((doc) => doc.data()));
@@ -51,13 +54,13 @@ export const Home = () => {
       );
       setIsLoading(false);
     });
-  }, []);
+  }, [ranking]);
 
   return (
     <>
       <SMain>
         <h2>Bread Review</h2>
-        <p>平均評価順/レビューが多い順</p>
+        <p onClick={()=>{setRanking("review")}}>レビューが多い順</p><p onClick={()=>{setRanking("starAverage")}}>/平均評価順</p>
         {isLoading ? (
           <p>ロード中</p>
         ) : (

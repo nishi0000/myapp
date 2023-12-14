@@ -104,6 +104,7 @@ export const EditBreadReview = () => {
           // 星の総数データを更新する
           updateDoc(doc(db, "newbread", `${params.breadId}`), {
             star: data,
+            starAverage:(data/(breadData.review)).toFixed(1),
           })
             .then(() => {
               console.log("更新が完了しました！");
