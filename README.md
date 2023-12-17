@@ -21,6 +21,7 @@
 ・HTML<br>
 ・CSS<br>
 ・React<br>
+・Typescript<br>
 ・FireBase<br>
 
 ## 実装機能

@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import human from "../images/human.png";
 import ReactStarsRating from "react-awesome-stars-rating";
