@@ -94,7 +94,7 @@ export const Home = () => {
                 <SBraedContainer
                   onClick={() =>
                     Navigate(
-                      `${process.env.PUBLIC_URL}/${breadId[page][index]}`
+                      `${process.env.REACT_APP_PUBLIC_URL}/${breadId[page][index]}`
                     )
                   }
                   key={index}
@@ -111,7 +111,7 @@ export const Home = () => {
                   )}
                   <SStoreDetail>
                     <SLink
-                      to={`${process.env.PUBLIC_URL}/${breadId[page][index]}`}
+                      to={`${process.env.REACT_APP_PUBLIC_URL}/${breadId[page][index]}`}
                     >
                       {data.name}
                     </SLink>
@@ -132,7 +132,7 @@ export const Home = () => {
                       )}
 
                       <SLinkReview
-                        to={`${process.env.PUBLIC_URL}/${breadId[page][index]}`}
+                        to={`${process.env.REACT_APP_PUBLIC_URL}/${breadId[page][index]}`}
                       >
                         <SIcon src={`${reviewicon}`} />
                         <SReviews>{data.review}</SReviews>
@@ -143,7 +143,7 @@ export const Home = () => {
                 {admin && (
                   <>
                     <SEditlink
-                      to={`${process.env.PUBLIC_URL}/${breadId[page][index]}/editbreadpage`}
+                      to={`${process.env.REACT_APP_PUBLIC_URL}/${breadId[page][index]}/editbreadpage`}
                     >
                       編集
                     </SEditlink>
@@ -155,7 +155,7 @@ export const Home = () => {
         )}
 
         <PageControl
-          url={`${process.env.PUBLIC_URL}/#top`}
+          url={`${process.env.REACT_APP_PUBLIC_URL}/#top`}
           arrayData={breadData}
         />
       </SMain>

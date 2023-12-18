@@ -41,7 +41,7 @@ export const SignUp = () => {
           admin:false,
         })
 
-      Navigate(`${process.env.PUBLIC_URL}/`);
+      Navigate(`${process.env.REACT_APP_PUBLIC_URL}/`);
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -142,7 +142,7 @@ export const SignUp = () => {
           </Button>
           <br />
           <br />
-          <Link to={`${process.env.PUBLIC_URL}/signin`}>アカウントをお持ちの方はこちら</Link>
+          <Link to={`${process.env.REACT_APP_PUBLIC_URL}/signin`}>アカウントをお持ちの方はこちら</Link>
         </SContainer>
         </form>
       </SMain>

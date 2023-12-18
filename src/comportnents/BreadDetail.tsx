@@ -50,6 +50,11 @@ export const BreadDtail: FC<BaredDtailType> = ({ params }) => {
             <SBraednoneicon src={noimage}></SBraednoneicon>
           )}
          
+
+
+
+
+         
           <SStoreDetail>
                     <SH2>{breadData.name}</SH2>
                     <SHomepagelink target="_blank" href={`${breadData.homepageUrl}`}>{breadData.store}</SHomepagelink>

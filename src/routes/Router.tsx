@@ -14,18 +14,18 @@ import { EditBreadReview } from "../pages/EditBreadReview";
 export const Router = () => {
   return (
     <Routes>
-      <Route path={`${process.env.PUBLIC_URL}/`} element={<Home />} />
-      <Route path={`${process.env.PUBLIC_URL}/`} element={<Home />} />
-      <Route path={`${process.env.PUBLIC_URL}/signin`} element={<SignIn />} />
-      <Route path={`${process.env.PUBLIC_URL}/signup`} element={<SignUp />} />
-      <Route path={`${process.env.PUBLIC_URL}/newbreadpage`} element={<NewBreadPage />} />
-      <Route path={`${process.env.PUBLIC_URL}/:breadId/editbreadpage`} element={<EditBreadPage />} />
-      <Route path={`${process.env.PUBLIC_URL}/:breadId/newbreadreview`} element={<NewBreadReview />} />
-      <Route path={`${process.env.PUBLIC_URL}/:breadId/:reviewId/editbreadreview`} element={<EditBreadReview />} />
-      <Route path={`${process.env.PUBLIC_URL}/:breadId`} element={<BreadReview />} />
-      <Route path={`${process.env.PUBLIC_URL}/users/:userId`} element={<UserReviewList />} />
-      <Route path={`${process.env.PUBLIC_URL}/userprofile`} element={<UserProfile />} />
-      <Route path={`${process.env.PUBLIC_URL}/*`} element={<NotFound />} />
+      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/`} element={<Home />} />
+      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/`} element={<Home />} />
+      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/signin`} element={<SignIn />} />
+      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/signup`} element={<SignUp />} />
+      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/newbreadpage`} element={<NewBreadPage />} />
+      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/:breadId/editbreadpage`} element={<EditBreadPage />} />
+      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/:breadId/newbreadreview`} element={<NewBreadReview />} />
+      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/:breadId/:reviewId/editbreadreview`} element={<EditBreadReview />} />
+      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/:breadId`} element={<BreadReview />} />
+      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/users/:userId`} element={<UserReviewList />} />
+      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/userprofile`} element={<UserProfile />} />
+      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/*`} element={<NotFound />} />
     </Routes>
   );
 };
