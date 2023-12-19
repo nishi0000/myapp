@@ -86,11 +86,11 @@ export const UserReviewList = () => {
                 <>
                   <SReviewContainer
                     onClick={() =>
-                      Navigate(`${process.env.REACT_APP_PUBLIC_URL}/${data.breadid}`)
+                      Navigate(`/${process.env.REACT_APP_PUBLIC_URL}/${data.breadid}`)
                     }
                   >
                     <SLinkbread
-                      to={`${process.env.REACT_APP_PUBLIC_URL}/${data.breadid}`}
+                      to={`/${process.env.REACT_APP_PUBLIC_URL}/${data.breadid}`}
                     >
                       {data.breadtitle}
                     </SLinkbread>
@@ -118,7 +118,7 @@ export const UserReviewList = () => {
 
       {reviewDataArray.length > 0 && (
         <PageControl
-          url={`${process.env.REACT_APP_PUBLIC_URL}/users/${params.userId}/#top`}
+          url={`/${process.env.REACT_APP_PUBLIC_URL}/users/${params.userId}/#top`}
           arrayData={reviewDataArray}
         />
       )}

@@ -110,7 +110,7 @@ export const EditBreadReview = () => {
               console.log("更新が完了しました！");
             })
             .then(() => {// レビューページに戻る
-              Navigate(`${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}`);
+              Navigate(`/${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}`);
             });
         });
     });
@@ -154,11 +154,11 @@ export const EditBreadReview = () => {
                   console.log("更新が完了しました！");
                 })
                 .then(() => {// レビューページに戻る
-                  Navigate(`${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}`);
+                  Navigate(`/${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}`);
                 });
             });
       }).then(()=>{
-        Navigate(`${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}`);
+        Navigate(`/${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}`);
       })
   }
 

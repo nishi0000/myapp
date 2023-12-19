@@ -30,7 +30,7 @@ export const EditBreadPage = () => {
 
   useEffect(()=>{// 編集用のデータを受け取ってセットする
     const checkAdmin =async() => {
-      await admin || Navigate(`${process.env.REACT_APP_PUBLIC_URL}/`);
+      await admin || Navigate(`/${process.env.REACT_APP_PUBLIC_URL}`);
     }
     checkAdmin();
 
@@ -110,7 +110,7 @@ export const EditBreadPage = () => {
           console.log("画像アップロード失敗");
         })
         .then(() => {
-          Navigate(`${process.env.REACT_APP_PUBLIC_URL}/`);
+          Navigate(`/${process.env.REACT_APP_PUBLIC_URL}`);
         });
     } else {// 画像データの更新がない場合はアップロードを省く
         updateDoc(doc(db, "newbread", `${params.breadId}`), {
@@ -126,7 +126,7 @@ export const EditBreadPage = () => {
         detail,
         timestamp: serverTimestamp(),
       }).then(() => {
-        Navigate(`${process.env.REACT_APP_PUBLIC_URL}/`);
+        Navigate(`/${process.env.REACT_APP_PUBLIC_URL}`);
       });
     }
   };
@@ -135,7 +135,7 @@ export const EditBreadPage = () => {
       deleteDoc(
         doc(db, "newbread", `${params.breadId}`)
       ).then(()=>{
-        Navigate(`${process.env.REACT_APP_PUBLIC_URL}/`);
+        Navigate(`/${process.env.REACT_APP_PUBLIC_URL}`);
       })
 
   }
