@@ -61,10 +61,10 @@ export const PageControl: FC<PageProps> = ({ url,arrayData }) => {
 
 return (
     arrayData.length > 0 ? (    <SPaginationcontainer>
-        {page === 0 || <SPagination to={`${url}`} onClick={onClickFirstPage}>最初に戻る</SPagination>}
-        {page === 0 || <SPagination to={`${url}`} onClick={onClickBackPage}>前へ</SPagination>}
-        {page === arrayData.length - 1 || <SPagination to={`${url}`} onClick={onClickNextPage}>次へ</SPagination>}
-        {page === arrayData.length - 1 || <SPagination to={`${url}`} onClick={onClickLastPage}>最後に進む</SPagination>}
+        {page === 0 || <SPagination to={url} onClick={onClickFirstPage}>最初に戻る</SPagination>}
+        {page === 0 || <SPagination to={url} onClick={onClickBackPage}>前へ</SPagination>}
+        {page === arrayData.length - 1 || <SPagination to={url} onClick={onClickNextPage}>次へ</SPagination>}
+        {page === arrayData.length - 1 || <SPagination to={url} onClick={onClickLastPage}>最後に進む</SPagination>}
         </SPaginationcontainer>):(<></>)
 
 

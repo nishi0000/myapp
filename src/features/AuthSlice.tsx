@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export type RootState = {
+export interface RootState {
   auth:{
         isSignIn: boolean;
         userToken: string;
