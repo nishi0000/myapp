@@ -16,10 +16,7 @@ import ReactStarsRating from "react-awesome-stars-rating";
 import { RootState } from "features/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { PageControl, Pagination } from "../comportnents/Pagination";
-import {
-  PageState,
-  pageFirst,
-} from "../features/Page";
+import { PageState, pageFirst } from "../features/Page";
 
 export const BreadReview = () => {
   const [reviewId, setReviewId] = useState<any>([]);
@@ -46,17 +43,18 @@ export const BreadReview = () => {
           // 各レビューidを配列として受け取る（リンク作成用）
           Pagination(
             querySnapshot.docs.map((doc) => doc.id),
-            3
+            5
           )
         );
         // 各レビューデータを配列として受け取る（データ表示用）
         setReviewData(
           Pagination(
             querySnapshot.docs.map((doc) => doc.data()),
-            3
+            5
           )
         );
-      } else {// もしレビューがなければ空の配列を受け取る
+      } else {
+        // もしレビューがなければ空の配列を受け取る
         setReviewData(querySnapshot.docs.map((doc) => doc.data()));
       }
       // ローディング非表示
@@ -82,15 +80,14 @@ export const BreadReview = () => {
     if (reviewData && reviewData[page] && page !== undefined) {
       getUserNameArray();
     }
-  }, [reviewData,page]);
-
+  }, [reviewData, page]);
 
   return (
     <>
       <BreadDtail params={`${params.breadId}`} />
       {useId && (
         <SButtoncontainer>
-          <Link to="newbreadreview">
+          <Link to={`/${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}/newbreadreview`}>
             <Button>レビューを投稿する</Button>
           </Link>
         </SButtoncontainer>
@@ -113,23 +110,27 @@ export const BreadReview = () => {
                     />
                     <SH3>{data.title}</SH3>
                   </STitlecontainer>
-                  <p>
-                    {timestamp.getFullYear()}年{timestamp.getMonth() + 1}月
+                  <STimestamp>
+                    レビュー日時：{timestamp.getFullYear()}年{timestamp.getMonth() + 1}月
                     {timestamp.getDate()}日
-                  </p>
+                  </STimestamp>
 
-                  <p>{data.datail}</p>
-                  <Link to={`/users/${data.uid}`}>
-                    <SUsername>{userName[index]}</SUsername>
-                  </Link>
+                  <SDetail>{data.datail}</SDetail>
+                  <SUsernamecontainer>
+                    <SUsername to={`/${process.env.REACT_APP_PUBLIC_URL}/users/${data.uid}`}>
+                      {userName[index]}
+                    </SUsername>
+                  </SUsernamecontainer>
 
                   {admin || useId === data.uid ? (
+                    <>
                       <Link
-                        to={`/${params.breadId}/${reviewId[page][index]}/editbreadreview`}
+                        to={`/${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}/${reviewId[page][index]}/editbreadreview`}
                       >
                         編集
                       </Link>
-                    ):(null)}
+                    </>
+                  ) : null}
                 </SReviewContainer>
               </>
             );
@@ -137,7 +138,7 @@ export const BreadReview = () => {
         ) : (
           <p>まだレビューが投稿されていません。</p>
         )}
-        <PageControl url={`/${params.breadId}/#top`} arrayData={reviewData}/>
+        <PageControl url={`/${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}/#top`} arrayData={reviewData} />
       </SMaincontainer>
     </>
   );
@@ -150,12 +151,14 @@ const SMaincontainer = styled.div`
   margin: 8px auto;
   margin-top: 16px;
   gap: 18px;
+  width: 95%;
 `;
 
 const SH3 = styled.h3`
-  font-size: 18px;
+  font-size: 16px;
   display: block;
   margin-left: 8px;
+  font-weight: bolder;
 `;
 
 const SReviewContainer = styled.div`
@@ -163,7 +166,7 @@ const SReviewContainer = styled.div`
   padding: 24px;
 `;
 
-const SUsername = styled.div`
+const SUsername = styled(Link)`
   text-align: right;
 `;
 
@@ -174,4 +177,17 @@ const SButtoncontainer = styled.div`
 const STitlecontainer = styled.div`
   display: flex;
   margin-bottom: 8px;
+`;
+
+const STimestamp = styled.div`
+  color: #444444;
+  font-size: 14px;
+`;
+
+const SDetail = styled.div`
+  margin: 12px auto;
+`;
+
+const SUsernamecontainer = styled.div`
+  text-align: right;
 `;
