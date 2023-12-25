@@ -25,6 +25,7 @@ export const EditBreadReview = () => {
   const [star, setStar] = useState<number>(3);
   const useId = useSelector((state: RootState) => state.auth.userToken);
   const useName = useSelector((state: RootState) => state.auth.userName);
+  const admin = useSelector((state: RootState) => state.auth.admin);
   const params = useParams();
   const Navigate = useNavigate();
   const onChange = (value: any) => {
@@ -32,7 +33,6 @@ export const EditBreadReview = () => {
   };
 
   useEffect(()=>{
-
     getDoc(doc(
       db,
       "newbread",
@@ -104,12 +104,13 @@ export const EditBreadReview = () => {
           // 星の総数データを更新する
           updateDoc(doc(db, "newbread", `${params.breadId}`), {
             star: data,
+            starAverage:(data/(breadData.review)).toFixed(1),
           })
             .then(() => {
               console.log("更新が完了しました！");
             })
             .then(() => {// レビューページに戻る
-              Navigate(`/${params.breadId}`);
+              Navigate(`/${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}`);
             });
         });
     });
@@ -153,11 +154,11 @@ export const EditBreadReview = () => {
                   console.log("更新が完了しました！");
                 })
                 .then(() => {// レビューページに戻る
-                  Navigate(`/${params.breadId}`);
+                  Navigate(`/${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}`);
                 });
             });
       }).then(()=>{
-        Navigate( `/${params.breadId}`);
+        Navigate(`/${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}`);
       })
   }
 

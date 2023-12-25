@@ -80,6 +80,7 @@ export const NewBreadReview = () => {
           updateDoc(doc(db, "newbread", `${params.breadId}`), {
             // レビュー数を取得・データを更新する
             review: data.length,
+            timestamp: serverTimestamp(),
           });
 
           const starSum = data.reduce((data:any, value:any) => {
@@ -92,14 +93,16 @@ export const NewBreadReview = () => {
 
         .then((data) => {
           // 星の総数データを更新する
+
           updateDoc(doc(db, "newbread", `${params.breadId}`), {
             star: data,
+            starAverage:(data/(breadData.review+1)).toFixed(1),
           })
             .then(() => {
               console.log("更新が完了しました！");
             })
             .then(() => {// レビューページに戻る
-              Navigate(`/${params.breadId}`);
+              Navigate(`/${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}`);
             });
         });
     });

@@ -7,6 +7,8 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import Compressor from "compressorjs";
 import { useNavigate, useParams } from "react-router-dom";
 import { ModalWindow } from "../comportnents/ModalWindow";
+import { useSelector } from "react-redux";
+import { RootState } from "../features/AuthSlice";
 
 export const EditBreadPage = () => {
   const [modalOpen,setModalOpen] = useState<boolean>(false);
@@ -20,12 +22,17 @@ export const EditBreadPage = () => {
   const [star, setStar] = useState<any>(0);
   const [review, setReview] = useState<any>(0);
   const [image, setImage] = useState<any>("");
+  const admin = useSelector((state: RootState) => state.auth.admin);
   const Navigate = useNavigate();
   const params = useParams();
   const storage = getStorage();
  
 
   useEffect(()=>{// 編集用のデータを受け取ってセットする
+    const checkAdmin =async() => {
+      await admin || Navigate(`/${process.env.REACT_APP_PUBLIC_URL}`);
+    }
+    checkAdmin();
 
     getDoc(doc(
       db,
@@ -103,7 +110,7 @@ export const EditBreadPage = () => {
           console.log("画像アップロード失敗");
         })
         .then(() => {
-          Navigate("/");
+          Navigate(`/${process.env.REACT_APP_PUBLIC_URL}`);
         });
     } else {// 画像データの更新がない場合はアップロードを省く
         updateDoc(doc(db, "newbread", `${params.breadId}`), {
@@ -119,7 +126,7 @@ export const EditBreadPage = () => {
         detail,
         timestamp: serverTimestamp(),
       }).then(() => {
-        Navigate("/");
+        Navigate(`/${process.env.REACT_APP_PUBLIC_URL}`);
       });
     }
   };
@@ -128,7 +135,7 @@ export const EditBreadPage = () => {
       deleteDoc(
         doc(db, "newbread", `${params.breadId}`)
       ).then(()=>{
-        Navigate("/");
+        Navigate(`/${process.env.REACT_APP_PUBLIC_URL}`);
       })
 
   }
