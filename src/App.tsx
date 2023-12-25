@@ -1,6 +1,5 @@
 import { Router } from "./routes/Router";
 import { Header } from "./comportnents/Header";
-import { Footer } from "./comportnents/Footer";
 
 function App() {
 
@@ -8,7 +7,6 @@ function App() {
     <>
       <Header />
       <Router />
-      <Footer />
     </>
   );
 }

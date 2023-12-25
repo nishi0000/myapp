@@ -62,7 +62,7 @@ export const Header = () => {
         console.log("ログアウト成功！");
         setModalOpen(false);
         dispatch(commonSignOut());
-        Navigate(`/${process.env.REACT_APP_PUBLIC_URL}`);
+        Navigate("/");
       })
       .catch((error) => {
         console.log(error);
@@ -73,7 +73,7 @@ export const Header = () => {
     <>
       <SHeader>
         <div>
-          <Link to={`/${process.env.REACT_APP_PUBLIC_URL}`}>
+          <Link to="/">
             <SLogopc src={`${pclogo}`} />
             <SLogosp src={`${splogo}`} />
           </Link>
@@ -90,7 +90,7 @@ export const Header = () => {
                 }}
               />
               <Link
-                to={`/${process.env.REACT_APP_PUBLIC_URL}/userprofile`}
+                to="/userprofile"
                 onMouseEnter={() => {
                   setNaviText("プロフィール");
                 }}
@@ -103,7 +103,7 @@ export const Header = () => {
             </>
           ) : (
             <Link
-              to={`/${process.env.REACT_APP_PUBLIC_URL}/signin`}
+              to="/signin"
               onMouseEnter={() => {
                 setNaviText("ログイン");
               }}
@@ -115,7 +115,7 @@ export const Header = () => {
             </Link>
           )}
           <Link
-            to={`/${process.env.REACT_APP_PUBLIC_URL}/`}
+            to="/"
             onMouseEnter={() => {
               setNaviText("ホーム");
             }}
@@ -127,7 +127,7 @@ export const Header = () => {
           </Link>
           {admin && (
             <Link
-              to={`/${process.env.REACT_APP_PUBLIC_URL}/newbreadpage`}
+              to="/newbreadpage"
               onMouseEnter={() => {
                 setNaviText("商品追加");
               }}

@@ -3,35 +3,29 @@ import {
   getAuth,
   updateProfile,
 } from "firebase/auth";
-import { FC, useState } from "react";
+import { useState } from "react";
 import Button from "../comportnents/Button";
 import { Link, useNavigate } from "react-router-dom";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import eyeopen from "../images/eyeopen.png";
 import eyeclose from "../images/eyeclose.png";
 import { doc, setDoc } from "firebase/firestore";
 import db from "../firebase";
 
-type SignUpFormData = {
-  username: string;
-  email: string;
-  password: string;
-}
-
-export const SignUp: FC = () => {
+export const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignUpFormData>();
+  } = useForm();
   const Navigate = useNavigate();
 
   const auth = getAuth();
 
-  const onSubmit:SubmitHandler<SignUpFormData> = (data) => {
+  const onSubmit = (data: any) => {
     console.log(data);
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
@@ -47,7 +41,7 @@ export const SignUp: FC = () => {
           admin:false,
         })
 
-      Navigate(`/${process.env.REACT_APP_PUBLIC_URL}`);
+      Navigate("/");
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -148,7 +142,7 @@ export const SignUp: FC = () => {
           </Button>
           <br />
           <br />
-          <Link to={`/${process.env.REACT_APP_PUBLIC_URL}/signin`}>アカウントをお持ちの方はこちら</Link>
+          <Link to="/signin">アカウントをお持ちの方はこちら</Link>
         </SContainer>
         </form>
       </SMain>

@@ -14,18 +14,18 @@ import { EditBreadReview } from "../pages/EditBreadReview";
 export const Router = () => {
   return (
     <Routes>
-      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/`} element={<Home />} />
-      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/`} element={<Home />} />
-      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/signin`} element={<SignIn />} />
-      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/signup`} element={<SignUp />} />
-      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/newbreadpage`} element={<NewBreadPage />} />
-      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/:breadId/editbreadpage`} element={<EditBreadPage />} />
-      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/:breadId/newbreadreview`} element={<NewBreadReview />} />
-      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/:breadId/:reviewId/editbreadreview`} element={<EditBreadReview />} />
-      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/:breadId`} element={<BreadReview />} />
-      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/users/:userId`} element={<UserReviewList />} />
-      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/userprofile`} element={<UserProfile />} />
-      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/*`} element={<NotFound />} />
+      <Route path="/myapp" element={<Home />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/signin" element={<SignIn />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/newbreadpage" element={<NewBreadPage />} />
+      <Route path=":breadId/editbreadpage" element={<EditBreadPage />} />
+      <Route path=":breadId/newbreadreview" element={<NewBreadReview />} />
+      <Route path=":breadId/:reviewId/editbreadreview" element={<EditBreadReview />} />
+      <Route path=":breadId" element={<BreadReview />} />
+      <Route path="/users/:userId" element={<UserReviewList />} />
+      <Route path="/userprofile" element={<UserProfile />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
