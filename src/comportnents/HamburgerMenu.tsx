@@ -39,34 +39,49 @@ const HamburgerMenu = () => {
         {isOpen ? (
           <SNavi>
             <SUl>
-              <Link to={`/${process.env.REACT_APP_PUBLIC_URL}`} onClick={() => setIsOpen(false)}>
+              <SLink
+                to={`/${process.env.REACT_APP_PUBLIC_URL}`}
+                onClick={() => setIsOpen(false)}
+              >
                 <Sli>ホーム</Sli>
-              </Link>
+              </SLink>
               {uid && (
                 <>
-                  <Link to={`/${process.env.REACT_APP_PUBLIC_URL}/userprofile`} onClick={() => setIsOpen(false)}>
+                  <SLink
+                    to={`/${process.env.REACT_APP_PUBLIC_URL}/userprofile`}
+                    onClick={() => setIsOpen(false)}
+                  >
                     <Sli>プロフィール</Sli>
-                  </Link>
-                  <div onClick={() => setModalOpen(true)}>
+                  </SLink>
+                  <SOnbutton onClick={() => setModalOpen(true)}>
                     <Sli>ログアウト</Sli>
-                  </div>
+                  </SOnbutton>
                 </>
               )}
 
               {!uid && (
                 <>
-                  <Link to={`/${process.env.REACT_APP_PUBLIC_URL}/signin`} onClick={() => setIsOpen(false)}>
+                  <SLink
+                    to={`/${process.env.REACT_APP_PUBLIC_URL}/signin`}
+                    onClick={() => setIsOpen(false)}
+                  >
                     <Sli>ログイン</Sli>
-                  </Link>
-                  <Link to={`/${process.env.REACT_APP_PUBLIC_URL}/signup`} onClick={() => setIsOpen(false)}>
+                  </SLink>
+                  <SLink
+                    to={`/${process.env.REACT_APP_PUBLIC_URL}/signup`}
+                    onClick={() => setIsOpen(false)}
+                  >
                     <Sli>新規登録</Sli>
-                  </Link>
+                  </SLink>
                 </>
               )}
               {admin && (
-                <Link to={`/${process.env.REACT_APP_PUBLIC_URL}/newbreadpage`} onClick={() => setIsOpen(false)}>
+                <SLink
+                  to={`/${process.env.REACT_APP_PUBLIC_URL}/newbreadpage`}
+                  onClick={() => setIsOpen(false)}
+                >
                   <Sli>商品登録</Sli>
-                </Link>
+                </SLink>
               )}
             </SUl>
           </SNavi>
@@ -153,4 +168,20 @@ const SOverlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+`;
+
+const SLink = styled(Link)`
+  color: black;
+  text-decoration: none;
+  font-size: 20px;
+  display: block;
+  margin-bottom: 8px;
+  @media screen and (max-width: 428px) {
+    font-size: 18px;
+    margin-top: 12px;
+  }
+`;
+
+const SOnbutton = styled.div`
+  cursor: pointer;
 `;
