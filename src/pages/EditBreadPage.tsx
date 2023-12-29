@@ -112,7 +112,7 @@ export const EditBreadPage = () => {
         .then(() => {
           Navigate(`/${process.env.REACT_APP_PUBLIC_URL}`);
         });
-    } else {// 画像データの更新がない場合はアップロードを省く
+    } else {// 画像データの更新がない場合はアップロードをしない
         updateDoc(doc(db, "newbread", `${params.breadId}`), {
         // レビュー新規登録
         name,

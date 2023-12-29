@@ -1,7 +1,8 @@
 export const NotFound = () => {
     return(<>
 
-    <p>NotFoundだよー</p>
+    <p>NotFound</p>
+    <p>トップに戻る</p>
     
     </>
 

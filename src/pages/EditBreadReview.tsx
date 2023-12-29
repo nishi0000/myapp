@@ -33,7 +33,7 @@ export const EditBreadReview = () => {
   };
 
   useEffect(()=>{
-    getDoc(doc(
+    getDoc(doc(// 商品のデータを取得する
       db,
       "newbread",
       `${params.breadId}`,
@@ -42,14 +42,14 @@ export const EditBreadReview = () => {
       setBreadData(data.data());
     })
 
-    getDoc(doc(
+    getDoc(doc(// 商品のレビューデータを取得する
         db,
         "newbread",
         `${params.breadId}`,
         "review",
         `${params.reviewId}`,
       ))
-      .then((data:any) => {
+      .then((data:any) => {// 商品のレビューデータをセットする
         console.log(data.data());
         setReviewTitle(data.data().title);
         setStar(data.data().star);
@@ -116,9 +116,9 @@ export const EditBreadReview = () => {
     });
   };
 
-  const onClickDelete = () => {
+  const onClickDelete = () => {// データを削除する
     deleteDoc(
-        doc(db, "newbread", `${params.breadId}`,"review",`${params.reviewId}`)
+        doc(db, "newbread", `${params.breadId}`,"review",`${params.reviewId}`)// データの削除
       ).then(()=>{
         const postData = collection(
             db,
@@ -126,7 +126,7 @@ export const EditBreadReview = () => {
             `${params.breadId}`,
             "review"
           );
-          getDocs(postData)
+          getDocs(postData)// 削除したあとのデータを取得
             .then((data) => {
               console.log(data.docs.map((doc) => doc.data()));
               return data.docs.map((doc) => doc.data());

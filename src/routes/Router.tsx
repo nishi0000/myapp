@@ -10,13 +10,15 @@ import { UserProfile } from "../pages/UserProfile";
 import { NewBreadReview } from "../pages/NewBreadReview";
 import { UserReviewList } from "../pages/UserReviewList";
 import { EditBreadReview } from "../pages/EditBreadReview";
+import { Test } from "../pages/test";
 
 export const Router = () => {
   return (
     <Routes>
       <Route path={`${process.env.REACT_APP_PUBLIC_URL}/`} element={<Home />} />
       <Route path={`${process.env.REACT_APP_PUBLIC_URL}/`} element={<Home />} />
-      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/signin`} element={<SignIn />} />
+      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/signin`} element={<SignIn />} /> 
+      <Route path={`${process.env.REACT_APP_PUBLIC_URL}/test`} element={<Test />} />
       <Route path={`${process.env.REACT_APP_PUBLIC_URL}/signup`} element={<SignUp />} />
       <Route path={`${process.env.REACT_APP_PUBLIC_URL}/newbreadpage`} element={<NewBreadPage />} />
       <Route path={`${process.env.REACT_APP_PUBLIC_URL}/:breadId/editbreadpage`} element={<EditBreadPage />} />
