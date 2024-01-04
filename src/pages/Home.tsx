@@ -21,39 +21,71 @@ export const Home = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(pageFirst());
-    // 各商品データ取得関数
-
+  const dataGet = async () => {
     const postData = collection(db, "newbread");
     const sortedQuery = query(postData, orderBy(ranking, `desc`));
 
-    getDocs(sortedQuery).then((querySnapshot) => {
+    const idData = await getDocs(sortedQuery).then((querySnapshot) => {
       // 各商品データ取得
       console.log(querySnapshot.docs.map((doc) => doc.data()));
       console.log(querySnapshot.docs.map((doc) => doc.id));
-      setBreadId(
-        // 各商品idを配列として受け取る（リンク作成用）
-        Pagination(
-          querySnapshot.docs.map((doc) => doc.id),
-          5
-        )
-      );
-      setBreadData(
-        // ページネーション用関数　各商品データを配列として受け取る（データ表示用）
-        Pagination(
-          querySnapshot.docs.map((doc) => doc.data()),
-          5
-        )
-      );
-      console.log(
-        Pagination(
-          querySnapshot.docs.map((doc) => doc.data()),
-          5
-        )
-      );
-      setIsLoading(false);
+      return querySnapshot.docs;
     });
+
+    setBreadId(
+      // 各商品idを配列として受け取る（リンク作成用）
+      Pagination(
+        idData.map((doc) => doc.id),
+        5
+      )
+    );
+    setBreadData(
+      // ページネーション用関数　各商品データを配列として受け取る（データ表示用）
+      Pagination(
+        idData.map((doc) => doc.data()),
+        5
+      )
+    );
+
+  };
+
+  useEffect(() => {
+    dispatch(pageFirst());
+    dataGet();
+    setIsLoading(false);
+
+
+    // 各商品データ取得関数
+
+    // const postData = collection(db, "newbread");
+    // const sortedQuery = query(postData, orderBy(ranking, `desc`));
+
+    // getDocs(sortedQuery).then((querySnapshot) => {
+    //   // 各商品データ取得
+    //   console.log(querySnapshot.docs.map((doc) => doc.data()));
+    //   console.log(querySnapshot.docs.map((doc) => doc.id));
+    //   setBreadId(
+    //     // 各商品idを配列として受け取る（リンク作成用）
+    //     Pagination(
+    //       querySnapshot.docs.map((doc) => doc.id),
+    //       5
+    //     )
+    //   );
+    //   setBreadData(
+    //     // ページネーション用関数　各商品データを配列として受け取る（データ表示用）
+    //     Pagination(
+    //       querySnapshot.docs.map((doc) => doc.data()),
+    //       5
+    //     )
+    //   );
+    //   console.log(
+    //     Pagination(
+    //       querySnapshot.docs.map((doc) => doc.data()),
+    //       5
+    //     )
+    //   );
+    //   setIsLoading(false);
+    // });
   }, [ranking]);
 
   return (
@@ -175,7 +207,7 @@ const STitlecontainer = styled.div`
 `;
 
 const SRanking = styled.span`
-  text-decoration:underline;
+  text-decoration: underline;
 `;
 
 const SH2 = styled.h2`

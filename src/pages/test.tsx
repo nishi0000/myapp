@@ -36,7 +36,7 @@ export const Test = () => {
 
   return (
     <>
-    {lording ? (<p>ローディング中</p>):(<p>ロード完了！{data}</p>)}
+    {lording ? (<p>ローディング中</p>):(<p>ロード完了！{data}{data2}</p>)}
 
     </>
   );
