@@ -10,7 +10,7 @@ import {
   } from "../features/Page";
 import { useDispatch, useSelector } from "react-redux";
 
-export const Pagination = (array:any,cutNumber:any) => {
+export const Pagination = (array:any,cutNumber:number) => {
     const newArr = [];
     for(let i =0; i < Math.floor(array.length); i+=cutNumber){
         newArr.push(array.slice(i,i+cutNumber));

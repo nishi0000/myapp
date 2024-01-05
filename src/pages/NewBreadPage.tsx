@@ -14,6 +14,7 @@ export const NewBreadPage = () => {
   const [store, setStore] = useState<string>("");
   const [homepageUrl, setHomepageUrl] = useState<string>("");
   const [photoUrl, setPhotoUrl] = useState<string>("");
+  const [imageURL,setImageURL] = useState<any>("");
   const [detail, setDetail] = useState<string>("");
   const [price, setPrice] = useState<any>(0);
   const admin = useSelector((state: RootState) => state.auth.admin);
@@ -48,10 +49,23 @@ export const NewBreadPage = () => {
     }
   };
 
+  // const imageUpload = async() => {
+  //   const storageRef = ref(storage, `images/${image.name}`);
+  //   const imageURL = await uploadBytes(storageRef, image)
+  //       .then(() => {
+  //         console.log("画像アップロード成功！");
+  //         return getDownloadURL(storageRef); //画像URLゲット
+  //       })
+  //   setImageURL(imageURL);
+  // }
+
+
+
+
   const onSubmitNewBread = (event: any) => {
     // 「投稿する」ボタンのクリック
     event.preventDefault();
-    if (image) {
+    if (image) {// 画像がある場合
       console.log(image);
       const storageRef = ref(storage, `images/${image.name}`);
       uploadBytes(storageRef, image)
@@ -81,7 +95,7 @@ export const NewBreadPage = () => {
         .then(() => {
           Navigate(`/${process.env.REACT_APP_PUBLIC_URL}`);
         });
-    } else {
+    } else {// 画像がない場合
       addDoc(collection(db, "newbread"), {
         // レビュー新規登録
         name,
