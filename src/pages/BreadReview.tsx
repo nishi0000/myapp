@@ -62,20 +62,21 @@ export const BreadReview = () => {
     });
   }, []);
 
-  useEffect(() => {
-    //ユーザーネーム取得用関数
-    const getUserNameArray = async () => {
-      const usernames = await Promise.all(
-        reviewData[page].map((data: any) =>
-          getDoc(doc(db, "users", `${data.uid}`)).then(
-            (userData: any) => userData.data().username
-          )
+  
+  //ユーザーネーム取得用関数
+  const getUserNameArray = async () => {
+    const usernames = await Promise.all(
+      reviewData[page].map((data: any) =>
+        getDoc(doc(db, "users", `${data.uid}`)).then(
+          (userData: any) => userData.data().username
         )
-      );
-      // ユーザーネームを配列として受け取る
-      setUserName(usernames);
-    };
+      )
+    );
+    // ユーザーネームを配列として受け取る
+    setUserName(usernames);
+  };
 
+  useEffect(() => {
     // ユーザーデータを取得する前に、reviewDataとpageが定義されているか確認
     if (reviewData && reviewData[page] && page !== undefined) {
       getUserNameArray();
@@ -87,7 +88,9 @@ export const BreadReview = () => {
       <BreadDtail params={`${params.breadId}`} />
       {useId && (
         <SButtoncontainer>
-          <Link to={`/${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}/newbreadreview`}>
+          <Link
+            to={`/${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}/newbreadreview`}
+          >
             <Button>レビューを投稿する</Button>
           </Link>
         </SButtoncontainer>
@@ -111,13 +114,15 @@ export const BreadReview = () => {
                     <SH3>{data.title}</SH3>
                   </STitlecontainer>
                   <STimestamp>
-                    レビュー日時：{timestamp.getFullYear()}年{timestamp.getMonth() + 1}月
-                    {timestamp.getDate()}日
+                    レビュー日時：{timestamp.getFullYear()}年
+                    {timestamp.getMonth() + 1}月{timestamp.getDate()}日
                   </STimestamp>
 
                   <SDetail>{data.datail}</SDetail>
                   <SUsernamecontainer>
-                    <SUsername to={`/${process.env.REACT_APP_PUBLIC_URL}/users/${data.uid}`}>
+                    <SUsername
+                      to={`/${process.env.REACT_APP_PUBLIC_URL}/users/${data.uid}`}
+                    >
                       {userName[index]}
                     </SUsername>
                   </SUsernamecontainer>
@@ -138,7 +143,10 @@ export const BreadReview = () => {
         ) : (
           <p>まだレビューが投稿されていません。</p>
         )}
-        <PageControl url={`/${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}/#top`} arrayData={reviewData} />
+        <PageControl
+          url={`/${process.env.REACT_APP_PUBLIC_URL}/${params.breadId}/#top`}
+          arrayData={reviewData}
+        />
       </SMaincontainer>
     </>
   );
