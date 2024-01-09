@@ -1,46 +1,35 @@
-# Getting Started with Create React App
+# Delicious Bread
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+このアプリは、高級食パンのレビューを目的としたレビューアプリです。<br>
+各商品のレビューを見ることができます。<br>
+<br>
+未ログインユーザーはレビューが投稿できません。<br>
+通常ユーザーはレビューの投稿、自分が投稿したレビューの編集・削除が可能です。<br>
+管理者は商品ページの投稿・編集・削除、レビューの投稿、すべてのレビューの編集・削除が可能です。<br>
 
-## Available Scripts
+## なぜこのアプリを作ったか
 
-In the project directory, you can run:
+高級食パンの食べ比べをしていた際、商品の性質上「一度に多くの商品を購入して比較する」ということが難しいため、感想を書き留めるメモアプリのようなものが欲しかったためです。<br>
+また、商品によって食感や味が違い、好みが細分化されるため、他の人が食べた商品の感想が見られたら便利だろうなと思い、「他のユーザーのレビュー一覧が見られる」という部分に力を入れました。<br>
 
-### `npm start`
+## アピールポイント
+レスポンシブに対応しているため、スマホからも利用できます。<br>
+他のユーザーのレビューの一覧が見られます。<br>
+ユーザーの権限により、利用できる機能が違います。<br>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 採用技術
+・HTML<br>
+・CSS<br>
+・React<br>
+・Typescript<br>
+・FireBase<br>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 実装機能
+・ユーザー登録、ログイン機能<br>
+・レビュー投稿、編集、削除機能<br>
+・画像投稿機能<br>
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## FutureWork
+・ユーザーフォロー機能<br>
+・商品のお気に入り機能<br>
+・ユーザーレビューにいいね機能<br>
