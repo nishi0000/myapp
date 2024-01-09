@@ -19,7 +19,7 @@ export const Pagination = (array:any,cutNumber:number) => {
 }
 
 type PageProps = {
-    arrayData:string[];
+    arrayData:any[];
     url:string;
 };
 
