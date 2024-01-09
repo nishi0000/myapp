@@ -11,10 +11,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { PageState, pageFirst } from "../features/Page";
 import { RootState } from "../features/AuthSlice";
 
+// type Bread = {
+//   breadid: string;
+//   breadtitle: string;
+//   datail: string;
+//   star: number;
+//   timestamp: Date;
+//   title: string;
+//   uid: string;
+//   username?: string
+// }
+
+
 export const Home = () => {
   const [breadData, setBreadData] = useState<any>([]);
   const [ranking, setRanking] = useState<string>("timestamp");
-  const [breadId, setBreadId] = useState<any>([]);
+  const [breadId, setBreadId] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const page = useSelector((state: PageState) => state.page.page);
   const admin = useSelector((state: RootState) => state.auth.admin);
