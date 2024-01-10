@@ -23,10 +23,7 @@
 ・CSS<br>
 ・React<br>
 ・TypeScript<br>
-・Firebase<br>
-  ・Cloud Firestore
-  ・Authentication
-  ・Storage 
+・Firebase(Cloud Firestore,Authentication,Storage)
 
 ## 実装機能
 ・ユーザー登録、ログイン機能<br>
