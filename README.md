@@ -1,6 +1,6 @@
 # Delicious Bread
 
-URL:https://nishi0000.github.io/myPortfolio/<br>
+URL:https://nishi0000.github.io/myPortfolio/<br><br>
 このアプリは、高級食パンのレビューの投稿・閲覧を目的としたレビューアプリです。<br>
 各商品のレビューを見ることができます。<br>
 <br>
@@ -8,7 +8,13 @@ URL:https://nishi0000.github.io/myPortfolio/<br>
 未登録アカウントはレビューの閲覧のみ可能です。<br>
 登録アカウントはレビューの投稿、自分が投稿したレビューの編集・削除が可能です。<br>
 管理者アカウントは商品ページの投稿・編集・削除、レビューの投稿、すべてのレビューの編集・削除が可能です。<br>
-
+<br>
+管理者アカウント:test@gmail.com<br>
+管理者パス:testtest<br>
+<br>
+一般登録アカウント:test2@gmail.com<br>
+登録アカウントパス:testtest<br>
+<br>
 ## なぜこのアプリを作ったか
 
 高級食パンの食べ比べをしていた際、商品の性質上「一度に多くの商品を購入して比較する」ということが難しいため、感想を書き留めるメモアプリのようなものが欲しかったためです。<br>
