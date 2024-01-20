@@ -7,6 +7,7 @@ export const Test = () => {
     const [lording,setLording] = useState(true);
     const [data,setData] = useState<any>();
     const [data2,setData2] = useState<any>();
+    console.log("テストです２")
 
     const test = async() => {
         let testdata = await getDocs(collection(db, "newbread")).then((data) => {
