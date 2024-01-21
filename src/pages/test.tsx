@@ -4,7 +4,7 @@ import { useState,useEffect } from "react";
 
 
 export const Test = () => {
-  // test
+  // test2
     const [lording,setLording] = useState(true);
     const [data,setData] = useState<any>();
     const [data2,setData2] = useState<any>();
