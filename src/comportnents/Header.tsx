@@ -32,7 +32,6 @@ export const Header = () => {
 
   useEffect(() => {
     // ユーザー情報を取得、グローバルステートにセット
-    const auth = getAuth();
     onAuthStateChanged(auth, (user: any) => {
       if (user) {
         console.log(user);
@@ -61,7 +60,7 @@ export const Header = () => {
       .then(() => {
         console.log("ログアウト成功！");
         setModalOpen(false);
-        dispatch(commonSignOut());
+        dispatch(commonSignOut());// グローバルステートの更新
         Navigate(`/${process.env.REACT_APP_PUBLIC_URL}`);
       })
       .catch((error) => {

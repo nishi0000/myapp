@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 export const Pagination = (array:any,cutNumber:number) => {
     const newArr = [];
-    for(let i =0; i < Math.floor(array.length); i+=cutNumber){
+    for(let i =0; i < Math.floor(array.length); i+=cutNumber){// Math.floorは整数を返す
         newArr.push(array.slice(i,i+cutNumber));
     }
     return newArr;

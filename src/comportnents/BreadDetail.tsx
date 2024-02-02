@@ -20,12 +20,11 @@ export const BreadDtail: FC<BaredDtailType> = ({ params }) => {
     const test = async () => {
       const docRef = doc(db, "newbread", params);
       const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
+      if (docSnap.exists()) {// docSnapが存在すればtrueを返す
         console.log("Document data:", docSnap.data());
         setBreadData(docSnap.data());
         setBreadIsLoading(false);
       } else {
-        // docSnap.data() will be undefined in this case
         console.log("No such document!", docSnap);
         console.error(`ドキュメントが見つかりませんでした。ID: ${params}`);
       }
@@ -49,11 +48,6 @@ export const BreadDtail: FC<BaredDtailType> = ({ params }) => {
           ) : (
             <SBraednoneicon src={noimage}></SBraednoneicon>
           )}
-         
-
-
-
-
          
           <SStoreDetail>
                     <SH2>{breadData.name}</SH2>
