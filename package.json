@@ -1,6 +1,6 @@
 {
-  "name": "myportfolio",
-  "homepage": "https://nishi0000.github.io/myPortfolio/",
+  "name": "myapp",
+  "homepage": "https://nishi0000.github.io/myapp/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -30,7 +30,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "cross-env PUBLIC_URL=/myPortfolio react-scripts build",
+    "build": "cross-env PUBLIC_URL=/myapp react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "npm run build && gh-pages -d build"

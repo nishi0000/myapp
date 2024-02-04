@@ -1,6 +1,6 @@
 # Delicious Bread
 
-URL:https://nishi0000.github.io/myPortfolio/<br><br>
+URL:https://nishi0000.github.io/myapp/<br><br>
 このアプリは、高級食パンのレビューの投稿・閲覧を目的としたレビューアプリです。<br>
 各商品のレビューを見ることができます。<br>
 <br>

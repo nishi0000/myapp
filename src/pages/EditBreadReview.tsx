@@ -65,7 +65,7 @@ export const EditBreadReview = () => {
     console.log(breadData);
 
     updateDoc(doc(db, "newbread", `${params.breadId}`, "review",`${params.reviewId}`), {
-      // レビュー新規登録
+      // レビュー編集
       username: `${useName}`,
       uid: `${useId}`,
       title: `${reviewTitle}`,
@@ -117,7 +117,7 @@ export const EditBreadReview = () => {
   };
 
   const onClickDelete = () => {// データを削除する
-    deleteDoc(
+      deleteDoc(
         doc(db, "newbread", `${params.breadId}`,"review",`${params.reviewId}`)// データの削除
       ).then(()=>{
         const postData = collection(
@@ -125,8 +125,8 @@ export const EditBreadReview = () => {
             "newbread",
             `${params.breadId}`,
             "review"
-          );
-          getDocs(postData)// 削除したあとのデータを取得
+          )
+       getDocs(postData)// 削除したあとのデータを取得
             .then((data) => {
               console.log(data.docs.map((doc) => doc.data()));
               return data.docs.map((doc) => doc.data());
@@ -144,7 +144,6 @@ export const EditBreadReview = () => {
               console.log(starSum);
               return starSum; // 星の総数をreturnする
             })
-    
             .then((data) => {
               // 星の総数データを更新する
               updateDoc(doc(db, "newbread", `${params.breadId}`), {

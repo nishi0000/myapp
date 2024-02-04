@@ -131,13 +131,13 @@ export const Home = () => {
                     <p>価格：{data.price}円</p>
                     <div>
                       <ReactStarsRating
-                        value={parseInt(data.starAverage,10)}
+                        value={(data.star/data.review).toFixed(1)}
                         isEdit={false}
                         size={18}
                       />
 
                       {data.review ? (
-                        <SStar>{data.starAverage}</SStar>
+                        <SStar>{(data.star/data.review).toFixed(1)}</SStar>
                       ) : (
                         <SStar>0</SStar>
                       )}

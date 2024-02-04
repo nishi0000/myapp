@@ -56,14 +56,14 @@ export const BreadDtail: FC<BaredDtailType> = ({ params }) => {
                     <p>価格：{breadData.price}円</p>
                     <div>
                       <ReactStarsRating
-                        value={breadData.starAverage}
+                        value={(breadData.star/breadData.review).toFixed(1)}
                         isEdit={false}
                         size={18}
                       />
 
                       {breadData.review ? (
                         <SStar>
-                          {breadData.starAverage}
+                          {(breadData.star/breadData.review).toFixed(1)}
                         </SStar>
                       ) : (
                         <SStar>0</SStar>
